@@ -15,6 +15,8 @@ interface NewsArticleProps {
 }
 
 export default function NewsArticle({ item, aside }: NewsArticleProps) {
+  if (!item) return null;
+
   return (
     <article className="prose lg:prose-lg prose-a:text-blue-700 prose-a:hover:text-crimson-500 prose-h1:font-semibold prose-h1:leading-tight lg:prose-h1:leading-tight max-w-none my-8">
       <NextSeo
