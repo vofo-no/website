@@ -1,45 +1,69 @@
-export interface NewsItemProps {
-  category: "artikkel" | "arrangement" | "oppslag" | "dokument";
-  title: string;
-  description: string;
-  date: string;
-  featured?: boolean;
-}
+import Image from "next/image";
+import { urlFor } from "../lib/sanity";
+import shortDate from "../lib/shortDate";
+import docTypeDisplay from "../lib/docTypeDisplay";
+import { NewsItemType } from "../lib/sanity.api";
+import getRoute from "../lib/getRoute";
+import Link from "next/link";
+import NewsItemMeta from "./NewsItemMeta";
 
 export default function NewsItem({
-  category,
-  title,
-  description,
-  date,
   featured,
-}: NewsItemProps) {
+  ...props
+}: NewsItemType & { featured?: boolean }) {
+  const { _type, docType, title, description, publishedAt, slug, image } =
+    props;
   if (!featured)
     return (
-      <a href="#" className="group block">
-        <h3 className="text-lg text-blue-700 group-hover:underline font-semibold group-hover:text-crimson-500 mb-2 leading-6">
-          {title}
+      <div>
+        <h3 className="text-lg font-semibold mb-2 leading-tight">
+          <Link href={getRoute(_type, slug)}>
+            <a className="text-blue-700 hover:underline hover:text-crimson-500">
+              {title}
+            </a>
+          </Link>
         </h3>
+        <NewsItemMeta {...props} />
         <p className="text-base text-gray-700">{description}</p>
-        <p className="text-sm text-gray-500 mt-2">
+        <p className="text-xs text-gray-500 mt-2">
           <>
-            {date} ({category})
+            {[docTypeDisplay(docType || _type), shortDate(publishedAt)].join(
+              " ⬩ "
+            )}
           </>
         </p>
-      </a>
+      </div>
     );
 
   return (
-    <a href="#" className="group block">
-      <div className="aspect-video border border-gray-200 bg-gray-100 mb-2"></div>
-      <h3 className="text-2xl text-blue-700 group-hover:underline font-semibold group-hover:text-crimson-500 mb-2 leading-8">
-        {title}
+    <div>
+      <h3 className="text-2xl font-semibold mb-2 leading-tight">
+        <Link href={getRoute(_type, slug)}>
+          <a className="text-blue-700 hover:underline hover:text-crimson-500">
+            {image && (
+              <figure className="mb-1">
+                <Image
+                  src={urlFor(image).size(640, 360).url()}
+                  alt={image.alt}
+                  width={640}
+                  height={360}
+                  title={image.attribution}
+                />
+              </figure>
+            )}
+            {title}
+          </a>
+        </Link>
       </h3>
+      <NewsItemMeta {...props} />
       <p className="text-base text-gray-700">{description}</p>
-      <p className="text-sm text-gray-500 mt-2">
+      <p className="text-xs text-gray-500 mt-2">
         <>
-          {date} ({category})
+          {[docTypeDisplay(docType || _type), shortDate(publishedAt)].join(
+            " ⬩ "
+          )}
         </>
       </p>
-    </a>
+    </div>
   );
 }

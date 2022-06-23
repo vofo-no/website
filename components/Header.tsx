@@ -4,6 +4,7 @@ import { MenuIcon, SearchIcon, XIcon } from "@heroicons/react/outline";
 import { LayoutProps } from "./Layout";
 import idFromName from "../lib/idFromName";
 import Logo from "./Logo";
+import Link from "next/link";
 
 function classNames(...classes: any[]) {
   return classes.filter(Boolean).join(" ");
@@ -173,10 +174,12 @@ export default function Header({ navigation }: HeaderProps) {
               </button>
 
               <div className="ml-4 -mt-6 flex grow justify-center lg:grow-0 lg:ml-0 mr-4">
-                <a href="#">
-                  <span className="sr-only">Voksenopplæringsforbundet</span>
-                  <Logo className="w-48" />
-                </a>
+                <Link href="/">
+                  <a>
+                    <span className="sr-only">Voksenopplæringsforbundet</span>
+                    <Logo className="w-48" />
+                  </a>
+                </Link>
               </div>
 
               {/* Flyout menus */}
