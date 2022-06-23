@@ -6,7 +6,8 @@
     "dev": "concurrently --kill-others --names \"next,sanity\" \"next dev\" \"cd studio && sanity start\"",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "studio:deploy": "cd studio && sanity deploy"
   },
   "dependencies": {
     "@headlessui/react": "^1.6.1",
