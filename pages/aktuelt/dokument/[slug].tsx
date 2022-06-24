@@ -42,7 +42,7 @@ export const getStaticProps: GetStaticProps<
   const layout: LayoutProps = { navigation };
   const item = await getNewsItem(typeName, params.slug, preview);
 
-  return { props: { preview, layout, item } };
+  return { props: { preview, layout, item }, revalidate: 10 };
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {

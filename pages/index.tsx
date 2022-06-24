@@ -53,7 +53,7 @@ export async function getStaticProps({ preview = false }) {
   const layout: LayoutProps = { navigation };
   const news = await getNewsListItems(preview);
 
-  return { props: { preview, layout, news } };
+  return { props: { preview, layout, news }, revalidate: 10 };
 }
 
 export default FrontPage;
