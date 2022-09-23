@@ -22,7 +22,7 @@ interface PageProps {
 const EventPage: NextPage<PageProps> = ({ item }) => {
   return (
     <>
-      <div className="max-w-5xl mx-auto my-4 px-2 sm:px-4 lg:px-8">
+      <div className="max-w-5xl mx-auto my-4 px-3 sm:px-4 lg:px-8">
         <NewsArticle
           item={item}
           aside={<>[Plass til kontaktpersoner og relatert innhold]</>}

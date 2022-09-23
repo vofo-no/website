@@ -37,7 +37,7 @@ export default function NewsItem({
 
   return (
     <div>
-      <h3 className="text-2xl font-semibold mb-2 leading-tight">
+      <h3 className="text-2xl font-semibold mb-2 leading-tight overflow-hidden text-ellipsis">
         <Link href={getRoute(_type, slug)}>
           <a className="text-blue-700 hover:underline hover:text-crimson-500">
             {image && (

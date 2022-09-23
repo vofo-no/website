@@ -5,7 +5,7 @@ const Sep = () => <span className="inline-block px-3 opacity-50">|</span>;
 export default function Footer() {
   return (
     <footer className="bg-gray-800 mt-8 py-8 text-white">
-      <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-8">
           <ul className="flex flex-col gap-4">
             <li className="uppercase font-semibold text-gray-300">
