@@ -1,4 +1,4 @@
-import StringWithCounter from "../../src/StringWithCounter";
+import StringWithCounter from "../src/StringWithCounter";
 
 export default {
   name: "title",

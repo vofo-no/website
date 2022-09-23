@@ -1,19 +1,20 @@
-import bodyText from "../fields/bodyText";
-import description from "../fields/description";
-import expiredAt from "../fields/expiredAt";
-import image from "../fields/image";
-import importance from "../fields/importance";
-import publishedAt from "../fields/publishedAt";
-import slug from "../fields/slug";
-import title from "../fields/title";
+import bodyText from "./fields/bodyText";
+import description from "./fields/description";
+import expiredAt from "./fields/expiredAt";
+import image from "./fields/image";
+import importance from "./fields/importance";
+import publishedAt from "./fields/publishedAt";
+import slug from "./fields/slug";
+import title from "./title";
 import { MdOutlineArticle } from "react-icons/md";
-import formatLocalTime from "../../lib/formatLocalTime";
+import formatLocalTime from "../lib/formatLocalTime";
 
 export default {
   name: "article",
   type: "document",
   title: "Artikkel",
   icon: MdOutlineArticle,
+  fieldsets: [{ name: "seo", title: "SEO og metadata" }],
   groups: [
     { name: "content", title: "Innhold", default: true },
     {

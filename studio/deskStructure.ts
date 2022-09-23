@@ -1,13 +1,21 @@
 import S from "@sanity/desk-tool/structure-builder";
 import { MdMenu, MdSettings, MdWeb } from "react-icons/md";
 
+const settingIds = ["siteSettings", "navigation", "employee"];
+const staticIds = ["learningAssociation"];
+
 export default () =>
   S.list()
     .title("Innhold")
     .items([
       ...S.documentTypeListItems().filter(
-        (listItem) => !["siteSettings", "navigation"].includes(listItem.getId())
+        (listItem) => ![...settingIds, ...staticIds].includes(listItem.getId())
       ),
+      S.divider(),
+      ...S.documentTypeListItems().filter((listItem) =>
+        staticIds.includes(listItem.getId())
+      ),
+      S.divider(),
       S.listItem()
         .title("Innstillinger")
         .icon(MdSettings)
@@ -29,6 +37,7 @@ export default () =>
                 .child(
                   S.document().schemaType("navigation").documentId("navigation")
                 ),
+              S.documentTypeListItem("employee").title("Ansatte"),
             ])
         ),
     ]);
