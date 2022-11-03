@@ -8,6 +8,7 @@ import slug from "./fields/slug";
 import title from "./title";
 import { MdOutlineAttachment } from "react-icons/md";
 import { publicationDocTypes } from "../lib/publicationDocTypes";
+import relevance from "./fields/relevance";
 
 export default {
   name: "publication",
@@ -57,5 +58,6 @@ export default {
       title: "Ekstern lenke",
       description: "Ekstern lenke til dokumentet (valgfritt)",
     },
+    relevance,
   ],
 };

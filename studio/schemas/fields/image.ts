@@ -12,10 +12,10 @@ export default {
       type: "string",
       title: "Alternativ tekst",
       description: "Beskrivelse av bildet (for lesere som ikke kan se bildet)",
+      hidden: ({ document }) => !document?.image,
       options: {
         isHighlighted: true,
       },
-      validation: (Rule) => [Rule.required()],
     },
     {
       name: "attribution",

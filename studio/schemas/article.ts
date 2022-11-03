@@ -8,6 +8,7 @@ import slug from "./fields/slug";
 import title from "./title";
 import { MdOutlineArticle } from "react-icons/md";
 import formatLocalTime from "../lib/formatLocalTime";
+import relevance from "./fields/relevance";
 
 export default {
   name: "article",
@@ -30,9 +31,8 @@ export default {
     publishedAt,
     expiredAt,
     importance,
-    {
-      ...bodyText,
-    },
+    bodyText,
+    relevance,
   ],
   orderings: [
     {

@@ -2,7 +2,7 @@ import S from "@sanity/desk-tool/structure-builder";
 import { MdMenu, MdSettings, MdWeb } from "react-icons/md";
 
 const settingIds = ["siteSettings", "navigation", "employee"];
-const staticIds = ["learningAssociation"];
+const staticIds = ["topic", "region", "learningAssociation"];
 
 export default () =>
   S.list()

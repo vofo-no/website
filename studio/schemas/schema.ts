@@ -12,6 +12,8 @@ import employee from "./employee";
 import office from "./office";
 import person from "./person";
 import siteSettings from "./siteSettings";
+import region from "./region";
+import topic from "./topic";
 
 // Then we give our schema to the builder and provide the result to Sanity
 export default createSchema({
@@ -28,6 +30,8 @@ export default createSchema({
     learningAssociation,
     office,
     person,
+    region,
     siteSettings,
+    topic,
   ]),
 });

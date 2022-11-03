@@ -7,6 +7,8 @@ import publishedAt from "./fields/publishedAt";
 import slug from "./fields/slug";
 import title from "./title";
 import { MdEvent } from "react-icons/md";
+import relevance from "./fields/relevance";
+import formatLocalTime from "../lib/formatLocalTime";
 
 export default {
   name: "event",
@@ -52,6 +54,13 @@ export default {
         {
           name: "name",
           title: "Stedsnavn",
+          description: "Oppgi by eller tettsted for fysiske arrangementer",
+          type: "string",
+        },
+        {
+          name: "address",
+          title: "Adresse",
+          description: "Oppgi detaljert adresse, inkludert navn på hotell e.l.",
           type: "string",
         },
       ],
@@ -63,5 +72,21 @@ export default {
       ...bodyText,
       description: "Informasjon om arrangementet",
     },
+    relevance,
   ],
+  preview: {
+    select: {
+      title: "title",
+      start: "start",
+      media: "image",
+    },
+    prepare(selection) {
+      const { title, start, media } = selection;
+      return {
+        title,
+        subtitle: start ? formatLocalTime(start) : "(mangler dato)",
+        media,
+      };
+    },
+  },
 };
