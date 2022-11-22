@@ -28,6 +28,18 @@ export default {
       ...bodyText,
       description: "Informasjon om regionen",
     },
+    {
+      name: "contacts",
+      title: "Kontaktpersoner",
+      type: "array",
+      of: [
+        {
+          type: "reference",
+          to: { type: "employee" },
+        },
+      ],
+      group: "content",
+    },
     { ...slug, group: null },
     {
       name: "active",

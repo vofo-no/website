@@ -14,6 +14,8 @@ import person from "./person";
 import siteSettings from "./siteSettings";
 import region from "./region";
 import topic from "./topic";
+import eventProgramItem from "./eventProgramItem";
+import eventSpeaker from "./eventSpeaker";
 
 // Then we give our schema to the builder and provide the result to Sanity
 export default createSchema({
@@ -24,6 +26,8 @@ export default createSchema({
   types: schemaTypes.concat([
     article,
     event,
+    eventProgramItem,
+    eventSpeaker,
     publication,
     blockContent,
     employee,

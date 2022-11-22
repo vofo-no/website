@@ -1,7 +1,7 @@
 import S from "@sanity/desk-tool/structure-builder";
 import { MdMenu, MdSettings, MdWeb } from "react-icons/md";
 
-const settingIds = ["siteSettings", "navigation", "employee"];
+const settingIds = ["siteSettings", "navigation", "employee", "person"];
 const staticIds = ["topic", "region", "learningAssociation"];
 
 export default () =>
@@ -38,6 +38,7 @@ export default () =>
                   S.document().schemaType("navigation").documentId("navigation")
                 ),
               S.documentTypeListItem("employee").title("Ansatte"),
+              S.documentTypeListItem("person").title("Personer"),
             ])
         ),
     ]);

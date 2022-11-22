@@ -60,5 +60,11 @@ export default {
       title: "Personvernerklæring",
       type: "blockContent",
     },
+    {
+      name: "larkonfEvent",
+      title: "Arrangement for læringskonferansen.no",
+      type: "reference",
+      to: { type: "event" },
+    },
   ],
 };

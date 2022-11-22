@@ -17,6 +17,7 @@ export default {
   icon: MdEvent,
   groups: [
     { name: "content", title: "Innhold", default: true },
+    { name: "program", title: "Program" },
     {
       name: "seo",
       title: "SEO",
@@ -64,6 +65,35 @@ export default {
           type: "string",
         },
       ],
+    },
+    {
+      name: "program",
+      type: "array",
+      title: "Programposter",
+      of: [{ type: "eventProgramItem" }],
+      group: "program",
+    },
+    {
+      name: "mainSpeakers",
+      type: "array",
+      of: [{ type: "eventSpeaker" }],
+      title: "Hovedtalere",
+      description:
+        "Personer som kan trekkes særlig frem i omtale av arrangementet.",
+      group: "program",
+    },
+    {
+      name: "registerUrl",
+      type: "url",
+      title: "Lenke til påmelding",
+      group: "content",
+    },
+    {
+      name: "youTubeVideoId",
+      type: "string",
+      title: "YouTube video-ID",
+      description: "ID til opptak eller direktesending på YouTube",
+      group: "content",
     },
     publishedAt,
     expiredAt,

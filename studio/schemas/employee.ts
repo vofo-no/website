@@ -6,7 +6,8 @@ export default {
     {
       name: "person",
       title: "Person",
-      type: "person",
+      type: "reference",
+      to: { type: "person" },
     },
     {
       name: "job",
@@ -16,17 +17,9 @@ export default {
   ],
   preview: {
     select: {
-      name: "person.name",
-      job: "job",
+      title: "person.name",
+      subtitle: "job",
       media: "person.image",
-    },
-    prepare(selection) {
-      const { name, job, media } = selection;
-      return {
-        title: name,
-        subtitle: job,
-        media,
-      };
     },
   },
 };
