@@ -3,13 +3,16 @@ import { ParsedUrlQuery } from "querystring";
 import { LayoutProps } from "../../../components/Layout";
 import NewsArticle from "../../../components/NewsArticle";
 import {
-  getAllNewsItemsSlugs,
-  getNewsItem,
+  getAllNewsItemsSlugsQuery,
+  getNewsItemQuery,
   getNavigation,
   NewsItemType,
+  ArticleNewsItem,
 } from "../../../lib/sanity.api";
+import { client } from "../../../lib/sanity.client";
 
-const typeName = "article";
+const type = "article";
+type ItemType = ArticleNewsItem;
 
 interface StaticPathParams extends ParsedUrlQuery {
   slug: string;
@@ -40,13 +43,19 @@ export const getStaticProps: GetStaticProps<
 
   const navigation = await getNavigation(preview);
   const layout: LayoutProps = { navigation };
-  const item = await getNewsItem(typeName, params.slug, preview);
+  const item = await client.fetch<ItemType>(getNewsItemQuery, {
+    type,
+    slug: params.slug,
+  });
 
   return { props: { preview, layout, item }, revalidate: 10 };
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const slugs = await getAllNewsItemsSlugs(typeName, false);
+  const slugs = await client.fetch<Array<ItemType>>(getAllNewsItemsSlugsQuery, {
+    type,
+  });
+
   return {
     paths: slugs.map(({ slug }) => ({ params: { slug } })),
     fallback: true,

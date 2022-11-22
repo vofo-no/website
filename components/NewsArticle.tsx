@@ -39,15 +39,21 @@ export default function NewsArticle({ item, aside }: NewsArticleProps) {
       <div className="grid md:grid-cols-3 gap-x-4">
         <div className="md:col-span-2 md:row-span-2">
           {item.image && (
-            <figure className="mb-0 lg:mb-0 mt-0 lg:mt-0 -mx-3 sm:-mx-4 md:mx-0">
+            <figure className="!my-0 -mx-3 sm:-mx-4 md:mx-0">
               <Image
                 src={urlFor(item.image).size(1280, 720).url()}
-                alt={item.image?.alt}
+                alt={item.image.alt || ""}
                 width={1280}
                 height={720}
+                placeholder="blur"
+                blurDataURL={urlFor(item.image)
+                  .size(64, 36)
+                  .quality(30)
+                  .blur(50)
+                  .url()}
               />
               {(item.image.attribution || item.image.caption) && (
-                <figcaption className="mt-0 mb-2 lg:mt-0 px-3 sm:px-4 md:px-0 grid gap-2">
+                <figcaption className="my-2 px-3 sm:px-4 md:px-0 grid gap-2">
                   {item.image.caption && <span>{item.image.caption}</span>}
                   {item.image.attribution && (
                     <span className="text-xs uppercase">

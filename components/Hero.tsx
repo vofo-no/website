@@ -8,9 +8,9 @@ export default function Hero() {
         <Image
           src={demoPic}
           alt="Demo"
-          layout="fill"
-          objectFit="cover"
-          objectPosition="center"
+          placeholder="blur"
+          fill
+          className="object-cover"
         />
         <div className="z-1 absolute bottom-0 sm:bottom-4 bg-crimson-500 bg-opacity-80 text-white py-4 px-6">
           <div className="text-xl lg:text-2xl font-semibold">

@@ -1,3 +1,5 @@
+"use client";
+
 import { Fragment, useState } from "react";
 import { Dialog, Popover, Tab, Transition } from "@headlessui/react";
 import { MenuIcon, SearchIcon, XIcon } from "@heroicons/react/outline";
@@ -16,6 +18,8 @@ interface HeaderProps {
 
 export default function Header({ navigation }: HeaderProps) {
   const [open, setOpen] = useState(false);
+
+  if (!navigation) return null;
 
   return (
     <div className="bg-white">
@@ -175,10 +179,8 @@ export default function Header({ navigation }: HeaderProps) {
 
               <div className="ml-4 -mt-6 flex grow justify-center lg:grow-0 lg:ml-0 mr-4">
                 <Link href="/">
-                  <a>
-                    <span className="sr-only">Voksenopplæringsforbundet</span>
-                    <Logo className="w-48" />
-                  </a>
+                  <span className="sr-only">Voksenopplæringsforbundet</span>
+                  <Logo className="w-48" />
                 </Link>
               </div>
 

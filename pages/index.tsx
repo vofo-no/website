@@ -4,7 +4,8 @@ import Hero from "../components/Hero";
 import { LayoutProps } from "../components/Layout";
 import NewsList from "../components/NewsList";
 
-import { getNavigation, getNewsListItems } from "../lib/sanity.api";
+import { getNavigation, getNewsListItemsQuery } from "../lib/sanity.api";
+import { client } from "../lib/sanity.client";
 
 function FrontPage({ news }: InferGetStaticPropsType<typeof getStaticProps>) {
   return (
@@ -51,7 +52,7 @@ function FrontPage({ news }: InferGetStaticPropsType<typeof getStaticProps>) {
 export const getStaticProps: GetStaticProps = async ({ preview = false }) => {
   const navigation = await getNavigation(preview);
   const layout: LayoutProps = { navigation };
-  const news = await getNewsListItems(preview);
+  const news = await client.fetch(getNewsListItemsQuery);
 
   return { props: { preview, layout, news }, revalidate: 10 };
 };

@@ -1,7 +1,6 @@
 import { groq } from "next-sanity";
-import { getClient } from "./sanity.server";
 
-const getNewsListItemsQuery = groq`
+export const getNewsListItemsQuery = groq`
 *[_type in ["article", "event", "publication"] && dateTime(publishedAt) < dateTime(now())] | order(publishedAt desc) [0...6] {
   _id,
   _type,
@@ -17,13 +16,13 @@ const getNewsListItemsQuery = groq`
 }
 `;
 
-const getAllNewsItemsSlugsQuery = groq`
+export const getAllNewsItemsSlugsQuery = groq`
 *[_type == $type && dateTime(publishedAt) < dateTime(now())] {
   "slug": slug.current,
 }
 `;
 
-const getNewsItemQuery = groq`
+export const getNewsItemQuery = groq`
 *[_type == $type && slug.current == $slug][0] {
   _id,
   _type,
@@ -39,7 +38,8 @@ const getNewsItemQuery = groq`
   location { name },
   body,
   "attachment": attachment.asset->url,
-  remoteUrl
+  remoteUrl,
+  relevance[][0]->{ _type, name, "slug": slug.current, image, "contact": contacts[][0]->}
 }
 `;
 
@@ -55,21 +55,21 @@ type NewsItemBase = {
   body?: Array<any>;
 };
 
-type EventNewsItem = NewsItemBase & {
+export type EventNewsItem = NewsItemBase & {
   _type: "event";
   start: string;
   end: string;
   location?: { name?: string };
 };
 
-type PublicationNewsItem = NewsItemBase & {
+export type PublicationNewsItem = NewsItemBase & {
   _type: "publication";
   docType: string;
   attachment?: string;
   remoteUrl?: string;
 };
 
-type ArticleNewsItem = NewsItemBase & {
+export type ArticleNewsItem = NewsItemBase & {
   _type: "article";
 };
 
@@ -77,33 +77,6 @@ export type NewsItemType =
   | ArticleNewsItem
   | EventNewsItem
   | PublicationNewsItem;
-
-export async function getNewsListItems(preview: boolean) {
-  return getClient(preview).fetch<Array<NewsItemType>>(getNewsListItemsQuery);
-}
-
-export async function getAllNewsItemsSlugs(
-  type: NewsItemType["_type"],
-  preview: boolean
-) {
-  return getClient(preview).fetch<Array<EventNewsItem>>(
-    getAllNewsItemsSlugsQuery,
-    {
-      type,
-    }
-  );
-}
-
-export async function getNewsItem(
-  type: NewsItemType["_type"],
-  slug: string,
-  preview: boolean
-) {
-  return getClient(preview).fetch<EventNewsItem>(getNewsItemQuery, {
-    type,
-    slug,
-  });
-}
 
 // MOCK
 export async function getNavigation(preview: boolean) {
