@@ -67,6 +67,20 @@ export default {
       ],
     },
     {
+      name: "programStatus",
+      type: "string",
+      title: "Program-status",
+      group: "program",
+      options: {
+        list: [
+          { title: "Utkast (vises ikke)", value: "draft" },
+          { title: "Foreløpig", value: "temp" },
+          { title: "Ferdig", value: "final" },
+        ],
+        layout: "radio",
+      },
+    },
+    {
       name: "program",
       type: "array",
       title: "Programposter",
