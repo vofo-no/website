@@ -1,9 +1,8 @@
-import client from "part:@sanity/base/client";
-
 // Note: this assumes that every document that has a slug field
 // have it on the `slug` field at the root
 export function isUniqueAcrossAllDocuments(slug, options) {
-  const { document } = options;
+  const { document, getClient } = options;
+  const client = getClient({ apiVersion: "2022-12-07" });
 
   const id = document._id.replace(/^drafts\./, "");
   const params = {

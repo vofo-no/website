@@ -1,10 +1,9 @@
-import S from "@sanity/desk-tool/structure-builder";
 import { MdMenu, MdSettings, MdWeb } from "react-icons/md";
 
 const settingIds = ["siteSettings", "navigation", "employee", "person"];
 const staticIds = ["topic", "region", "learningAssociation"];
 
-export default () =>
+export default (S) =>
   S.list()
     .title("Innhold")
     .items([

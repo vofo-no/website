@@ -1,11 +1,13 @@
-import StringWithCounter from "../src/StringWithCounter";
+import { TextInputWithCounter } from "../src/StringWithCounter";
 
 export default {
   name: "title",
   type: "string",
   title: "Tittel",
   group: "content",
-  inputComponent: StringWithCounter,
+  components: {
+    input: TextInputWithCounter,
+  },
   validation: (Rule) => [
     Rule.required(),
     Rule.min(15).max(70).warning("Tittelen bør være mellom 15 og 70 tegn"),

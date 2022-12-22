@@ -2,6 +2,7 @@ import { Rule } from "@sanity/types";
 
 export default {
   name: "siteSettings",
+  title: "Oppsett",
   type: "document",
   fields: [
     {

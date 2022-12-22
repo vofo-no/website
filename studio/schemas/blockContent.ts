@@ -10,6 +10,7 @@
  */
 export default {
   name: "blockContent",
+  title: "Innhold",
   type: "array",
   of: [
     {

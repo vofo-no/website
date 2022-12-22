@@ -1,11 +1,13 @@
-import StringWithCounter from "../../src/StringWithCounter";
+import { TextAreaWithCounter } from "../../src/StringWithCounter";
 
 export default {
   name: "description",
   type: "text",
   group: "content",
   title: "Beskrivelse",
-  inputComponent: StringWithCounter,
+  components: {
+    input: TextAreaWithCounter,
+  },
   description: "Kort beskrivelse eller presentasjon av dokumentet.",
   validation: (Rule) => [
     Rule.required(),

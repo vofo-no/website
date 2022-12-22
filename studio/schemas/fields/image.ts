@@ -13,9 +13,6 @@ export default {
       title: "Alternativ tekst",
       description: "Beskrivelse av bildet (for lesere som ikke kan se bildet)",
       hidden: ({ document }) => !document?.image,
-      options: {
-        isHighlighted: true,
-      },
     },
     {
       name: "attribution",
@@ -23,12 +20,14 @@ export default {
       title: "Attribusjon",
       description:
         'Dersom rettighetshaver krever det, skal attribusjon vises når vi bruker bildet. F.eks. "Foto: Kari Nordmann"',
+      hidden: ({ document }) => !document?.image,
     },
     {
       name: "caption",
       type: "string",
       title: "Bildetekst",
       description: "Tekst som kan vises sammen med bildet.",
+      hidden: ({ document }) => !document?.image,
     },
   ],
 };
