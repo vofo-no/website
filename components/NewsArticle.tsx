@@ -8,6 +8,8 @@ import LinkButton from "./LinkButton";
 import NewsItemMeta from "./NewsItemMeta";
 import TextBody from "./TextBody";
 import { ReactNode } from "react";
+import ContactPerson from "./ContactPerson";
+import RelevanceLink from "./RelevanceLink";
 
 interface NewsArticleProps {
   item: NewsItemType;
@@ -18,7 +20,7 @@ export default function NewsArticle({ item, aside }: NewsArticleProps) {
   if (!item) return null;
 
   return (
-    <article className="prose lg:prose-lg prose-a:text-blue-700 prose-a:hover:text-crimson-500 prose-h1:font-semibold prose-h1:leading-tight lg:prose-h1:leading-tight max-w-none my-8">
+    <article className="prose lg:prose-lg prose-a:text-blue-700 hover:prose-a:text-crimson-500 prose-h1:font-semibold prose-h1:leading-tight lg:prose-h1:leading-tight max-w-none my-8">
       <NextSeo
         title={item.title}
         openGraph={{
@@ -90,7 +92,27 @@ export default function NewsArticle({ item, aside }: NewsArticleProps) {
           <TextBody content={item.body} />
         </div>
         <aside className="flex flex-col mt-8 gap-4 md:row-span-2 md:row-start-2 md:col-start-3">
-          {aside}
+          <>
+            {item.relevance?.length && (
+              <>
+                {item.relevance[0].contacts?.length
+                  ? item.relevance[0].contacts.map((contact) => (
+                      <ContactPerson
+                        key={contact._id}
+                        {...contact.person}
+                        title={contact.job}
+                      />
+                    ))
+                  : null}
+                <div>
+                  {item.relevance.map((unit) => (
+                    <RelevanceLink key={unit._id} item={unit} />
+                  ))}
+                </div>
+              </>
+            )}
+            {aside}
+          </>
         </aside>
       </div>
     </article>

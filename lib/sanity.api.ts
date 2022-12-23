@@ -16,6 +16,19 @@ export const getNewsListItemsQuery = groq`
 }
 `;
 
+export const getCalendarItemsQuery = groq`
+*[_type == "event" && dateTime(publishedAt) < dateTime(now()) && dateTime(end) > dateTime(now())] | order(start) [0...9] {
+  _id,
+  _type,
+  title,
+  description,
+  "slug": slug.current,
+  start,
+  end,
+  location { name }
+}
+`;
+
 export const getAllNewsItemsSlugsQuery = groq`
 *[_type == $type && dateTime(publishedAt) < dateTime(now())] {
   "slug": slug.current,
@@ -39,20 +52,56 @@ export const getNewsItemQuery = groq`
   body,
   "attachment": attachment.asset->url,
   remoteUrl,
-  relevance[][0]->{ _type, name, "slug": slug.current, image, "contact": contacts[][0]->}
+  relevance[]->{ _type,_id,name,"slug":slug.current,image,contacts[]->{_id,job,person->}}
 }
 `;
 
-type NewsItemBase = {
+type ItemBase = {
   _id: string;
   _updatedAt?: string;
+  slug: string;
+};
+
+type ContactItemType = {
+  _id: string;
+  job: string;
+  person: {
+    name: string;
+    email?: string;
+    phone?: string;
+    image: { alt?: string; attribution?: string; caption?: string };
+  };
+};
+
+export type RegionItemType = ItemBase & {
+  _type: "region";
+  name: string;
+  contacts?: Array<ContactItemType>;
+};
+
+export type TopicItemType = ItemBase & {
+  _type: "topic";
+  name: string;
+  contacts?: Array<ContactItemType>;
+};
+
+export type CalendarItemType = ItemBase & {
+  _type: "event";
+  title: string;
+  description: string;
+  start: string;
+  end: string;
+  location?: { name?: string };
+};
+
+type NewsItemBase = ItemBase & {
   docType?: string;
   title: string;
   description: string;
   image: { alt?: string; attribution?: string; caption?: string };
   publishedAt: string;
-  slug: string;
   body?: Array<any>;
+  relevance?: Array<RegionItemType>;
 };
 
 export type EventNewsItem = NewsItemBase & {

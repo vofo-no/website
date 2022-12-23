@@ -1,13 +1,21 @@
 import { ChevronRightIcon } from "@heroicons/react/outline";
 import type { GetStaticProps, InferGetStaticPropsType } from "next";
+import CalendarList from "../components/CalendarList";
 import Hero from "../components/Hero";
 import { LayoutProps } from "../components/Layout";
 import NewsList from "../components/NewsList";
 
-import { getNavigation, getNewsListItemsQuery } from "../lib/sanity.api";
+import {
+  getCalendarItemsQuery,
+  getNavigation,
+  getNewsListItemsQuery,
+} from "../lib/sanity.api";
 import { client } from "../lib/sanity.client";
 
-function FrontPage({ news }: InferGetStaticPropsType<typeof getStaticProps>) {
+function FrontPage({
+  news,
+  events,
+}: InferGetStaticPropsType<typeof getStaticProps>) {
   return (
     <>
       <Hero />
@@ -31,18 +39,24 @@ function FrontPage({ news }: InferGetStaticPropsType<typeof getStaticProps>) {
             <span className="text-xl">fylkesutvalg</span>
           </div>
         </div>
-        <div className="border-b border-gray-200 mb-4">
-          <h2 className="sr-only">Aktuelt</h2>
-          <NewsList items={news} />
-          <p className="text-right text-xl my-6">
-            <a
-              href="#"
-              className="text-blue-700 hover:text-crimson-500 hover:underline"
-            >
-              Se alle saker
-              <ChevronRightIcon className="w-5 h-5 inline-block ml-1" />
-            </a>
-          </p>
+        <div className="border-b border-gray-200 mb-4 grid grid-cols-1 lg:grid-cols-4 gap-12">
+          <div className="lg:col-span-3">
+            <h2 className="text-xl font-semibold my-4">Aktuelt</h2>
+            <NewsList items={news} />
+            <p className="text-right text-xl my-6">
+              <a
+                href="#"
+                className="text-blue-700 hover:text-crimson-500 hover:underline"
+              >
+                Se alle saker
+                <ChevronRightIcon className="w-5 h-5 inline-block ml-1" />
+              </a>
+            </p>
+          </div>
+          <div>
+            <h2 className="text-xl font-semibold my-4">Kalender</h2>
+            <CalendarList items={events} />
+          </div>
         </div>
       </div>
     </>
@@ -53,8 +67,9 @@ export const getStaticProps: GetStaticProps = async ({ preview = false }) => {
   const navigation = await getNavigation(preview);
   const layout: LayoutProps = { navigation };
   const news = await client.fetch(getNewsListItemsQuery);
+  const events = await client.fetch(getCalendarItemsQuery);
 
-  return { props: { preview, layout, news }, revalidate: 10 };
+  return { props: { preview, layout, news, events }, revalidate: 10 };
 };
 
 export default FrontPage;

@@ -1,7 +1,5 @@
 import Image from "next/image";
 import { urlFor } from "../lib/sanity";
-import shortDate from "../lib/shortDate";
-import docTypeDisplay from "../lib/docTypeDisplay";
 import { NewsItemType } from "../lib/sanity.api";
 import getRoute from "../lib/getRoute";
 import Link from "next/link";
@@ -11,8 +9,7 @@ export default function NewsItem({
   featured,
   ...props
 }: NewsItemType & { featured?: boolean }) {
-  const { _type, docType, title, description, publishedAt, slug, image } =
-    props;
+  const { _type, title, description, slug, image } = props;
   if (!featured)
     return (
       <div>
@@ -26,13 +23,6 @@ export default function NewsItem({
         </h3>
         <NewsItemMeta {...props} />
         <p className="text-base text-gray-700">{description}</p>
-        <p className="text-xs text-gray-500 mt-2">
-          <>
-            {[docTypeDisplay(docType || _type), shortDate(publishedAt)].join(
-              " ⬩ "
-            )}
-          </>
-        </p>
       </div>
     );
 
@@ -65,13 +55,6 @@ export default function NewsItem({
       </h3>
       <NewsItemMeta {...props} />
       <p className="text-base text-gray-700">{description}</p>
-      <p className="text-xs text-gray-500 mt-2">
-        <>
-          {[docTypeDisplay(docType || _type), shortDate(publishedAt)].join(
-            " ⬩ "
-          )}
-        </>
-      </p>
     </div>
   );
 }
