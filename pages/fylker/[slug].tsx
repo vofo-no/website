@@ -46,11 +46,11 @@ function AllRegionsPage({
         <div className="border-b border-gray-200 mb-4 grid grid-cols-1 lg:grid-cols-4 gap-12">
           <div className="lg:col-span-3">
             <h2 className="text-xl font-semibold my-4">Aktuelt</h2>
-            <NewsList items={region.news} />
+            <NewsList items={region.news || []} />
           </div>
           <div>
             <h2 className="text-xl font-semibold my-4">Kalender</h2>
-            <CalendarList items={region.calendar} />
+            <CalendarList items={region.calendar || []} />
           </div>
         </div>
       </div>

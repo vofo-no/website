@@ -137,6 +137,8 @@ export type RegionItemType = ItemBase & {
   description?: string;
   image?: ImageType;
   contacts?: Array<ContactItemType>;
+  news?: Array<NewsItemType>;
+  calendar?: Array<CalendarItemType>;
 };
 
 export type TopicItemType = ItemBase & {
