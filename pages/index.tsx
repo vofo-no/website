@@ -1,5 +1,6 @@
 import { ChevronRightIcon } from "@heroicons/react/outline";
 import type { GetStaticProps, InferGetStaticPropsType } from "next";
+import Link from "next/link";
 import CalendarList from "../components/CalendarList";
 import Hero from "../components/Hero";
 import { LayoutProps } from "../components/Layout";
@@ -18,7 +19,11 @@ function FrontPage({
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   return (
     <>
-      <Hero />
+      <Hero
+        title="Læring til levende lokalsamfunn"
+        href="#"
+        linkText="Se kursstatistikken for 2021"
+      />
       <div className="max-w-7xl mx-auto my-4 px-3 sm:px-4 lg:px-8">
         <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-4 items-center border-b border-gray-200 pb-4 mb-4">
           <p className="col-span-2 lg:col-span-3 text-base text-gray-500">
@@ -32,11 +37,18 @@ function FrontPage({
             </span>
             <span className="text-xl">studieforbund</span>
           </div>
-          <div className="lg:col-span-2 flex flex-col items-center justify-center tracking-tight">
-            <span className="text-7xl font-bold text-crimson-500 proportional-nums">
-              11
-            </span>
-            <span className="text-xl">fylkesutvalg</span>
+          <div className="lg:col-span-2 flex items-center justify-center">
+            <Link
+              href="/fylker"
+              className="flex flex-col items-center justify-center tracking-tight group"
+            >
+              <span className="text-7xl font-bold text-crimson-500 proportional-nums">
+                11
+              </span>
+              <span className="text-xl group-hover:text-crimson-500 group-hover:underline">
+                fylkesutvalg
+              </span>
+            </Link>
           </div>
         </div>
         <div className="border-b border-gray-200 mb-4 grid grid-cols-1 lg:grid-cols-4 gap-12">

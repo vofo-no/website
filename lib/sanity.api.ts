@@ -1,3 +1,4 @@
+import { SanityImageObject } from "@sanity/image-url/lib/types/types";
 import { groq } from "next-sanity";
 
 export const getNewsListItemsQuery = groq`
@@ -26,6 +27,57 @@ export const getCalendarItemsQuery = groq`
   start,
   end,
   location { name }
+}
+`;
+
+export const getAllRegionsQuery = groq`
+*[_type == "region" && active] {
+  _id,
+  _type,
+  name,
+  description,
+  image,
+  "slug": slug.current,
+}
+`;
+
+export const getAllRegionsSlugsQuery = groq`
+*[_type == "region" && active] {
+  "slug": slug.current,
+}
+`;
+
+export const getRegionQuery = groq`
+*[_type == "region" && slug.current == $slug][0] {
+  _id,
+  _type,
+  name,
+  description,
+  image,
+  contacts[]->{_id,job,person->},
+  "news": *[_type in ["article", "event", "publication"] && dateTime(publishedAt) < dateTime(now()) && references(^._id)] | order(publishedAt desc) [0...6] {
+    _id,
+    _type,
+    docType,
+    title,
+    description,
+    image,
+    publishedAt,
+    "slug": slug.current,
+    start,
+    end,
+    location { name }
+  },
+  "calendar": *[_type == "event" && dateTime(publishedAt) < dateTime(now()) && dateTime(end) > dateTime(now()) && references(^._id)] | order(start) [0...9] {
+    _id,
+    _type,
+    title,
+    description,
+    "slug": slug.current,
+    start,
+    end,
+    location { name }
+  }
 }
 `;
 
@@ -62,6 +114,12 @@ type ItemBase = {
   slug: string;
 };
 
+export type ImageType = SanityImageObject & {
+  alt: string;
+  attribution?: string;
+  caption?: string;
+};
+
 type ContactItemType = {
   _id: string;
   job: string;
@@ -69,13 +127,15 @@ type ContactItemType = {
     name: string;
     email?: string;
     phone?: string;
-    image: { alt?: string; attribution?: string; caption?: string };
+    image: ImageType;
   };
 };
 
 export type RegionItemType = ItemBase & {
   _type: "region";
   name: string;
+  description?: string;
+  image?: ImageType;
   contacts?: Array<ContactItemType>;
 };
 
@@ -98,7 +158,7 @@ type NewsItemBase = ItemBase & {
   docType?: string;
   title: string;
   description: string;
-  image: { alt?: string; attribution?: string; caption?: string };
+  image: ImageType;
   publishedAt: string;
   body?: Array<any>;
   relevance?: Array<RegionItemType>;

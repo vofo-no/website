@@ -1,7 +1,9 @@
 const knownRoutes: Record<string, string> = {
-  event: "aktuelt/arrangement",
-  publication: "aktuelt/dokument",
-  article: "aktuelt/artikkel",
+  event: "/aktuelt/arrangement",
+  publication: "/aktuelt/dokument",
+  article: "/aktuelt/artikkel",
+  region: "/fylker",
+  topic: "/tema",
 };
 
 export default function getRoute(typeName: string, slug?: string) {
