@@ -19,6 +19,8 @@ import { client } from "../../lib/sanity.client";
 function AllRegionsPage({
   region,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
+  if (!region) return null;
+
   return (
     <>
       <Hero image={region.image} title={region.name} />
