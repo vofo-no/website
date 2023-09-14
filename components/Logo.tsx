@@ -1,5 +1,33 @@
 import { SVGProps } from "react";
 
+export function MobileLogo(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      version="1.1"
+      id="Layer_1"
+      role="img"
+      aria-label="Vofo logo"
+      xmlns="http://www.w3.org/2000/svg"
+      height={44}
+      viewBox="0 0 43 50"
+      {...props}
+    >
+      <title>Vofo logo</title>
+      <g>
+        <path
+          fill="#A41F35"
+          d="M25,9.6c0.8,0.5,1.2,1,1.1,1.5c-0.2,1.2-3.2,1.8-6.8,1.3c-2.4-0.3-4.4-1-5.4-1.8C5.8,13.5,0,21.1,0,29.9
+                c0,9.9,7.2,18.2,16.8,20.2c1.1-0.5,2.7-0.8,4.6-0.8c1.8,0,3.4,0.3,4.5,0.8c9.5-2.1,16.6-10.3,16.6-20.1C42.5,19.8,35,11.4,25,9.6"
+        ></path>
+        <path
+          fill="#6D6E70"
+          d="M20.7,9.9c0.2,0.4-0.5,0.7-0.7,0.3l-4.8-8.8c-0.2-0.5,0-1.2,0.5-1.4c0.5-0.2,1.2,0,1.4,0.5L20.7,9.9"
+        ></path>
+      </g>
+    </svg>
+  );
+}
+
 export default function Logo(props: SVGProps<SVGSVGElement>) {
   return (
     <svg

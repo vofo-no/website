@@ -1,5 +1,5 @@
-import { utcToZonedTime, format } from "date-fns-tz";
 import { nb as locale } from "date-fns/locale";
+import { format, utcToZonedTime } from "date-fns-tz";
 
 const timeZone = "Europe/Oslo";
 export type RawTime = Date | string | number;

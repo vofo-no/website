@@ -1,14 +1,8 @@
+import { urlForImage } from "lib/sanity.image";
 import Image from "next/image";
-import { urlFor } from "../lib/sanity";
-import ContactButton from "./ContactButton";
+import { Person } from "types";
 
-interface ContactPersonProps {
-  name: string;
-  image?: any;
-  title: string;
-  email?: string;
-  phone?: string;
-}
+import ContactButton from "./ContactButton";
 
 export default function ContactPerson({
   image,
@@ -16,24 +10,28 @@ export default function ContactPerson({
   title,
   email,
   phone,
-}: ContactPersonProps) {
+}: Pick<Person, "image" | "email" | "name" | "phone" | "title">) {
+  const imageUrl = image && urlForImage(image)?.size(256, 256).url();
+  const blurImageUrl =
+    image && urlForImage(image)?.size(16, 16).quality(30).blur(50).url();
+
   return (
-    <div className="flex gap-2 items-start not-prose">
-      {image && (
+    <div className="flex gap-4 items-start not-prose">
+      {imageUrl && (
         <figure className="mb-2">
           <Image
-            src={urlFor(image).size(128, 128).url()}
+            src={imageUrl}
             alt={image.alt || ""}
             width={128}
             height={128}
-            title={image.attribution}
+            title={image.credit}
             className="rounded-full"
             placeholder="blur"
-            blurDataURL={urlFor(image).size(16, 16).quality(30).blur(50).url()}
+            blurDataURL={blurImageUrl}
           />
         </figure>
       )}
-      <div className="flex flex-col gap-1 text-sm">
+      <div className="flex flex-col gap-1 self-center text-sm pb-4">
         <h3 className="text-xl font-semibold">{name}</h3>
         <p className="text-gray-500 text-base">{title}</p>
         {email && (

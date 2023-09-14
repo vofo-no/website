@@ -1,43 +1,62 @@
+import classNames from "classnames";
+import { urlForImage } from "lib/sanity.image";
 import Image from "next/image";
 import Link from "next/link";
-import { UrlObject } from "url";
-import { urlFor } from "../lib/sanity";
-import { ImageType } from "../lib/sanity.api";
-import demoPic from "./robert-bye-xjQhTrxyVBw-unsplash.jpg";
+import { HomePagePayload } from "types";
 
-interface HeroProps {
-  image?: ImageType;
-  title?: string;
-  href?: string | UrlObject;
-  linkText?: string;
-}
+export default function Hero({ banner }: Pick<HomePagePayload, "banner">) {
+  if (!banner) return null;
 
-export default function Hero({ image, title, href, linkText }: HeroProps) {
-  const hasLink = href && linkText;
+  const { image, title, url, description, colorScheme } = banner;
+  const hasLink = url && description;
+
+  const imageUrl = image && urlForImage(image)?.size(2560, 768).url();
+  const blurImageUrl =
+    image && urlForImage(image)?.size(64, 19).quality(30).blur(50).url();
+
+  const bgClassName = {
+    "bg-crimson-500": colorScheme === "crimson",
+    "bg-blue-600": colorScheme === "blue",
+    "bg-green-600": colorScheme === "green",
+    "bg-red-600": colorScheme === "red",
+    "bg-teal-600": colorScheme === "teal",
+  };
 
   return (
     <div className="max-w-7xl mx-auto my-4 sm:px-4 lg:px-8">
-      <div className="bg-crimson-500 h-64 sm:h-80 lg:h-96 relative">
-        <Image
-          src={image ? urlFor(image).size(2560, 768).url() : demoPic}
-          alt={image?.alt || ""}
-          title={image?.attribution}
-          placeholder="blur"
-          fill
-          className="object-cover"
-          blurDataURL={
-            image && urlFor(image).size(64, 19).quality(30).blur(50).url()
-          }
-        />
+      <div
+        className={classNames(
+          bgClassName,
+          "h-64 sm:h-80 lg:h-96 relative shadow"
+        )}
+      >
+        {imageUrl && (
+          <Image
+            src={imageUrl}
+            alt={image.alt}
+            title={image.credit}
+            placeholder="blur"
+            fill
+            className="object-cover"
+            blurDataURL={blurImageUrl}
+          />
+        )}
         {(title || hasLink) && (
-          <div className="z-1 absolute bottom-0 sm:bottom-4 bg-crimson-500 bg-opacity-80 text-white py-4 px-6">
+          <div
+            className={classNames(
+              bgClassName,
+              "z-1 absolute bottom-0 sm:bottom-4 bg-opacity-80 text-white py-4 px-6"
+            )}
+          >
             {title && (
-              <div className="text-xl lg:text-2xl font-semibold">{title}</div>
+              <div className="text-xl lg:text-3xl md:text-2xl font-semibold">
+                {title}
+              </div>
             )}
             {hasLink && (
               <div className="mt-2">
-                <Link href={href} className="hover:underline">
-                  {linkText}
+                <Link href={url} className="hover:underline">
+                  {description}
                 </Link>
               </div>
             )}

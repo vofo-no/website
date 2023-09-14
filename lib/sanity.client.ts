@@ -1,8 +1,16 @@
+import {
+  apiVersion,
+  dataset,
+  projectId,
+  revalidateSecret,
+} from "lib/sanity.api";
 import { createClient } from "next-sanity";
 
-const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "";
-const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || "website";
-const apiVersion = process.env.NEXT_PUBLIC_SANITY_API_VERSION || "2021-10-21";
-const useCdn = process.env.NODE_ENV === "production";
-
-export const client = createClient({ projectId, dataset, apiVersion, useCdn });
+export const client = createClient({
+  projectId,
+  dataset,
+  apiVersion,
+  // If webhook revalidation is setup we want the freshest content, if not then it's best to use the speedy CDN
+  useCdn: revalidateSecret ? false : true,
+  perspective: "published",
+});
