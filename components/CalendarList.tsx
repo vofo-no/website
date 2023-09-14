@@ -1,4 +1,4 @@
-import React from "react";
+/*import React from "react";
 import { CalendarItemType } from "../lib/sanity.api";
 import CalendarItem from "./CalendarListItem";
 
@@ -19,3 +19,4 @@ export default function CalendarList({ items = [] }: CalendarListProps) {
     </div>
   );
 }
+*/

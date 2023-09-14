@@ -1,4 +1,5 @@
-import { MdEvent } from "react-icons/md";
+/*import { MdEvent } from "react-icons/md";
+
 import eventTimeDisplay from "../lib/eventTimeDisplay";
 import { CalendarItemType, NewsItemType } from "../lib/sanity.api";
 
@@ -23,3 +24,4 @@ export default function NewsItemMeta(props: NewsItemType | CalendarItemType) {
       return null;
   }
 }
+*/

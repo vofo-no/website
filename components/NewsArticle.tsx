@@ -1,15 +1,14 @@
+/*import { urlForImage } from "lib/sanity.image";
 import Image from "next/image";
-import { NextSeo } from "next-seo";
+import { ReactNode } from "react";
 import { MdDownload } from "react-icons/md";
+
 import formatTime from "../lib/formatTime";
-import { urlFor } from "../lib/sanity";
-import { NewsItemType } from "../lib/sanity.api";
+import ContactPerson from "./ContactPerson";
 import LinkButton from "./LinkButton";
 import NewsItemMeta from "./NewsItemMeta";
-import TextBody from "./TextBody";
-import { ReactNode } from "react";
-import ContactPerson from "./ContactPerson";
 import RelevanceLink from "./RelevanceLink";
+import TextBody from "./TextBody";
 
 interface NewsArticleProps {
   item: NewsItemType;
@@ -27,7 +26,7 @@ export default function NewsArticle({ item, aside }: NewsArticleProps) {
           images: item.image
             ? [
                 {
-                  url: urlFor(item.image).size(1200, 630).url(),
+                  url: urlForImage(item.image)?.size(1200, 630).url(),
                   width: 1200,
                   height: 630,
                   alt: item.image.alt,
@@ -43,7 +42,7 @@ export default function NewsArticle({ item, aside }: NewsArticleProps) {
           {item.image && (
             <figure className="!my-0 -mx-3 sm:-mx-4 md:mx-0">
               <Image
-                src={urlFor(item.image).size(1280, 720).url()}
+                src={urlForImage(item.image)?.size(1280, 720).url() || ""}
                 alt={item.image.alt || ""}
                 width={1280}
                 height={720}
@@ -118,3 +117,4 @@ export default function NewsArticle({ item, aside }: NewsArticleProps) {
     </article>
   );
 }
+*/

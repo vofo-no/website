@@ -1,4 +1,4 @@
-import React from "react";
+/*import React from "react";
 import { NewsItemType } from "../lib/sanity.api";
 import NewsItem from "./NewsItem";
 
@@ -19,3 +19,4 @@ export default function NewsList({ items = [] }: NewsListsProps) {
     </div>
   );
 }
+*/

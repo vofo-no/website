@@ -1,4 +1,4 @@
-import Image from "next/image";
+/*import Image from "next/image";
 import { urlFor } from "../lib/sanity";
 import { NewsItemType } from "../lib/sanity.api";
 import getRoute from "../lib/getRoute";
@@ -58,3 +58,4 @@ export default function NewsItem({
     </div>
   );
 }
+*/

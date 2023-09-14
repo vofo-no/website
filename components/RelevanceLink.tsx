@@ -1,5 +1,6 @@
-import { ChevronRightIcon } from "@heroicons/react/outline";
+/*import { ChevronRightIcon } from "@heroicons/react/outline";
 import Link from "next/link";
+
 import getRoute from "../lib/getRoute";
 import { RegionItemType, TopicItemType } from "../lib/sanity.api";
 
@@ -18,3 +19,4 @@ export default function RelevanceLink({ item }: RelevanceLinkProps) {
     </p>
   );
 }
+*/

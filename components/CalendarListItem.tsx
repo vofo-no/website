@@ -1,4 +1,4 @@
-import { CalendarItemType } from "../lib/sanity.api";
+/*import { CalendarItemType } from "../lib/sanity.api";
 import getRoute from "../lib/getRoute";
 import Link from "next/link";
 import formatTime from "../lib/formatTime";
@@ -33,3 +33,4 @@ export default function CalendarItem(props: CalendarItemType) {
     </div>
   );
 }
+*/
