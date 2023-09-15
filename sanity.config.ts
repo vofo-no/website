@@ -35,6 +35,7 @@ const title = process.env.NEXT_PUBLIC_SANITY_PROJECT_TITLE || "Vofo";
 
 export const PREVIEWABLE_DOCUMENT_TYPES = [
   home.name,
+  learningAssociations.name,
   page.name,
 ] satisfies string[];
 
