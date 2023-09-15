@@ -13,7 +13,7 @@ interface Props {
 
 export default function ArticleBody({ body, toc, media, meta }: Props) {
   return (
-    <div className="grid md:grid-cols-3 gap-x-4">
+    <div className="grid md:grid-cols-3 gap-x-8">
       {media ? (
         <>
           <div className="md:col-span-2 md:row-span-2">{media}</div>

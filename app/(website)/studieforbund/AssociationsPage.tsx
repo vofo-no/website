@@ -14,7 +14,7 @@ export default function AssociationsPage({ data }: AssociationsPageProps) {
 
   return (
     <div>
-      <Container prose className="px-4 md:flex md:gap-4">
+      <Container prose className="px-4 md:flex md:gap-8">
         <div className="grow">
           <h1>Studieforbund</h1>
           <p className="lead max-w-prose">{description}</p>
