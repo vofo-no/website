@@ -17,7 +17,7 @@ import type {
   HomePagePayload,
   PagePayload,
   PrivacyPayload,
-  ProjectPayload,
+  //ProjectPayload,
   SettingsPayload,
 } from "types";
 
@@ -81,14 +81,14 @@ export function getPageBySlug(slug: string) {
   });
 }
 
-export function getProjectBySlug(slug: string) {
+/*export function getProjectBySlug(slug: string) {
   return sanityFetch<ProjectPayload | null>({
     query: projectBySlugQuery,
     params: { slug },
     tags: [`project:${slug}`],
   });
 }
-
+*/
 export function getHomePage() {
   return sanityFetch<HomePagePayload | null>({
     query: homePageQuery,
@@ -117,10 +117,11 @@ export function getPagesPaths() {
     { token, perspective: "published" }
   );
 }
-export function getProjectsPaths() {
+/*export function getProjectsPaths() {
   return client.fetch<string[]>(
     projectPaths,
     {},
     { token, perspective: "published" }
   );
 }
+*/
