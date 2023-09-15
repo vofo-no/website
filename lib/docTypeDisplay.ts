@@ -1,4 +1,4 @@
-import { publicationDocTypes } from "../studio/lib/publicationDocTypes";
+import { publicationDocTypes } from "lib/publicationDocTypes";
 
 const knownTypes = [
   { title: "Artikkel", value: "article" },
