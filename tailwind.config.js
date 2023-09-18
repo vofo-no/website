@@ -11,7 +11,9 @@ const crimson = {
   900: "#230109",
 };
 
+/** @type {import("tailwindcss").Config} */
 module.exports = {
+  darkMode: "class",
   content: ["./app/**/*.tsx", "./components/**/*.tsx"],
   theme: {
     extend: {
