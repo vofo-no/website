@@ -1,12 +1,9 @@
+import ArticleBody from "components/ArticleBody";
+import Container from "components/Container";
 import { getPageBySlug } from "lib/sanity.fetch";
-import { pagesBySlugQuery } from "lib/sanity.queries";
 import { defineMetadata } from "lib/utils.metadata";
 import { Metadata } from "next";
-import { draftMode } from "next/headers";
-import { LiveQuery } from "next-sanity/preview/live-query";
-
-import GenericPage from "./GenericPage";
-import GenericPagePreview from "./GenericPagePreview";
+import { notFound } from "next/navigation";
 
 interface Params {
   params: { slug: string[] };
@@ -23,21 +20,15 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 
 export default async function Page({ params }: Params) {
   const slug = params.slug.join("/");
-  const data = await getPageBySlug(slug);
+  const data = (await getPageBySlug(slug)) || notFound();
 
-  if (!data && !draftMode().isEnabled) {
-    return <div className="text-center">Siden er ikke satt opp ennå.</div>;
-  }
+  const { title, description, body, toc } = data;
 
   return (
-    <LiveQuery
-      enabled={draftMode().isEnabled}
-      query={pagesBySlugQuery}
-      params={{ slug }}
-      initialData={data}
-      as={GenericPagePreview}
-    >
-      <GenericPage data={data} />
-    </LiveQuery>
+    <Container paper prose>
+      <h1>{title}</h1>
+      <p className="lead max-w-prose">{description}</p>
+      <ArticleBody media={"media"} meta={"meta"} body={body} toc={toc} />
+    </Container>
   );
 }

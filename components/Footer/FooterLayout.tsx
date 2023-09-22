@@ -34,7 +34,7 @@ export default function Footer({ data }: FooterProps) {
                 {email}
               </Link>
             </address>
-            <div>
+            <div className="print:hidden">
               <a href="om-vofo/#ansatte" className="hover:underline">
                 Våre ansatte
                 <ChevronRightIcon className="w-4 h-4 inline-block ml-1" />
@@ -42,7 +42,7 @@ export default function Footer({ data }: FooterProps) {
             </div>
             <div>Organisasjonsnummer: 971 454 423</div>
           </div>
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4 print:hidden">
             <div>
               Få siste nytt om studieforbund og voksnes læring hver måned:
               <form>
