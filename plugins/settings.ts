@@ -3,10 +3,20 @@
  */
 
 import { definePlugin, type DocumentDefinition } from "sanity";
+import { iframeOptions, PREVIEWABLE_DOCUMENT_TYPES } from "sanity.config";
 import { type StructureResolver } from "sanity/desk";
 import { Iframe } from "sanity-plugin-iframe-pane";
 
-import { iframeOptions, PREVIEWABLE_DOCUMENT_TYPES } from "sanity.config";
+const pluralTitleExceptions: Record<string, string> = {
+  Artikkel: "Artikler",
+};
+
+function getPluralTitle(singularTitle: string) {
+  return (
+    pluralTitleExceptions[singularTitle] ||
+    [singularTitle, singularTitle.endsWith("e") ? "r" : "er"].join("")
+  );
+}
 
 export const singletonPlugin = (types: string[]) =>
   definePlugin({
@@ -68,13 +78,17 @@ export const pageStructure = (
     });
 
     // The default root list items (except custom ones)
-    const defaultListItems = S.documentTypeListItems().filter(
-      (listItem) =>
-        !typeDefArray.find((singleton) => singleton.name === listItem.getId())
-    );
+    const defaultListItems = S.documentTypeListItems()
+      .filter(
+        (listItem) =>
+          !typeDefArray.find((singleton) => singleton.name === listItem.getId())
+      )
+      .map((itemBuilder) =>
+        itemBuilder.title(getPluralTitle(itemBuilder.getTitle()!))
+      );
 
     return S.list()
-      .title("Content")
+      .title("Innhold")
       .items([...singletonItems, S.divider(), ...defaultListItems]);
   };
 };

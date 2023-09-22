@@ -1,4 +1,4 @@
-import { MdRemoveRedEye } from "react-icons/md";
+import { HeartFilledIcon } from "@sanity/icons";
 import { defineArrayMember, defineField, defineType } from "sanity";
 import bodyField from "schemas/fields/bodyField";
 import descriptionField from "schemas/fields/descriptionField";
@@ -7,8 +7,8 @@ import imageField from "schemas/fields/imageField";
 export default defineType({
   name: "topic",
   type: "document",
-  title: "Tema",
-  icon: MdRemoveRedEye,
+  title: "Sak",
+  icon: HeartFilledIcon,
   fields: [
     defineField({
       name: "title",
@@ -27,6 +27,13 @@ export default defineType({
       validation: (rule) => rule.required(),
     }),
     descriptionField,
+    defineField({
+      type: "reference",
+      name: "county",
+      title: "Fylke",
+      to: { type: "county" },
+      options: { disableNew: true },
+    }),
     bodyField,
     imageField,
     defineField({
@@ -43,9 +50,23 @@ export default defineType({
     defineField({
       name: "active",
       title: "Aktiv",
-      description: "Angir om temaet er aktivt",
+      description: "Angir om saken er aktiv",
       type: "boolean",
       initialValue: true,
     }),
   ],
+  preview: {
+    select: {
+      title: "title",
+      county: "county",
+      media: "image",
+    },
+    prepare({ title, county, media }) {
+      return {
+        title,
+        subtitle: county || "Nasjonalt",
+        media,
+      };
+    },
+  },
 });

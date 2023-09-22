@@ -1,3 +1,4 @@
+import { UserIcon } from "@sanity/icons";
 import { defineField, defineType } from "sanity";
 import descriptionField from "schemas/fields/descriptionField";
 import emailField from "schemas/fields/emailField";
@@ -8,6 +9,7 @@ export default defineType({
   name: "person",
   title: "Person",
   type: "document",
+  icon: UserIcon,
   fields: [
     defineField({
       name: "name",

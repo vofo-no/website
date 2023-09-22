@@ -70,13 +70,13 @@ export default defineConfig({
       settings,
       // Documents
       article,
+      publication,
       county,
       event,
       organization,
-      page,
       person,
-      publication,
       topic,
+      page,
       // Objects
       banner,
       duration,
