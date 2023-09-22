@@ -1,7 +1,6 @@
 import { PortableText } from "@portabletext/react";
+import People, { PeopleProps } from "app/_components/People";
 import slugify from "lib/slugify";
-
-import People, { PeopleProps } from "./People";
 
 const myPortableTextComponents = {
   types: {

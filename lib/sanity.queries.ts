@@ -18,16 +18,7 @@ export const homePageQuery = groq`
 export const pagesBySlugQuery = groq`
   *[_type == "page" && slug.current == $slug][0] {
     _id,
-    body[]{
-      ...,
-      _type == "people" => {
-        ...,
-        members[]{
-          ...,
-          person->
-        },
-      }
-    },
+    body,
     "toc": body[style == "h2"],
     description,
     title,
@@ -42,6 +33,17 @@ export const associationsPageQuery = groq`
     body,
     "toc": body[style == "h2"],
     organizations[]->,
+  }
+`;
+
+export const personByIdQuery = groq`
+  *[_type == "person" && _id == $id][0] {
+    _id,
+    name,
+    title,
+    image,
+    email,
+    phone,
   }
 `;
 
@@ -89,6 +91,7 @@ export const settingsQuery = groq`
 export const privacyQuery = groq`
   *[_type == "settings"][0]{
     privacy,
+    "toc": privacy[style == "h2"],
   }
 `;
 

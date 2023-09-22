@@ -1,4 +1,4 @@
-import type { Image, PortableTextBlock } from "sanity";
+import type { Image, PortableTextBlock, Reference } from "sanity";
 
 type ImageType = Image & {
   alt: string;
@@ -42,7 +42,7 @@ export interface MenuItem {
   url: string;
 }
 
-export interface Person {
+export interface PersonPayload {
   _id: string;
   name: string;
   title?: string;
@@ -52,7 +52,7 @@ export interface Person {
 }
 
 export interface PersonItem {
-  person: Person;
+  person: Reference;
   title?: string;
 }
 
@@ -66,6 +66,7 @@ export interface SettingsPayload {
 
 export interface PrivacyPayload {
   privacy?: PortableTextBlock[];
+  toc?: PortableTextBlock[];
 }
 
 export interface PagePayload {

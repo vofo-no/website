@@ -8,6 +8,7 @@ import {
   homePageTitleQuery,
   pagePaths,
   pagesBySlugQuery,
+  personByIdQuery,
   privacyQuery,
   settingsQuery,
 } from "lib/sanity.queries";
@@ -16,6 +17,7 @@ import type {
   AssociationsPagePayload,
   HomePagePayload,
   PagePayload,
+  PersonPayload,
   PrivacyPayload,
   //ProjectPayload,
   SettingsPayload,
@@ -78,6 +80,14 @@ export function getPageBySlug(slug: string) {
     query: pagesBySlugQuery,
     params: { slug },
     tags: [`page:${slug}`],
+  });
+}
+
+export function getPersonById(id: string) {
+  return sanityFetch<PersonPayload | null>({
+    query: personByIdQuery,
+    params: { id },
+    tags: [`person:${id}`],
   });
 }
 
