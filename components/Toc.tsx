@@ -1,25 +1,76 @@
+"use client";
+
+import { Disclosure } from "@headlessui/react";
+import { ChevronRightIcon } from "@heroicons/react/20/solid";
 import { toPlainText } from "@portabletext/react";
+import classNames from "classnames";
 import slugify from "lib/slugify";
 
-export default function Toc({ headers = [] }: { headers?: any[] }) {
+interface TocProps {
+  headers?: any[];
+  mobile?: boolean;
+}
+
+export default function Toc({ headers = [], mobile = false }: TocProps) {
   if (headers.length < 3) return null;
 
-  return (
-    <div className="md:sticky md:top-4">
-      <div>
-        <h2 className="!mt-0">Innhold</h2>
-        <ul className="list-none p-0">
-          {headers.map((item) => {
-            const plain = toPlainText(item);
-            const anchor = slugify(plain);
-            return (
-              <li key={item._key}>
-                <a href={`#${anchor}`}>{plain}</a>
-              </li>
-            );
-          })}
-        </ul>
+  if (mobile) {
+    return (
+      <div className="border mb-4 md:hidden print:hidden">
+        <Disclosure>
+          {({ open }) => (
+            <>
+              <Disclosure.Button
+                as="h2"
+                className="!my-0 p-4 flex justify-between cursor-pointer"
+              >
+                <small>Innhold</small>
+                <ChevronRightIcon
+                  className={classNames("h-6 duration-150", {
+                    "rotate-90 transform": open,
+                  })}
+                />
+              </Disclosure.Button>
+              <Disclosure.Panel as="ul" className="list-none px-4 pb-4 !mb-0">
+                {headers.map((item) => {
+                  const plain = toPlainText(item);
+                  const anchor = slugify(plain);
+                  return (
+                    <li key={item._key} className="!pl-0 flex justify-start">
+                      <a href={`#${anchor}`} className="flex">
+                        <ChevronRightIcon className="w-5 align-middle inline-block" />{" "}
+                        <span>{plain}</span>
+                      </a>
+                    </li>
+                  );
+                })}
+              </Disclosure.Panel>
+            </>
+          )}
+        </Disclosure>
       </div>
+    );
+  }
+
+  return (
+    <div className="border p-4 mb-4 hidden md:block">
+      <h2 className="!mt-0 !pt-0">
+        <small>Innhold</small>
+      </h2>
+      <ul className={`list-none !pl-0 !mb-0`}>
+        {headers.map((item) => {
+          const plain = toPlainText(item);
+          const anchor = slugify(plain);
+          return (
+            <li key={item._key} className="!pl-0 flex justify-start">
+              <a href={`#${anchor}`} className="flex">
+                <ChevronRightIcon className="w-5 align-middle inline-block" />{" "}
+                <span>{plain}</span>
+              </a>
+            </li>
+          );
+        })}
+      </ul>
     </div>
   );
 }

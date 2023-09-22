@@ -12,6 +12,8 @@ interface Props {
 }
 
 export default function ArticleBody({ body, toc, media, meta }: Props) {
+  const hasMedia = !!media;
+
   return (
     <div className="grid md:grid-cols-3 gap-x-8">
       {media ? (
@@ -22,16 +24,25 @@ export default function ArticleBody({ body, toc, media, meta }: Props) {
           </div>
         </>
       ) : null}
-      <div className="md:col-span-2">
+      <Toc headers={toc} mobile />
+      <div
+        className={classNames(
+          "md:col-span-2",
+          hasMedia ? "md:row-start-3" : "md:row-start-1"
+        )}
+      >
         <TextBody content={body} />
       </div>
       <aside
         className={classNames(
-          "flex flex-col gap-4 md:row-span-2 md:col-start-3",
-          media && "md:row-start-2"
+          "md:col-start-3",
+          hasMedia && "md:row-start-2 md:row-span-2"
         )}
       >
-        <Toc headers={toc} />
+        <div className="flex flex-col gap-4 md:sticky md:top-4">
+          <Toc headers={toc} />
+          <div>[ASIDE]</div>
+        </div>
       </aside>
     </div>
   );

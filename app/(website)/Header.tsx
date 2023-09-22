@@ -16,7 +16,7 @@ export default function Header() {
   const pathname = usePathname();
 
   return (
-    <header className="bg-white shadow h-14 md:h-24 flex items-center max-w-full overflow-auto">
+    <header className="bg-white shadow h-14 md:h-24 flex items-center max-w-full overflow-auto print:hidden">
       <nav className="grow">
         <div className="mx-auto max-w-7xl md:px-4 lg:px-8">
           <div className="flex items-center px-2 md:px-0">
