@@ -34,7 +34,7 @@ export default function Header() {
                   key={url}
                   href={url}
                   className={classNames(
-                    "p-2 text-sm sm:text-base text-gray-950 hover:text-crimson-500 active:text-crimson-500 font-medium whitespace-nowrap",
+                    "p-2 text-base md:text-lg tracking-tight text-gray-950 hover:text-crimson-500 active:text-crimson-500 font-medium whitespace-nowrap",
                     {
                       "underline decoration-crimson-500 underline-offset-8":
                         pathname.startsWith(url),
