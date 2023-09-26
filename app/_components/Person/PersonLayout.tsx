@@ -38,27 +38,26 @@ export default function PersonLayout({
           "animate-pulse": !data,
         })}
       >
-        <h3 className="!my-2">
+        <h3 className="!my-0">
           {data ? (
             data.name
           ) : (
             <span className="w-36 inline-block bg-gray-300 h-4 rounded-md "></span>
           )}
-          <br />
-          <small className="font-normal text-gray-500">
-            {data ? (
-              title || data.title
-            ) : (
-              <span className="w-24 inline-block bg-gray-300 h-3 rounded-md "></span>
-            )}
-          </small>
         </h3>
-        <p className="flex justify-start flex-wrap gap-x-2 gap-y-1">
+        <div className="text-gray-500">
+          {data ? (
+            title || data.title
+          ) : (
+            <span className="w-24 inline-block bg-gray-300 h-3 rounded-md "></span>
+          )}
+        </div>
+        <div className="flex justify-start flex-wrap gap-x-2 gap-y-1 mt-1">
           {data?.email && (
             <ContactButton protocol="mailto" value={data.email} />
           )}
           {data?.phone && <ContactButton protocol="tel" value={data.phone} />}
-        </p>
+        </div>
       </div>
     </div>
   );

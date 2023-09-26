@@ -1,3 +1,5 @@
+const defaultTheme = require("tailwindcss/defaultTheme");
+
 const crimson = {
   50: "#fee2e9",
   100: "#eab5c2",
@@ -19,6 +21,11 @@ module.exports = {
     extend: {
       colors: {
         crimson,
+      },
+      fontFamily: {
+        sans: ["var(--font-open-sans)", ...defaultTheme.fontFamily.sans],
+        "open-sans": ["var(--font-open-sans)"],
+        roboto: "var(--font-roboto)",
       },
     },
   },

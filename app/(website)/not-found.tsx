@@ -9,9 +9,9 @@ export const metadata: Metadata = {
 
 export default function NotFound() {
   return (
-    <div className="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6">
-      <Container prose className="max-w-screen-sm">
-        <h1>Siden finnes ikke</h1>
+    <Container prose className="px-4">
+      <h1>Siden finnes ikke</h1>
+      <div className="max-w-prose">
         <p className="lead">
           Du har prøvd å komme inn på en side vi ikke kan finne. Vi kan ha
           flyttet eller fjernet innholdet, eller nettadressen kan være skrevet
@@ -33,7 +33,7 @@ export default function NotFound() {
         <p className="text-gray-400">
           <small>Feilmelding: HTTP 404</small>
         </p>
-      </Container>
-    </div>
+      </div>
+    </Container>
   );
 }

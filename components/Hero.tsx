@@ -49,7 +49,7 @@ export default function Hero({ banner }: Pick<HomePagePayload, "banner">) {
             )}
           >
             {title && (
-              <div className="text-xl lg:text-3xl md:text-2xl font-semibold">
+              <div className="text-xl lg:text-3xl md:text-2xl tracking-tight font-semibold font-open-sans">
                 {title}
               </div>
             )}
