@@ -12,7 +12,6 @@ import {
   privacyQuery,
   settingsQuery,
 } from "lib/sanity.queries";
-import { draftMode } from "next/headers";
 import type {
   AssociationsPagePayload,
   HomePagePayload,
@@ -39,23 +38,10 @@ export async function sanityFetch<QueryResponse>({
   params?: QueryParams;
   tags: string[];
 }): Promise<QueryResponse> {
-  const isDraftMode = draftMode().isEnabled;
-  if (isDraftMode && !token) {
-    throw new Error(
-      "The `SANITY_API_READ_TOKEN` environment variable is required."
-    );
-  }
-
   return client.fetch<QueryResponse>(query, params, {
     // We only cache if there's a revalidation webhook setup
     cache: revalidateSecret ? "force-cache" : "no-store",
-    ...(isDraftMode && {
-      cache: undefined,
-      token: token,
-      perspective: "previewDrafts",
-    }),
     next: {
-      ...(isDraftMode && { revalidate: 30 }),
       tags,
     },
   });

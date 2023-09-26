@@ -1,18 +1,8 @@
 import { visionTool } from "@sanity/vision";
-import {
-  apiVersion,
-  dataset,
-  previewSecretId,
-  projectId,
-} from "lib/sanity.api";
+import { apiVersion, dataset, projectId } from "lib/sanity.api";
 import { pageStructure, singletonPlugin } from "plugins/settings";
 import { defineConfig } from "sanity";
 import { deskTool } from "sanity/desk";
-import Iframe, {
-  defineUrlResolver,
-  IframeOptions,
-} from "sanity-plugin-iframe-pane";
-import { previewUrl } from "sanity-plugin-iframe-pane/preview-url";
 import article from "schemas/documents/article";
 import county from "schemas/documents/county";
 import event from "schemas/documents/event";
@@ -32,29 +22,6 @@ import learningAssociations from "schemas/singletons/learningAssociations";
 import settings from "schemas/singletons/settings";
 
 const title = process.env.NEXT_PUBLIC_SANITY_PROJECT_TITLE || "Vofo";
-
-export const PREVIEWABLE_DOCUMENT_TYPES = [
-  home.name,
-  learningAssociations.name,
-  page.name,
-] satisfies string[];
-
-export const PREVIEWABLE_DOCUMENT_TYPES_REQUIRING_SLUGS = [
-  page.name,
-] satisfies typeof PREVIEWABLE_DOCUMENT_TYPES;
-
-// Used to generate URLs for drafts and live previews
-export const PREVIEW_BASE_URL = "/api/draft";
-
-export const urlResolver = defineUrlResolver({
-  base: PREVIEW_BASE_URL,
-  requiresSlug: PREVIEWABLE_DOCUMENT_TYPES_REQUIRING_SLUGS,
-});
-
-export const iframeOptions = {
-  url: urlResolver,
-  urlSecretId: previewSecretId,
-} satisfies IframeOptions;
 
 export default defineConfig({
   basePath: "/studio",
@@ -89,33 +56,9 @@ export default defineConfig({
   plugins: [
     deskTool({
       structure: pageStructure([home, learningAssociations, settings]),
-      // `defaultDocumentNode` is responsible for adding a “Preview” tab to the document pane
-      // You can add any React component to `S.view.component` and it will be rendered in the pane
-      // and have access to content in the form in real-time.
-      // It's part of the Studio's “Structure Builder API” and is documented here:
-      // https://www.sanity.io/docs/structure-builder-reference
-      defaultDocumentNode: (S, { schemaType }) => {
-        if ((PREVIEWABLE_DOCUMENT_TYPES as string[]).includes(schemaType)) {
-          return S.document().views([
-            // Default form view
-            S.view.form(),
-            // Preview
-            S.view.component(Iframe).options(iframeOptions).title("Preview"),
-          ]);
-        }
-
-        return null;
-      },
     }),
     // Configures the global "new document" button, and document actions, to suit the Settings document singleton
     singletonPlugin([home.name, settings.name]),
-    // Add the "Open preview" action
-    previewUrl({
-      base: PREVIEW_BASE_URL,
-      requiresSlug: PREVIEWABLE_DOCUMENT_TYPES_REQUIRING_SLUGS,
-      urlSecretId: previewSecretId,
-      matchTypes: PREVIEWABLE_DOCUMENT_TYPES,
-    }),
     visionTool({ defaultApiVersion: apiVersion }),
   ],
 });

@@ -11,8 +11,6 @@ export const projectId = assertValue(
 export const apiVersion =
   process.env.NEXT_PUBLIC_SANITY_API_VERSION || "2023-06-21";
 
-export const previewSecretId: `${string}.${string}` = "preview.secret";
-
 export const revalidateSecret = process.env.SANITY_REVALIDATE_SECRET;
 
 function assertValue<T>(v: T | undefined, errorMessage: string): T {

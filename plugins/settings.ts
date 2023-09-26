@@ -3,9 +3,7 @@
  */
 
 import { definePlugin, type DocumentDefinition } from "sanity";
-import { iframeOptions, PREVIEWABLE_DOCUMENT_TYPES } from "sanity.config";
 import { type StructureResolver } from "sanity/desk";
-import { Iframe } from "sanity-plugin-iframe-pane";
 
 const pluralTitleExceptions: Record<string, string> = {
   Artikkel: "Artikler",
@@ -64,15 +62,6 @@ export const pageStructure = (
             .views([
               // Default form view
               S.view.form(),
-              // Preview
-              ...(PREVIEWABLE_DOCUMENT_TYPES.includes(typeDef.name as any)
-                ? [
-                    S.view
-                      .component(Iframe)
-                      .options(iframeOptions)
-                      .title("Preview"),
-                  ]
-                : []),
             ])
         );
     });
