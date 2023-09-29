@@ -3,6 +3,7 @@ import "server-only";
 import type { QueryParams } from "@sanity/client";
 import { client } from "lib/sanity.client";
 import {
+  allActiveCountiesQuery,
   associationsPageQuery,
   homePageQuery,
   homePageTitleQuery,
@@ -14,6 +15,7 @@ import {
 } from "lib/sanity.queries";
 import type {
   AssociationsPagePayload,
+  CountiesPayload,
   HomePagePayload,
   PagePayload,
   PersonPayload,
@@ -74,6 +76,13 @@ export function getPersonById(id: string) {
     query: personByIdQuery,
     params: { id },
     tags: [`person:${id}`],
+  });
+}
+
+export function getAllActiveCounties() {
+  return sanityFetch<CountiesPayload>({
+    query: allActiveCountiesQuery,
+    tags: ["county"],
   });
 }
 

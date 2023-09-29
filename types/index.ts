@@ -69,6 +69,17 @@ export interface PrivacyPayload {
   toc?: PortableTextBlock[];
 }
 
+export interface County {
+  _id: string;
+  name: string;
+  slug: string;
+  image?: Image;
+  description?: string;
+  body?: PortableTextBlock[];
+}
+
+export type CountiesPayload = County[];
+
 export interface PagePayload {
   title: string;
   description?: string;

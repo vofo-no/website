@@ -36,6 +36,16 @@ export const associationsPageQuery = groq`
   }
 `;
 
+export const allActiveCountiesQuery = groq`
+  *[_type == "county" && active == true][]{
+    _id,
+    name,
+    "slug": slug.current,
+    description,
+    image,
+  } | order(name asc)
+`;
+
 export const personByIdQuery = groq`
   *[_type == "person" && _id == $id][0] {
     _id,
