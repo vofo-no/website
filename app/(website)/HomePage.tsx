@@ -16,7 +16,7 @@ export default function HomePage({ data }: HomePageProps) {
       <Container prose>
         <h1>{title}</h1>
         <p className="lead max-w-prose">{description}</p>
-        <div className="my-4 flex gap-4 not-prose">
+        <div className="my-4 flex gap-2 sm:gap-4 -mx-1 not-prose">
           <Button as={Link} href="/om-vofo">
             Bli kjent med Vofo
           </Button>
