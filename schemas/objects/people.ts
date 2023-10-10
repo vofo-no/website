@@ -1,8 +1,10 @@
+import { UserIcon, UsersIcon } from "@sanity/icons";
 import { defineArrayMember, defineField, defineType } from "sanity";
 
 export default defineType({
   name: "people",
-  title: "People",
+  title: "Personer",
+  icon: UsersIcon,
   type: "object",
   fields: [
     defineField({
@@ -36,11 +38,13 @@ export default defineType({
               title: "person.name",
               subtitle: "person.title",
               overrideSubtitle: "title",
+              media: "person.image",
             },
-            prepare({ title, subtitle, overrideSubtitle }) {
+            prepare({ title, subtitle, overrideSubtitle, media }) {
               return {
                 title,
                 subtitle: overrideSubtitle || subtitle,
+                media: media || UserIcon,
               };
             },
           },
