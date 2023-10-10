@@ -15,7 +15,7 @@ export default function Footer({ data }: FooterProps) {
   const { address, phone, email, some } = data ?? {};
 
   return (
-    <footer className="bg-gray-800 mt-8 py-0.5 text-white dark">
+    <footer className="bg-gray-800 py-4 text-white dark">
       <Container prose className="px-4">
         <div className="grid lg:grid-cols-2 gap-8">
           <div className="flex flex-col gap-4">
@@ -40,7 +40,12 @@ export default function Footer({ data }: FooterProps) {
                 <ChevronRightIcon className="w-4 h-4 inline-block ml-1" />
               </a>
             </div>
-            <div>Organisasjonsnummer: 971 454 423</div>
+            <div>
+              Organisasjonsnummer:{" "}
+              <Link href="https://w2.brreg.no/enhet/sok/detalj.jsp?orgnr=971454423">
+                971 454 423
+              </Link>
+            </div>
           </div>
           <div className="flex flex-col gap-4 print:hidden">
             <div>

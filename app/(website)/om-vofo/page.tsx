@@ -20,16 +20,14 @@ export default async function Page() {
   const { title, description, body, toc } = data ?? {};
 
   return (
-    <div>
-      <Container prose className="px-4 md:flex md:gap-4">
-        <div className="grow">
-          <h1>{title}</h1>
-          <p className="lead max-w-prose">{description}</p>
-        </div>
+    <>
+      <Container prose>
+        <h1>{title}</h1>
+        <p className="lead max-w-prose">{description}</p>
       </Container>
       <Container paper prose>
         <ArticleBody body={body} toc={toc} />
       </Container>
-    </div>
+    </>
   );
 }

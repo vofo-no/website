@@ -12,8 +12,8 @@ export default function HomePage({ data }: HomePageProps) {
   const { title, description, banner } = data ?? {};
 
   return (
-    <div>
-      <Container prose className="px-4">
+    <>
+      <Container prose>
         <h1>{title}</h1>
         <p className="lead max-w-prose">{description}</p>
         <div className="my-4 flex gap-4 not-prose">
@@ -26,20 +26,13 @@ export default function HomePage({ data }: HomePageProps) {
         </div>
       </Container>
       <Hero banner={banner} />
-      <Container className="grid grid-cols-1 sm:grid-cols-[2fr_1fr] gap-8 px-4">
-        <div>
-          <h2 className="text-crimson-500 text-2xl md:text-3xl font-semibold">
-            Aktuelt
-          </h2>
-          Aktuelt
-        </div>
-        <div>
-          <h2 className="text-crimson-500 text-2xl md:text-3xl font-semibold">
-            Kalender
-          </h2>
-          Kalender
+      <Container prose>
+        <h2 className="text-crimson-500 !mt-0 !pt-0">Aktuelt</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+          <div>[todo]</div>
+          <div>[todo]</div>
         </div>
       </Container>
-    </div>
+    </>
   );
 }

@@ -16,7 +16,7 @@ export default function Header() {
   const pathname = usePathname();
 
   return (
-    <header className="bg-white shadow h-14 md:h-24 flex items-center max-w-full overflow-auto print:hidden">
+    <header className="bg-white shadow h-14 md:h-24 flex items-center max-w-full overflow-auto print:hidden mb-8 md:mb-10 lg:mb-12">
       <nav className="grow">
         <div className="mx-auto max-w-7xl md:px-4 lg:px-8">
           <div className="flex items-center px-2 md:px-0">
@@ -36,7 +36,7 @@ export default function Header() {
                   className={classNames(
                     "p-2 text-base md:text-lg tracking-tight text-gray-950 hover:text-crimson-500 active:text-crimson-500 font-medium whitespace-nowrap",
                     {
-                      "underline decoration-crimson-500 underline-offset-8":
+                      "underline decoration-[3px] decoration-crimson-500 underline-offset-8":
                         pathname.startsWith(url),
                     }
                   )}

@@ -23,8 +23,8 @@ export default async function Page() {
   const { description, organizations, body, toc } = data ?? {};
 
   return (
-    <div>
-      <Container prose className="px-4 md:flex md:gap-8">
+    <>
+      <Container prose className="md:flex md:gap-8">
         <div className="grow">
           <h1>Studieforbund</h1>
           <p className="lead max-w-prose">{description}</p>
@@ -48,6 +48,6 @@ export default async function Page() {
       <Container paper prose>
         <ArticleBody body={body} toc={toc} />
       </Container>
-    </div>
+    </>
   );
 }
