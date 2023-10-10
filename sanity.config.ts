@@ -12,6 +12,7 @@ import person from "schemas/documents/person";
 import publication from "schemas/documents/publication";
 import topic from "schemas/documents/topic";
 import banner from "schemas/objects/banner";
+import documentLink from "schemas/objects/documentLink";
 import duration from "schemas/objects/duration";
 import milestone from "schemas/objects/milestone";
 import people from "schemas/objects/people";
@@ -46,6 +47,7 @@ export default defineConfig({
       page,
       // Objects
       banner,
+      documentLink,
       duration,
       milestone,
       people,

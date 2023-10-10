@@ -5,6 +5,10 @@ export function resolveHref(
   switch (documentType) {
     case "home":
       return "/";
+    case "publication":
+      return slug ? `/dokumenter/${slug}` : undefined;
+    case "article":
+      return slug ? `/aktuelt/${slug}` : undefined;
     case "page":
       return slug ? `/${slug}` : undefined;
     case "project":

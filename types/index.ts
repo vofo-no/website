@@ -1,12 +1,28 @@
 import type { Image, PortableTextBlock, Reference } from "sanity";
 
-type ImageType = Image & {
+export type ImageType = Image & {
   alt: string;
   credit?: string;
   caption?: string;
 };
 
 type ColorSchemeType = "crimson" | "red" | "green" | "blue" | "teal";
+
+interface ItemBase {
+  _id: string;
+  _updatedAt?: string;
+  type: string;
+  slug: string;
+}
+
+interface ArticleBase extends ItemBase {
+  title: string;
+  description?: string;
+  body?: PortableTextBlock[];
+  toc?: PortableTextBlock[];
+  publishedAt?: string;
+  image?: ImageType;
+}
 
 export interface HomePagePayload {
   title?: string;
@@ -42,6 +58,16 @@ export interface MenuItem {
   url: string;
 }
 
+export interface DocumentPayload
+  extends Pick<
+    PublicationPayload,
+    "_id" | "_type" | "docType" | "title" | "description" | "image" | "slug"
+  > {}
+
+export interface DocumentLinkItem {
+  item: Reference;
+}
+
 export interface PersonPayload {
   _id: string;
   name: string;
@@ -67,6 +93,7 @@ export interface SettingsPayload {
 export interface PrivacyPayload {
   privacy?: PortableTextBlock[];
   toc?: PortableTextBlock[];
+  _updatedAt?: string;
 }
 
 export interface County {
@@ -87,7 +114,14 @@ export interface PagePayload {
   toc?: PortableTextBlock[];
 }
 
-type ItemBase = {
+export interface PublicationPayload extends ArticleBase {
+  _type: "publication";
+  docType?: string;
+  attachment?: string;
+  remoteUrl?: string;
+}
+
+type xItemBase = {
   _id: string;
   _updatedAt?: string;
   slug: string;

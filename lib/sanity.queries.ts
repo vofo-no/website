@@ -26,6 +26,23 @@ export const pagesBySlugQuery = groq`
   }
 `;
 
+export const publicationBySlugQuery = groq`
+  *[_type == "publication" && slug.current == $slug][0] {
+    _id,
+    docType,
+    title,
+    description,
+    image,
+    publishedAt,
+    _updatedAt,
+    "slug": slug.current,
+    body,
+    "toc": body[style == "h2"],
+    "attachment": attachment.asset->url,
+    remoteUrl,
+  }
+`;
+
 export const associationsPageQuery = groq`
   *[_type == "learningAssociations"][0]{
     _id,
@@ -54,6 +71,18 @@ export const personByIdQuery = groq`
     image,
     email,
     phone,
+  }
+`;
+
+export const documentByIdQuery = groq`
+  *[_type in ["article", "publication"] && _id == $id][0] {
+    _id,
+    _type,
+    docType,
+    title,
+    description,
+    image,
+    "slug": slug.current,
   }
 `;
 
@@ -102,6 +131,7 @@ export const privacyQuery = groq`
   *[_type == "settings"][0]{
     privacy,
     "toc": privacy[style == "h2"],
+    _updatedAt,
   }
 `;
 

@@ -5,21 +5,25 @@ import { client } from "lib/sanity.client";
 import {
   allActiveCountiesQuery,
   associationsPageQuery,
+  documentByIdQuery,
   homePageQuery,
   homePageTitleQuery,
   pagePaths,
   pagesBySlugQuery,
   personByIdQuery,
   privacyQuery,
+  publicationBySlugQuery,
   settingsQuery,
 } from "lib/sanity.queries";
 import type {
   AssociationsPagePayload,
   CountiesPayload,
+  DocumentPayload,
   HomePagePayload,
   PagePayload,
   PersonPayload,
   PrivacyPayload,
+  PublicationPayload,
   //ProjectPayload,
   SettingsPayload,
 } from "types";
@@ -71,11 +75,27 @@ export function getPageBySlug(slug: string) {
   });
 }
 
+export function getPublicationBySlug(slug: string) {
+  return sanityFetch<PublicationPayload | null>({
+    query: publicationBySlugQuery,
+    params: { slug },
+    tags: [`publication:${slug}`],
+  });
+}
+
 export function getPersonById(id: string) {
   return sanityFetch<PersonPayload | null>({
     query: personByIdQuery,
     params: { id },
-    tags: [`person:${id}`],
+    tags: [id],
+  });
+}
+
+export function getDocumentById(id: string) {
+  return sanityFetch<DocumentPayload | null>({
+    query: documentByIdQuery,
+    params: { id },
+    tags: [id],
   });
 }
 

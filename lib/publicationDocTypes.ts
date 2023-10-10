@@ -1,7 +1,7 @@
 export const publicationDocTypes = [
-  { title: "Høringsuttalelse", value: "statement" },
+  { title: "Notat", value: "memo" },
+  { title: "Protokoll", value: "minutes" },
   { title: "Rapport", value: "report" },
-  { title: "Referat", value: "minutes" },
-  { title: "Styreprotokoll", value: "boardMinutes" },
+  { title: "Uttalelse", value: "statement" },
   { title: "Veileder", value: "guide" },
 ];

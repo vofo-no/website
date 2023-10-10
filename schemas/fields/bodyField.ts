@@ -36,6 +36,7 @@ export default defineField({
       styles: [
         { title: "Normal", value: "normal" },
         { title: "Overskrift", value: "h2" },
+        { title: "Underoverskrift", value: "h3" },
         { title: "Sitatblokk", value: "blockquote" },
       ],
       lists: [{ title: "Punktliste", value: "bullet" }],
@@ -47,6 +48,10 @@ export default defineField({
     defineArrayMember({
       name: "people",
       type: "people",
+    }),
+    defineArrayMember({
+      name: "documentLink",
+      type: "documentLink",
     }),
     imageField,
   ],
