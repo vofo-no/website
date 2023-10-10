@@ -37,8 +37,11 @@ export default function Toc({ headers = [], mobile = false }: TocProps) {
                   const anchor = slugify(plain);
                   return (
                     <li key={item._key} className="!pl-0 flex justify-start">
-                      <a href={`#${anchor}`} className="flex">
-                        <ChevronRightIcon className="w-5 align-middle inline-block" />{" "}
+                      <a
+                        href={`#${anchor}`}
+                        className="relative pl-4 leading-normal"
+                      >
+                        <ChevronRightIcon className="w-5 top-0.5 -left-1 absolute" />
                         <span>{plain}</span>
                       </a>
                     </li>
@@ -63,8 +66,8 @@ export default function Toc({ headers = [], mobile = false }: TocProps) {
           const anchor = slugify(plain);
           return (
             <li key={item._key} className="!pl-0 flex justify-start">
-              <a href={`#${anchor}`} className="flex">
-                <ChevronRightIcon className="w-5 align-middle inline-block" />{" "}
+              <a href={`#${anchor}`} className="relative pl-4 leading-normal">
+                <ChevronRightIcon className="w-5 top-0.5 -left-1 absolute" />
                 <span>{plain}</span>
               </a>
             </li>
