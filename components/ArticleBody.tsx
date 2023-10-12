@@ -38,7 +38,7 @@ export default function ArticleBody({
       )}
     >
       {hasMedia ? (
-        <figure className="!my-0 md:!mb-8 -mx-3 sm:-mx-4 md:mx-0 md:col-span-2 md:row-span-2">
+        <figure className="!my-0 !-mt-4 md:!mt-0 md:!mb-8 -mx-4 md:mx-0 md:col-span-2 md:row-span-2">
           <Image
             src={imageUrl}
             alt={media.alt}
@@ -58,7 +58,7 @@ export default function ArticleBody({
         </figure>
       ) : null}
       {hasMeta ? (
-        <div className="border-gray-200 border-y md:border-y-0 mb-4">
+        <div className="border-gray-200 border-y md:border-y-0 mb-4 -mx-4 px-4 md:mx-0 md:px-0">
           <div className="text-gray-600 my-2">
             <small className="flex flex-row flex-wrap md:flex-col gap-1">
               {publishedAt && (
