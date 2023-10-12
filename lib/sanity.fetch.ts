@@ -4,6 +4,7 @@ import type { QueryParams } from "@sanity/client";
 import { client } from "lib/sanity.client";
 import {
   allActiveCountiesQuery,
+  articleBySlugQuery,
   associationsPageQuery,
   documentByIdQuery,
   homePageQuery,
@@ -16,6 +17,7 @@ import {
   settingsQuery,
 } from "lib/sanity.queries";
 import type {
+  ArticlePayload,
   AssociationsPagePayload,
   CountiesPayload,
   DocumentPayload,
@@ -80,6 +82,14 @@ export function getPublicationBySlug(slug: string) {
     query: publicationBySlugQuery,
     params: { slug },
     tags: [`publication:${slug}`],
+  });
+}
+
+export function getArticleBySlug(slug: string) {
+  return sanityFetch<ArticlePayload | null>({
+    query: articleBySlugQuery,
+    params: { slug },
+    tags: [`article:${slug}`],
   });
 }
 

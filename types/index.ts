@@ -114,6 +114,10 @@ export interface PagePayload {
   toc?: PortableTextBlock[];
 }
 
+export interface ArticlePayload extends ArticleBase {
+  _type: "article";
+}
+
 export interface PublicationPayload extends ArticleBase {
   _type: "publication";
   docType?: string;

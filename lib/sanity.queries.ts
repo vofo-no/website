@@ -26,6 +26,21 @@ export const pagesBySlugQuery = groq`
   }
 `;
 
+export const articleBySlugQuery = groq`
+  *[_type == "article" && slug.current == $slug][0] {
+    _id,
+    _type,
+    title,
+    description,
+    image,
+    publishedAt,
+    _updatedAt,
+    "slug": slug.current,
+    body,
+    "toc": body[style == "h2"],
+  }
+`;
+
 export const publicationBySlugQuery = groq`
   *[_type == "publication" && slug.current == $slug][0] {
     _id,
