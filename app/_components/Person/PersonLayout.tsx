@@ -17,7 +17,7 @@ export default function PersonLayout({
   return (
     <div className="grid gap-4 grid-cols-[5rem_auto] md:grid-cols-[7rem_auto]">
       {imageUrl ? (
-        <figure className="!m-0">
+        <figure className="not-prose">
           <Image
             src={imageUrl}
             alt={data.image!.alt || ""}
@@ -45,7 +45,7 @@ export default function PersonLayout({
             <span className="w-36 inline-block bg-gray-300 h-4 rounded-md "></span>
           )}
         </h3>
-        <div className="text-gray-500">
+        <div className="text-gray-600 text-sm leading-normal font-medium">
           {data ? (
             title || data.title
           ) : (
