@@ -33,9 +33,9 @@ async function DocumentLayout({ id }: Props) {
   return (
     <Link
       href={resolveHref(_type, slug)!}
-      className="flex gap-4 -mx-4 bg-gray-100 shadow my-[1.25em] no-underline group"
+      className="flex gap-4 -mx-4 bg-gray-50 border-l-4 border-l-blue-700 my-6 no-underline group items-center"
     >
-      <div className="flex flex-col gap-1 shrink overflow-hidden px-4 py-3">
+      <div className="flex flex-col gap-1 shrink overflow-hidden px-4 py-4">
         <div className="leading-snug">
           <ArrowRightCircleIcon className="h-5 inline-block mr-1 align-text-bottom" />
           <strong className="group-hover:underline">{title}</strong>
@@ -45,7 +45,7 @@ async function DocumentLayout({ id }: Props) {
         </div>
       </div>
       {imageUrl && (
-        <figure className="not-prose shrink-0 w-1/5">
+        <figure className="not-prose shrink-0 w-32 sm:w-40">
           <Image
             src={imageUrl}
             alt={image.alt}
