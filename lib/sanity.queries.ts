@@ -27,7 +27,7 @@ export const pagesBySlugQuery = groq`
 `;
 
 export const getNewsItemsQuery = groq`
-  *[_type == $type && dateTime(publishedAt) < dateTime(now())] | order(publishedAt desc) [0...6] {
+  *[_type == $type] | order(publishedAt desc) [0...6] {
     _id,
     _type,
     docType,
@@ -37,11 +37,12 @@ export const getNewsItemsQuery = groq`
     publishedAt,
     _updatedAt,
     "slug": slug.current,
+    relevance[]->{ _type,_id,name,title,"slug":slug.current},
   }
 `;
 
 export const getNewsItemsByReferenceQuery = groq`
-  *[_type == $type && references($ref) && dateTime(publishedAt) < dateTime(now())] | order(publishedAt desc) [0...6] {
+  *[_type == $type && references($ref)] | order(publishedAt desc) [0...6] {
     _id,
     _type,
     docType,
@@ -51,6 +52,7 @@ export const getNewsItemsByReferenceQuery = groq`
     publishedAt,
     _updatedAt,
     "slug": slug.current,
+    relevance[]->{ _type,_id,name,title,"slug":slug.current},
   }
 `;
 

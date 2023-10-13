@@ -11,7 +11,7 @@ type ColorSchemeType = "crimson" | "red" | "green" | "blue" | "teal";
 interface ItemBase {
   _id: string;
   _updatedAt?: string;
-  type: string;
+  _type: string;
   slug: string;
 }
 
@@ -22,6 +22,7 @@ interface ArticleBase extends ItemBase {
   toc?: PortableTextBlock[];
   publishedAt?: string;
   image?: ImageType;
+  relevance?: Array<County | Topic>;
 }
 
 export interface HomePagePayload {
@@ -96,10 +97,17 @@ export interface PrivacyPayload {
   _updatedAt?: string;
 }
 
-export interface County {
-  _id: string;
+export interface Topic extends ItemBase {
+  _type: "topic";
+  title: string;
+  image?: Image;
+  description?: string;
+  body?: PortableTextBlock[];
+}
+
+export interface County extends ItemBase {
+  _type: "county";
   name: string;
-  slug: string;
   image?: Image;
   description?: string;
   body?: PortableTextBlock[];

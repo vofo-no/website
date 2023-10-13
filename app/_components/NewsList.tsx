@@ -7,6 +7,8 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { ArticlePayload, PublicationPayload } from "types";
 
+import TagLink from "./TagLink";
+
 interface Props {
   reference?: string;
   type: "article" | "publication";
@@ -39,15 +41,16 @@ async function NewsListLayout({ reference, type }: Props) {
 }
 
 function NewsListItem({ item }: { item: PublicationPayload | ArticlePayload }) {
-  const { _type, title, slug, description, image, _updatedAt } = item;
+  const { _type, title, slug, description, image, publishedAt, relevance } =
+    item;
   const imageUrl = image && urlForImage(image)?.size(320, 320).url();
   const imageBlurUrl =
     image && urlForImage(image)?.size(32, 32).quality(30).blur(50).url();
 
   return (
-    <div className="pt-3 mb-3 flex gap-3">
+    <div className="pt-6 mb-6 flex gap-3">
       {imageUrl && (
-        <figure className="not-prose w-28 sm:w-40 max-h-48 shrink-0 relative">
+        <figure className="not-prose w-28 sm:w-40 max-h-48 min-h-[5rem] sm:min-h-[7rem] shrink-0 relative">
           <Image
             src={imageUrl}
             alt={image.alt}
@@ -60,17 +63,22 @@ function NewsListItem({ item }: { item: PublicationPayload | ArticlePayload }) {
           />
         </figure>
       )}
-      <div>
+      <div className="self-center">
         <h3 className="mt-0">
           <Link href={resolveHref(_type, slug)!} className="no-underline">
             {title}
           </Link>
         </h3>
-        <div className="text-gray-600 text-sm leading-normal">
+        <div className="text-gray-600 text-sm leading-normal line-clamp-3">
           {description}
         </div>
-        <div className="text-gray-600 text-xs leading-normal mt-2">
-          {formatRelative(_updatedAt)}
+        <div className="mt-2 flex flex-wrap items-center gap-2">
+          <div className="text-gray-600 text-xs leading-normal">
+            {formatRelative(publishedAt)}
+          </div>
+          {relevance?.map((tag) => (
+            <TagLink key={tag._id} item={tag} />
+          ))}
         </div>
       </div>
     </div>
