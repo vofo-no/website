@@ -1,5 +1,6 @@
 import classNames from "classnames";
-import formatTime from "lib/formatTime";
+import formatRelative from "lib/formatRelative";
+import isSameDay from "lib/isSameDay";
 import { urlForImage } from "lib/sanity.image";
 import Image from "next/image";
 import { PortableTextBlock } from "sanity";
@@ -38,7 +39,7 @@ export default function ArticleBody({
       )}
     >
       {hasMedia ? (
-        <figure className="!my-0 !-mt-4 md:!mt-0 md:!mb-8 -mx-4 md:mx-0 md:col-span-2 md:row-span-2">
+        <figure className="!-mt-4 md:!mt-0 -mx-4 md:mx-0 md:col-span-2 md:row-span-2">
           <Image
             src={imageUrl}
             alt={media.alt}
@@ -48,7 +49,7 @@ export default function ArticleBody({
             blurDataURL={imageBlurUrl}
           />
           {(media.credit || media.caption) && (
-            <figcaption className="my-2 px-3 sm:px-4 md:px-0 grid gap-2">
+            <figcaption className="my-2 px-4 md:px-0 grid gap-2">
               {media.caption && <span>{media.caption}</span>}
               {media.credit && (
                 <span className="text-xs uppercase">{media.credit}</span>
@@ -56,20 +57,6 @@ export default function ArticleBody({
             </figcaption>
           )}
         </figure>
-      ) : null}
-      {hasMeta ? (
-        <div className="border-gray-200 border-y md:border-y-0 mb-4 -mx-4 px-4 md:mx-0 md:px-0">
-          <div className="text-gray-600 my-2">
-            <small className="flex flex-row flex-wrap md:flex-col gap-1">
-              {publishedAt && (
-                <span>Publisert {formatTime(publishedAt, "PPp")}.</span>
-              )}
-              {updatedAt && updatedAt > (publishedAt || "") && (
-                <span>Sist endret {formatTime(updatedAt, "PPp")}.</span>
-              )}
-            </small>
-          </div>
-        </div>
       ) : null}
       <Toc headers={toc} mobile />
       <div
@@ -86,6 +73,20 @@ export default function ArticleBody({
           hasMeta && "md:row-start-2"
         )}
       >
+        {hasMeta ? (
+          <div className="border-gray-200 border-y md:border-y-0 my-4 -mx-4 px-4 md:mx-0 md:px-0 md:mt-0">
+            <div className="text-gray-600 my-2">
+              <small className="flex flex-row flex-wrap md:flex-col gap-1">
+                {publishedAt && (
+                  <span>Publisert {formatRelative(publishedAt)}.</span>
+                )}
+                {updatedAt && !isSameDay(updatedAt, publishedAt) && (
+                  <span>Sist endret {formatRelative(updatedAt)}.</span>
+                )}
+              </small>
+            </div>
+          </div>
+        ) : null}
         <div className="flex flex-col gap-4 md:sticky md:top-4">
           <Toc headers={toc} />
           <div>[ASIDE]</div>
