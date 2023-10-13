@@ -1,3 +1,4 @@
+import NewsList from "app/_components/NewsList";
 import Button from "components/Button";
 import Container from "components/Container";
 import Hero from "components/Hero";
@@ -27,10 +28,15 @@ export default function HomePage({ data }: HomePageProps) {
       </Container>
       <Hero banner={banner} />
       <Container prose>
-        <h2 className="text-crimson-500 !mt-0 !pt-0">Aktuelt</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-          <div>[todo]</div>
-          <div>[todo]</div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          <div>
+            <h2 className="mt-0">Aktuelt</h2>
+            <NewsList type="article" />
+          </div>
+          <div>
+            <h2 className="mt-0">Dokumenter</h2>
+            <NewsList type="publication" />
+          </div>
         </div>
       </Container>
     </>

@@ -7,6 +7,8 @@ import {
   articleBySlugQuery,
   associationsPageQuery,
   documentByIdQuery,
+  getNewsItemsByReferenceQuery,
+  getNewsItemsQuery,
   homePageQuery,
   homePageTitleQuery,
   pagePaths,
@@ -77,6 +79,24 @@ export function getPageBySlug(slug: string) {
   });
 }
 
+export function getNewsItems(type: "article" | "publication") {
+  return sanityFetch<Array<PublicationPayload | ArticlePayload> | null>({
+    query: getNewsItemsQuery,
+    params: { type },
+    tags: [type],
+  });
+}
+
+export function getNewsItemsByReference(
+  type: "article" | "publication",
+  ref: string
+) {
+  return sanityFetch<Array<PublicationPayload | ArticlePayload> | null>({
+    query: getNewsItemsByReferenceQuery,
+    params: { type, ref },
+    tags: [type],
+  });
+}
 export function getPublicationBySlug(slug: string) {
   return sanityFetch<PublicationPayload | null>({
     query: publicationBySlugQuery,

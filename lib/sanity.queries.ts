@@ -26,6 +26,34 @@ export const pagesBySlugQuery = groq`
   }
 `;
 
+export const getNewsItemsQuery = groq`
+  *[_type == $type && dateTime(publishedAt) < dateTime(now())] | order(publishedAt desc) [0...6] {
+    _id,
+    _type,
+    docType,
+    title,
+    description,
+    image,
+    publishedAt,
+    _updatedAt,
+    "slug": slug.current,
+  }
+`;
+
+export const getNewsItemsByReferenceQuery = groq`
+  *[_type == $type && references($ref) && dateTime(publishedAt) < dateTime(now())] | order(publishedAt desc) [0...6] {
+    _id,
+    _type,
+    docType,
+    title,
+    description,
+    image,
+    publishedAt,
+    _updatedAt,
+    "slug": slug.current,
+  }
+`;
+
 export const articleBySlugQuery = groq`
   *[_type == "article" && slug.current == $slug][0] {
     _id,
