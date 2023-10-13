@@ -1,9 +1,8 @@
 import { isSameDay, isSameMonth } from "date-fns";
-import { nb as locale } from "date-fns/locale";
 import { format, utcToZonedTime } from "date-fns-tz";
+import { RawTime } from "types/time";
 
-const timeZone = "Europe/Oslo";
-type RawTime = Date | string | number;
+import { locale, timeZone } from "./time";
 
 export default function eventTimeDisplay(start: RawTime, end: RawTime) {
   if (!start || !end) return null;
