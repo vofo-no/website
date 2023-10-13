@@ -23,7 +23,7 @@ export default function Hero({ banner }: Pick<HomePagePayload, "banner">) {
   };
 
   return (
-    <div className="max-w-screen-xl w-full mx-auto my-4 sm:px-4 lg:px-8">
+    <div className="max-w-screen-xl w-full mx-auto my-6 sm:px-4 lg:px-8">
       <div
         className={classNames(
           bgClassName,
