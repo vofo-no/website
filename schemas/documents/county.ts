@@ -36,6 +36,7 @@ export default defineType({
         defineArrayMember({
           type: "reference",
           to: { type: "person" },
+          options: { disableNew: true },
         }),
       ],
     }),
