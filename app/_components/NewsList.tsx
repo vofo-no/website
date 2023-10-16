@@ -8,11 +8,23 @@ import { Suspense } from "react";
 import { ArticlePayload, PublicationPayload } from "types";
 
 import TagLink from "./TagLink";
+import DreamerImg from "./undraw_dreamer.svg";
+import FriendsImg from "./undraw_friends.svg";
 
 interface Props {
   reference?: string;
   type: "article" | "publication";
 }
+
+const TypeName = {
+  article: "saker",
+  publication: "dokumenter",
+};
+
+const typeImage = {
+  article: FriendsImg,
+  publication: DreamerImg,
+};
 
 export default function NewsList(props: Props) {
   return (
@@ -28,19 +40,35 @@ async function NewsListLayout({ reference, type }: Props) {
     : await getNewsItems(type);
 
   if (!items || items.length === 0) {
-    return <p className="text-lg py-4 text-gray-500">Ingen saker</p>;
+    return (
+      <p className="text-center text-gray-500">
+        <Image
+          src={typeImage[type]}
+          alt=""
+          className="max-w-xs w-2/3 max-h-48 mx-auto"
+          priority
+        />
+        Ingen {TypeName[type]}
+      </p>
+    );
   }
 
   return (
     <div className="flex flex-col divide-y">
       {items.map((item) => (
-        <NewsListItem key={item._id} item={item} />
+        <NewsListItem key={item._id} item={item} refId={reference} />
       ))}
     </div>
   );
 }
 
-function NewsListItem({ item }: { item: PublicationPayload | ArticlePayload }) {
+function NewsListItem({
+  item,
+  refId,
+}: {
+  item: PublicationPayload | ArticlePayload;
+  refId?: string;
+}) {
   const { _type, title, slug, description, image, publishedAt, relevance } =
     item;
   const imageUrl = image && urlForImage(image)?.size(320, 320).url();
@@ -72,13 +100,15 @@ function NewsListItem({ item }: { item: PublicationPayload | ArticlePayload }) {
         <div className="text-gray-600 text-sm leading-normal line-clamp-3">
           {description}
         </div>
-        <div className="mt-2 flex flex-wrap items-center gap-2">
+        <div className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1">
           <div className="text-gray-600 text-xs leading-normal">
             {formatRelative(publishedAt)}
           </div>
-          {relevance?.map((tag) => (
-            <TagLink key={tag._id} item={tag} />
-          ))}
+          {relevance
+            ?.filter((tag) => tag._id !== refId)
+            .map((tag) => (
+              <TagLink key={tag._id} item={tag} />
+            ))}
         </div>
       </div>
     </div>
