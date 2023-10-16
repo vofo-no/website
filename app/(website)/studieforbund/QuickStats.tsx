@@ -1,14 +1,18 @@
 import { Square3Stack3DIcon, UsersIcon } from "@heroicons/react/24/outline";
+import Button from "components/Button";
 import intl from "lib/intl";
 import { getQuickKursInfo } from "lib/kursinfo.fetch";
 import Link from "next/link";
 
-export default async function QuickStats() {
-  const data = await getQuickKursInfo();
+interface Props {
+  param?: string;
+}
+
+export default async function QuickStats(props: Props) {
+  const data = await getQuickKursInfo(props.param);
 
   return (
     <div>
-      <h2>Nøkkeltall</h2>
       <p>
         Studieforbundene har rapportert
         <br />
@@ -30,11 +34,11 @@ export default async function QuickStats() {
         </span>{" "}
         i {data.year}
       </p>
-      <p>
-        <Link href="/studieforbund/statistikk">
-          Statistikk for alle fylker og studieforbund
-        </Link>
-      </p>
+      <div className="not-prose">
+        <Button as={Link} href="/studieforbund/statistikk">
+          Statistikk for {props.param ? data.name : data.name.toLowerCase()}
+        </Button>
+      </div>
     </div>
   );
 }

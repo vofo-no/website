@@ -108,6 +108,19 @@ export const allActiveCountiesQuery = groq`
   } | order(name asc)
 `;
 
+export const countyBySlugQuery = groq`
+  *[_type == "county" && slug.current == $slug][0] {
+    _id,
+    name,
+    "slug": slug.current,
+    description,
+    image,
+    body,
+    contacts,
+    countyCode,
+  }
+`;
+
 export const personByIdQuery = groq`
   *[_type == "person" && _id == $id][0] {
     _id,

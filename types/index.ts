@@ -108,9 +108,11 @@ export interface Topic extends ItemBase {
 export interface County extends ItemBase {
   _type: "county";
   name: string;
-  image?: Image;
+  image?: ImageType;
   description?: string;
   body?: PortableTextBlock[];
+  contacts?: Reference[];
+  countyCode?: string;
 }
 
 export type CountiesPayload = County[];
@@ -132,6 +134,8 @@ export interface PublicationPayload extends ArticleBase {
   attachment?: string;
   remoteUrl?: string;
 }
+
+/*
 
 type xItemBase = {
   _id: string;
@@ -207,3 +211,4 @@ export type NewsItemType =
   | ArticleNewsItem
   | EventNewsItem
   | PublicationNewsItem;
+*/

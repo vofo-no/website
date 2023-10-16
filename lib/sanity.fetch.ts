@@ -6,6 +6,7 @@ import {
   allActiveCountiesQuery,
   articleBySlugQuery,
   associationsPageQuery,
+  countyBySlugQuery,
   documentByIdQuery,
   getNewsItemsByReferenceQuery,
   getNewsItemsQuery,
@@ -22,6 +23,7 @@ import type {
   ArticlePayload,
   AssociationsPagePayload,
   CountiesPayload,
+  County,
   DocumentPayload,
   HomePagePayload,
   PagePayload,
@@ -133,6 +135,14 @@ export function getAllActiveCounties() {
   return sanityFetch<CountiesPayload>({
     query: allActiveCountiesQuery,
     tags: ["county"],
+  });
+}
+
+export function getCountyBySlug(slug: string) {
+  return sanityFetch<County>({
+    query: countyBySlugQuery,
+    params: { slug },
+    tags: [`county:${slug}`],
   });
 }
 

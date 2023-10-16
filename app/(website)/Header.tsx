@@ -8,7 +8,7 @@ import { MenuItem } from "types";
 
 const menuItems: MenuItem[] = [
   { title: "Studieforbund", url: "/studieforbund" },
-  { title: "Politikk", url: "/politikk" },
+  { title: "Fylker", url: "/fylker" },
   { title: "Om Vofo", url: "/om-vofo" },
 ];
 

@@ -3,11 +3,12 @@ import { urlForImage } from "lib/sanity.image";
 import Image from "next/image";
 import Link from "next/link";
 import { PropsWithChildren } from "react";
+import { ImageType } from "types";
 import { UrlObject } from "url";
 
 interface CardProps {
   href: string | UrlObject;
-  image?: any;
+  image?: ImageType;
   title: string;
   imgPadding?: boolean;
   layout?: "top" | "left";
@@ -21,42 +22,43 @@ export default function Card({
   layout = "top",
   children,
 }: PropsWithChildren<CardProps>) {
+  const baseImage = image && urlForImage(image);
   const imageUrl =
-    image &&
-    urlForImage(image)
-      ?.width(layout === "top" ? 640 : 360)
-      .fit("max")
-      .url();
+    layout === "top"
+      ? baseImage?.size(640, 320).url()
+      : baseImage?.width(360).maxHeight(360).fit("max").url();
   const blurImageUrl =
-    image &&
-    urlForImage(image)
-      ?.maxWidth(layout === "top" ? 18 : 32)
-      .maxHeight(18)
-      .quality(30)
-      .blur(50)
-      .url();
+    layout === "top"
+      ? baseImage?.size(18, 9).quality(30).blur(50).url()
+      : baseImage
+          ?.width(18)
+          .maxHeight(18)
+          .fit("max")
+          .quality(30)
+          .blur(50)
+          .url();
 
   return (
     <Link
       href={href}
-      className={classNames("shadow bg-white overflow-hidden grid gap-1", {
+      className={classNames("shadow bg-white overflow-hidden grid", {
         "grid-cols-[128px_auto]": layout === "left",
         "grid-cols-1": layout === "top",
       })}
     >
-      {imageUrl && (
+      {image && (
         <figure
-          className={classNames("mb-2 flex justify-center items-center", {
-            "px-4 pt-2": imgPadding,
-            "aspect-video": layout === "top",
+          className={classNames("flex justify-center items-center", {
+            "px-4": imgPadding,
+            "-mb-1": layout === "top",
           })}
         >
           <Image
-            src={imageUrl}
-            alt={image.alt || ""}
+            src={imageUrl!}
+            alt={image.alt}
             width={640}
-            height={360}
-            title={image.attribution}
+            height={320}
+            title={image.credit}
             placeholder="blur"
             blurDataURL={blurImageUrl}
           />
@@ -64,7 +66,7 @@ export default function Card({
       )}
       <div
         className={classNames({
-          "pb-4 px-4": layout === "top",
+          "my-4 px-4": layout === "top",
           "py-4 pr-4": layout === "left",
         })}
       >

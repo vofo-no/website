@@ -14,7 +14,7 @@ export default async function FylkerPage() {
   return (
     <Container prose>
       <h1>Fylker</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 not-prose">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 not-prose">
         {counties.map((county) => (
           <Card
             href={resolveHref("county", county.slug)!}
@@ -22,7 +22,9 @@ export default async function FylkerPage() {
             title={county.name}
             image={county.image}
           >
-            {county.description}
+            <div className="text-gray-600 text-sm leading-normal line-clamp-3">
+              {county.description}
+            </div>
           </Card>
         ))}
       </div>

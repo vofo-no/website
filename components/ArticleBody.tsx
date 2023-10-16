@@ -3,6 +3,7 @@ import formatRelative from "lib/formatRelative";
 import isSameDay from "lib/isSameDay";
 import { urlForImage } from "lib/sanity.image";
 import Image from "next/image";
+import { ReactNode } from "react";
 import { PortableTextBlock } from "sanity";
 import { ImageType } from "types";
 
@@ -10,18 +11,20 @@ import TextBody from "./TextBody";
 import Toc from "./Toc";
 
 interface Props {
+  aside?: ReactNode;
   body?: PortableTextBlock[];
-  toc?: PortableTextBlock[];
   media?: ImageType;
   publishedAt?: string;
+  toc?: PortableTextBlock[];
   updatedAt?: string;
 }
 
 export default function ArticleBody({
+  aside,
   body,
-  toc,
   media,
   publishedAt,
+  toc,
   updatedAt,
 }: Props) {
   const hasMeta = !!(publishedAt || updatedAt);
@@ -47,6 +50,7 @@ export default function ArticleBody({
             height={720}
             placeholder="blur"
             blurDataURL={imageBlurUrl}
+            priority
           />
           {(media.credit || media.caption) && (
             <figcaption className="my-2 px-4 md:px-0 grid gap-2">
@@ -89,7 +93,7 @@ export default function ArticleBody({
         ) : null}
         <div className="flex flex-col gap-4 md:sticky md:top-4">
           <Toc headers={toc} />
-          <div>[ASIDE]</div>
+          {aside && <div>{aside}</div>}
         </div>
       </aside>
     </div>
