@@ -39,6 +39,7 @@ export default function Hero({ banner }: Pick<HomePagePayload, "banner">) {
             fill
             className="object-cover"
             blurDataURL={blurImageUrl}
+            priority
           />
         )}
         {(title || hasLink) && (
