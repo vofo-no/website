@@ -5,16 +5,18 @@ export function resolveHref(
   switch (documentType) {
     case "home":
       return "/";
-    case "publication":
-      return slug ? `/dokumenter/${slug}` : undefined;
     case "article":
       return slug ? `/aktuelt/${slug}` : undefined;
+    case "county":
+      return slug ? `/fylker/${slug}` : undefined;
     case "page":
       return slug ? `/${slug}` : undefined;
     case "project":
       return slug ? `/projects/${slug}` : undefined;
-    case "county":
-      return slug ? `/fylker/${slug}` : undefined;
+    case "publication":
+      return slug ? `/dokumenter/${slug}` : undefined;
+    case "topic":
+      return slug ? `/tema/${slug}` : undefined;
     case undefined:
       return slug;
     default:
