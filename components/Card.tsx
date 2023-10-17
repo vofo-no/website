@@ -41,10 +41,13 @@ export default function Card({
   return (
     <Link
       href={href}
-      className={classNames("shadow bg-white overflow-hidden grid", {
-        "grid-cols-[128px_auto]": layout === "left",
-        "grid-cols-1": layout === "top",
-      })}
+      className={classNames(
+        "shadow bg-white overflow-hidden grid transition hover:ring-1 hover:ring-gray-500 hover:shadow-md active:shadow-sm",
+        {
+          "grid-cols-[128px_auto]": layout === "left",
+          "grid-cols-1": layout === "top",
+        }
+      )}
     >
       {image && (
         <figure
