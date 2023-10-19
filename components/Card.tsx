@@ -69,7 +69,7 @@ export default function Card({
       )}
       <div
         className={classNames({
-          "my-4 px-4": layout === "top",
+          "my-3 px-4": layout === "top",
           "py-4 pr-4": layout === "left",
         })}
       >
