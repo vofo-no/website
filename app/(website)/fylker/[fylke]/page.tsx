@@ -30,7 +30,7 @@ export default async function FylkePage({ params }: Params) {
           <h1>{data.name}</h1>
           <p className="lead max-w-prose">{data.description}</p>
         </div>
-        <QuickStats param={params.fylke} />
+        <QuickStats param={params.fylke} locale={data.locale} />
       </Container>
       <Container paper prose>
         <ArticleBody
@@ -39,7 +39,7 @@ export default async function FylkePage({ params }: Params) {
           aside={
             <>
               {data.contacts?.map((person) => (
-                <Person key={person._ref} id={person._ref} />
+                <Person key={person._ref} id={person._ref} showContactInfo />
               ))}
             </>
           }
@@ -47,14 +47,12 @@ export default async function FylkePage({ params }: Params) {
       </Container>
       <Container prose>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          <div>
-            <h2 className="mt-0">Aktuelt</h2>
-            <NewsList type="article" reference={data._id} />
-          </div>
-          <div>
-            <h2 className="mt-0">Dokumenter</h2>
-            <NewsList type="publication" reference={data._id} />
-          </div>
+          <NewsList type="article" reference={data._id} locale={data.locale} />
+          <NewsList
+            type="publication"
+            reference={data._id}
+            locale={data.locale}
+          />
         </div>
       </Container>
     </>

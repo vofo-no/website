@@ -21,22 +21,33 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 export default async function Page({ params }: Params) {
   const data = (await getArticleBySlug(params.slug)) || notFound();
 
-  const { title, description, body, toc, image, _updatedAt, publishedAt } =
-    data;
+  const {
+    _updatedAt,
+    body,
+    description,
+    image,
+    locale,
+    publishedAt,
+    relevance,
+    title,
+    toc,
+  } = data;
 
   return (
     <>
-      <Container prose>
+      <Container prose lang={locale}>
         <h1>{title}</h1>
         <p className="lead max-w-prose">{description}</p>
       </Container>
-      <Container paper prose>
+      <Container paper prose lang={locale}>
         <ArticleBody
+          body={body}
+          locale={locale}
           media={image}
           publishedAt={publishedAt}
-          updatedAt={_updatedAt}
-          body={body}
+          relevance={relevance}
           toc={toc}
+          updatedAt={_updatedAt}
         />
       </Container>
     </>

@@ -29,14 +29,8 @@ export default function HomePage({ data }: HomePageProps) {
       <Hero banner={banner} />
       <Container prose>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          <div>
-            <h2 className="mt-0">Aktuelt</h2>
-            <NewsList type="article" />
-          </div>
-          <div>
-            <h2 className="mt-0">Dokumenter</h2>
-            <NewsList type="publication" />
-          </div>
+          <NewsList type="article" />
+          <NewsList type="publication" />
         </div>
       </Container>
     </>

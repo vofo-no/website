@@ -6,10 +6,12 @@ export default function Container({
   className,
   prose,
   paper,
+  lang,
 }: PropsWithChildren<{
   className?: string;
   prose?: boolean;
   paper?: boolean;
+  lang?: string;
 }>) {
   return (
     <div
@@ -17,6 +19,7 @@ export default function Container({
         "prose prose-gray dark:prose-invert": prose,
         "bg-white shadow": paper,
       })}
+      lang={lang}
     >
       <div
         className={classNames("px-4 lg:px-8", className, {

@@ -1,11 +1,15 @@
+import { ArrowRightIcon } from "@heroicons/react/24/solid";
 import classNames from "classnames";
 import formatRelative from "lib/formatRelative";
+import { getIntl } from "lib/intl";
 import isSameDay from "lib/isSameDay";
 import { urlForImage } from "lib/sanity.image";
+import { resolveHref } from "lib/sanity.links";
 import Image from "next/image";
+import Link from "next/link";
 import { ReactNode } from "react";
 import { PortableTextBlock } from "sanity";
-import { ImageType } from "types";
+import { County, ImageType, LocaleName, Project, Topic } from "types";
 
 import TextBody from "./TextBody";
 import Toc from "./Toc";
@@ -13,21 +17,26 @@ import Toc from "./Toc";
 interface Props {
   aside?: ReactNode;
   body?: PortableTextBlock[];
+  locale?: LocaleName;
   media?: ImageType;
   publishedAt?: string;
+  relevance?: Array<Topic | County | Project>;
   toc?: PortableTextBlock[];
   updatedAt?: string;
 }
 
-export default function ArticleBody({
+export default async function ArticleBody({
   aside,
   body,
+  locale,
   media,
   publishedAt,
+  relevance,
   toc,
   updatedAt,
 }: Props) {
   const hasMeta = !!(publishedAt || updatedAt);
+  const intl = await getIntl(locale);
 
   const imageUrl = media && urlForImage(media)?.size(1280, 720).url();
   const imageBlurUrl =
@@ -62,7 +71,11 @@ export default function ArticleBody({
           )}
         </figure>
       ) : null}
-      <Toc headers={toc} mobile />
+      <Toc
+        headers={toc}
+        mobile
+        title={intl.formatMessage({ id: "contents" })}
+      />
       <div
         className={classNames(
           "md:col-span-2",
@@ -82,17 +95,40 @@ export default function ArticleBody({
             <div className="text-gray-600 my-2">
               <small className="flex flex-row flex-wrap md:flex-col gap-1">
                 {publishedAt && (
-                  <span>Publisert {formatRelative(publishedAt)}.</span>
+                  <span>
+                    {intl.formatMessage(
+                      { id: "published" },
+                      { publishedAt: formatRelative(publishedAt, locale) }
+                    )}
+                    .
+                  </span>
                 )}
                 {updatedAt && !isSameDay(updatedAt, publishedAt) && (
-                  <span>Sist endret {formatRelative(updatedAt)}.</span>
+                  <span>
+                    {intl.formatMessage(
+                      { id: "updated" },
+                      { updatedAt: formatRelative(updatedAt, locale) }
+                    )}
+                    .
+                  </span>
                 )}
               </small>
             </div>
           </div>
         ) : null}
         <div className="flex flex-col gap-4 md:sticky md:top-4">
-          <Toc headers={toc} />
+          <Toc headers={toc} title={intl.formatMessage({ id: "contents" })} />
+          {relevance?.map((item) => (
+            <h2 key={item._id} className="my-0">
+              <Link
+                href={resolveHref(item._type, item.slug)!}
+                className="no-underline flex items-center gap-1"
+              >
+                <ArrowRightIcon className="h-6 grow-0" />
+                {item._type === "county" ? item.name : item.title}
+              </Link>
+            </h2>
+          ))}
           {aside && <div>{aside}</div>}
         </div>
       </aside>

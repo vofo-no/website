@@ -9,9 +9,10 @@ import slugify from "lib/slugify";
 interface TocProps {
   headers?: any[];
   mobile?: boolean;
+  title: string;
 }
 
-export default function Toc({ headers = [], mobile = false }: TocProps) {
+export default function Toc({ title, headers = [], mobile = false }: TocProps) {
   if (headers.length < 3) return null;
 
   if (mobile) {
@@ -24,7 +25,7 @@ export default function Toc({ headers = [], mobile = false }: TocProps) {
                 as="h2"
                 className="!my-0 p-4 flex justify-between cursor-pointer"
               >
-                <small>Innhold</small>
+                <small>{title}</small>
                 <ChevronRightIcon
                   className={classNames("h-6 duration-150", {
                     "rotate-90 transform": open,
@@ -58,7 +59,7 @@ export default function Toc({ headers = [], mobile = false }: TocProps) {
   return (
     <div className="border p-4 mb-4 hidden md:block">
       <h2 className="!mt-0 !pt-0">
-        <small>Innhold</small>
+        <small>{title}</small>
       </h2>
       <ul className={`list-none !pl-0 !mb-0`}>
         {headers.map((item) => {
