@@ -68,6 +68,8 @@ export const articleBySlugQuery = groq`
     "slug": slug.current,
     body,
     "toc": body[style == "h2"],
+    locale,
+    relevance[]->{ _type,_id,name,title,"slug":slug.current},
   }
 `;
 
@@ -85,6 +87,8 @@ export const publicationBySlugQuery = groq`
     "toc": body[style == "h2"],
     "attachment": attachment.asset->url,
     remoteUrl,
+    locale,
+    relevance[]->{ _type,_id,name,title,"slug":slug.current},
   }
 `;
 
@@ -118,6 +122,7 @@ export const countyBySlugQuery = groq`
     body,
     contacts,
     countyCode,
+    locale,
   }
 `;
 
@@ -126,6 +131,18 @@ export const personByIdQuery = groq`
     _id,
     name,
     title,
+    image,
+    email,
+    phone,
+  }
+`;
+
+export const organzationByIdQuery = groq`
+  *[_type == "organization" && _id == $id][0] {
+    _id,
+    name,
+    description,
+    logo,
     image,
     email,
     phone,
@@ -144,24 +161,64 @@ export const documentByIdQuery = groq`
   }
 `;
 
-/** temp */
-export const homePageTitleQuery = groq`
-  *[_type == "home"][0].title
+export const allTopicsQuery = groq`
+  *[_type == "topic" && active == true] | order(title asc) [] {
+    _id,
+    _type,
+    title,
+    description,
+    image,
+    "slug": slug.current,
+  }
+`;
+
+export const topicBySlugQuery = groq`
+  *[_type == "topic" && slug.current == $slug][0] {
+    _id,
+    _type,
+    title,
+    description,
+    image,
+    "slug": slug.current,
+    body,
+    "toc": body[style == "h2"],
+    contacts,
+  }
+`;
+
+export const allProjectsQuery = groq`
+  *[_type == "project"] | order(active desc, duration.start desc) [] {
+    _id,
+    _type,
+    title,
+    description,
+    image,
+    "slug": slug.current,
+    duration,
+    active,
+  }
 `;
 
 export const projectBySlugQuery = groq`
   *[_type == "project" && slug.current == $slug][0] {
     _id,
-    client,
-    coverImage,
-    description,
-    duration,
-    overview,
-    site,
-    "slug": slug.current,
-    tags,
+    _type,
     title,
+    description,
+    image,
+    "slug": slug.current,
+    duration,
+    active,
+    body,
+    "toc": body[style == "h2"],
+    contacts,
+    locale,
   }
+`;
+
+/** temp */
+export const homePageTitleQuery = groq`
+  *[_type == "home"][0].title
 `;
 
 export const projectPaths = groq`

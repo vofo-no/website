@@ -1,10 +1,10 @@
 import classNames from "classnames";
 import { resolveHref } from "lib/sanity.links";
 import Link from "next/link";
-import { County, Topic } from "types";
+import { County, Project, Topic } from "types";
 
 interface Props {
-  item?: County | Topic;
+  item?: County | Topic | Project;
 }
 
 export default function TagLink({ item }: Props) {

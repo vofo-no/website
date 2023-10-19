@@ -4,6 +4,8 @@ import type { QueryParams } from "@sanity/client";
 import { client } from "lib/sanity.client";
 import {
   allActiveCountiesQuery,
+  allProjectsQuery,
+  allTopicsQuery,
   articleBySlugQuery,
   associationsPageQuery,
   countyBySlugQuery,
@@ -12,12 +14,15 @@ import {
   getNewsItemsQuery,
   homePageQuery,
   homePageTitleQuery,
+  organzationByIdQuery,
   pagePaths,
   pagesBySlugQuery,
   personByIdQuery,
   privacyQuery,
+  projectBySlugQuery,
   publicationBySlugQuery,
   settingsQuery,
+  topicBySlugQuery,
 } from "lib/sanity.queries";
 import type {
   ArticlePayload,
@@ -26,12 +31,15 @@ import type {
   County,
   DocumentPayload,
   HomePagePayload,
+  Organization,
   PagePayload,
   PersonPayload,
   PrivacyPayload,
+  Project,
   PublicationPayload,
   //ProjectPayload,
   SettingsPayload,
+  Topic,
 } from "types";
 
 import { revalidateSecret } from "./sanity.api";
@@ -123,6 +131,14 @@ export function getPersonById(id: string) {
   });
 }
 
+export function getOrganizationById(id: string) {
+  return sanityFetch<Organization | null>({
+    query: organzationByIdQuery,
+    params: { id },
+    tags: [id],
+  });
+}
+
 export function getDocumentById(id: string) {
   return sanityFetch<DocumentPayload | null>({
     query: documentByIdQuery,
@@ -146,25 +162,47 @@ export function getCountyBySlug(slug: string) {
   });
 }
 
-/*export function getProjectBySlug(slug: string) {
-  return sanityFetch<ProjectPayload | null>({
+export function getAllTopics() {
+  return sanityFetch<Topic[]>({
+    query: allTopicsQuery,
+    tags: ["topic"],
+  });
+}
+
+export function getTopicBySlug(slug: string) {
+  return sanityFetch<Topic | null>({
+    query: topicBySlugQuery,
+    params: { slug },
+    tags: [`topic:${slug}`],
+  });
+}
+
+export function getAllProjects() {
+  return sanityFetch<Project[]>({
+    query: allProjectsQuery,
+    tags: ["project"],
+  });
+}
+
+export function getProjectBySlug(slug: string) {
+  return sanityFetch<Project | null>({
     query: projectBySlugQuery,
     params: { slug },
     tags: [`project:${slug}`],
   });
 }
-*/
+
 export function getHomePage() {
   return sanityFetch<HomePagePayload | null>({
     query: homePageQuery,
-    tags: ["home", "project"],
+    tags: ["home"],
   });
 }
 
 export function getAssociationsPage() {
   return sanityFetch<AssociationsPagePayload | null>({
     query: associationsPageQuery,
-    tags: ["learningAssociations", "organization"],
+    tags: ["learningAssociation", "organization"],
   });
 }
 

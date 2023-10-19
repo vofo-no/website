@@ -12,7 +12,7 @@ export function resolveHref(
     case "page":
       return slug ? `/${slug}` : undefined;
     case "project":
-      return slug ? `/projects/${slug}` : undefined;
+      return slug ? `/prosjekter/${slug}` : undefined;
     case "publication":
       return slug ? `/dokumenter/${slug}` : undefined;
     case "topic":

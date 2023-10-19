@@ -5,7 +5,7 @@ import { DurationInput } from "./DurationInput";
 export default defineField({
   type: "object",
   name: "duration",
-  title: "Duration",
+  title: "Varighet",
   components: {
     input: DurationInput,
   },
@@ -18,7 +18,7 @@ export default defineField({
     defineField({
       type: "datetime",
       name: "end",
-      title: "End",
+      title: "Slutt",
     }),
   ],
 });

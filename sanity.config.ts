@@ -3,18 +3,21 @@ import { apiVersion, dataset, projectId } from "lib/sanity.api";
 import { pageStructure, singletonPlugin } from "plugins/settings";
 import { defineConfig } from "sanity";
 import { deskTool } from "sanity/desk";
+import { media } from "sanity-plugin-media";
 import article from "schemas/documents/article";
 import county from "schemas/documents/county";
 import event from "schemas/documents/event";
 import organization from "schemas/documents/organization";
 import page from "schemas/documents/page";
 import person from "schemas/documents/person";
+import project from "schemas/documents/project";
 import publication from "schemas/documents/publication";
 import topic from "schemas/documents/topic";
 import banner from "schemas/objects/banner";
 import documentLink from "schemas/objects/documentLink";
 import duration from "schemas/objects/duration";
 import milestone from "schemas/objects/milestone";
+import organizations from "schemas/objects/organizations";
 import people from "schemas/objects/people";
 import someLink from "schemas/objects/someLink";
 import timeline from "schemas/objects/timeline";
@@ -43,6 +46,7 @@ export default defineConfig({
       event,
       organization,
       person,
+      project,
       topic,
       page,
       // Objects
@@ -50,12 +54,14 @@ export default defineConfig({
       documentLink,
       duration,
       milestone,
+      organizations,
       people,
       someLink,
       timeline,
     ],
   },
   plugins: [
+    media(),
     deskTool({
       structure: pageStructure([home, learningAssociations, settings]),
     }),
