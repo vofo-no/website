@@ -5,16 +5,21 @@ import Person from "./Person";
 import PersonLoading from "./Person/loading";
 
 export interface PeopleProps {
-  title?: string;
   members: PersonItem[];
+  showContactInfo?: boolean;
 }
 
-export default function People({ title, members }: PeopleProps) {
+export default function People({ members, showContactInfo }: PeopleProps) {
   return (
-    <div title={title} className="grid grid-cols-1 gap-4 my-5">
+    <div className="grid grid-cols-1">
       {members.map(({ person, title }) => (
         <Suspense key={person._ref} fallback={<PersonLoading />}>
-          <Person id={person._ref} title={title} />
+          <Person
+            id={person._ref}
+            title={title}
+            compact
+            showContactInfo={showContactInfo}
+          />
         </Suspense>
       ))}
     </div>

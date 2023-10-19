@@ -1,5 +1,8 @@
 import { PortableText } from "@portabletext/react";
 import DocumentLink from "app/_components/DocumentLink";
+import Organizations, {
+  OrganizationsProps,
+} from "app/_components/Organizations";
 import People, { PeopleProps } from "app/_components/People";
 import slugify from "lib/slugify";
 import { DocumentLinkItem } from "types";
@@ -7,8 +10,14 @@ import { DocumentLinkItem } from "types";
 const myPortableTextComponents = {
   types: {
     people: ({ value }: { value: PeopleProps }) => {
-      const { title, members } = value || {};
-      return <People title={title} members={members} />;
+      const { showContactInfo, members } = value || {};
+      return <People showContactInfo={showContactInfo} members={members} />;
+    },
+    organizations: ({ value }: { value: OrganizationsProps }) => {
+      const { showContactInfo, members } = value || {};
+      return (
+        <Organizations showContactInfo={showContactInfo} members={members} />
+      );
     },
     documentLink: ({ value }: { value: DocumentLinkItem }) => {
       return <DocumentLink id={value.item._ref} />;

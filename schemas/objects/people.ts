@@ -12,7 +12,7 @@ export default defineType({
       title: "Tittel",
       type: "string",
     }),
-    {
+    defineField({
       name: "members",
       title: "Medlemmer",
       type: "array",
@@ -50,7 +50,15 @@ export default defineType({
           },
         }),
       ],
-    },
+    }),
+    defineField({
+      type: "boolean",
+      name: "showContactInfo",
+      title: "Vis kontaktinformasjon",
+      description:
+        "Angir om ev. tilgjengelig kontaktinformasjon skal knyttes til listen",
+      initialValue: true,
+    }),
   ],
   preview: {
     select: {

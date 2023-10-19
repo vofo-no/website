@@ -50,6 +50,10 @@ export default defineField({
       type: "people",
     }),
     defineArrayMember({
+      name: "organizations",
+      type: "organizations",
+    }),
+    defineArrayMember({
       name: "documentLink",
       type: "documentLink",
     }),

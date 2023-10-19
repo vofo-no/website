@@ -8,14 +8,28 @@ import { PersonPayload } from "types";
 export default function PersonLayout({
   data,
   title,
+  className,
+  compact = false,
+  showContactInfo,
 }: {
   data?: PersonPayload;
   title?: string;
+  className?: string;
+  compact?: boolean;
+  showContactInfo?: boolean;
 }) {
   const imageUrl = data?.image && urlForImage(data.image)?.size(256, 256).url();
 
   return (
-    <div className="grid gap-4 grid-cols-[5rem_auto] md:grid-cols-[7rem_auto]">
+    <div
+      className={classNames(
+        className,
+        "grid gap-4 py-2",
+        compact
+          ? "grid-cols-[4rem_auto] md:grid-cols-[5rem_auto]"
+          : "grid-cols-[5rem_auto] md:grid-cols-[7rem_auto]"
+      )}
+    >
       {imageUrl ? (
         <figure className="not-prose">
           <Image
@@ -38,26 +52,28 @@ export default function PersonLayout({
           "animate-pulse": !data,
         })}
       >
-        <h3 className="!my-0">
+        <div className="font-roboto text-lg font-medium leading-tight">
           {data ? (
             data.name
           ) : (
             <span className="w-36 inline-block bg-gray-300 h-4 rounded-md "></span>
           )}
-        </h3>
-        <div className="text-gray-600 text-sm leading-normal font-medium">
+        </div>
+        <div className="text-gray-500 text-sm leading-normal line-clamp-1">
           {data ? (
             title || data.title
           ) : (
             <span className="w-24 inline-block bg-gray-300 h-3 rounded-md "></span>
           )}
         </div>
-        <div className="flex justify-start flex-wrap gap-x-2 gap-y-1 mt-1">
-          {data?.email && (
-            <ContactButton protocol="mailto" value={data.email} />
-          )}
-          {data?.phone && <ContactButton protocol="tel" value={data.phone} />}
-        </div>
+        {showContactInfo && (
+          <div className="flex justify-start flex-wrap gap-x-2 gap-y-1 mt-1">
+            {data?.email && (
+              <ContactButton protocol="mailto" value={data.email} />
+            )}
+            {data?.phone && <ContactButton protocol="tel" value={data.phone} />}
+          </div>
+        )}
       </div>
     </div>
   );
