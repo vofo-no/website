@@ -7,6 +7,7 @@ export type ImageType = Image & {
 };
 
 type ColorSchemeType = "crimson" | "red" | "green" | "blue" | "teal";
+export type LocaleName = "nb-NO" | "nn-NO" | "en-US";
 
 interface ItemBase {
   _id: string;
@@ -20,9 +21,15 @@ interface ArticleBase extends ItemBase {
   description?: string;
   body?: PortableTextBlock[];
   toc?: PortableTextBlock[];
+  locale?: LocaleName;
   publishedAt?: string;
   image?: ImageType;
   relevance?: Array<County | Topic>;
+}
+
+interface Duration {
+  start?: string;
+  end?: string;
 }
 
 export interface HomePagePayload {
@@ -100,9 +107,10 @@ export interface PrivacyPayload {
 export interface Topic extends ItemBase {
   _type: "topic";
   title: string;
-  image?: Image;
+  image?: ImageType;
   description?: string;
   body?: PortableTextBlock[];
+  contacts?: Reference[];
 }
 
 export interface County extends ItemBase {
@@ -113,6 +121,7 @@ export interface County extends ItemBase {
   body?: PortableTextBlock[];
   contacts?: Reference[];
   countyCode?: string;
+  locale?: LocaleName;
 }
 
 export type CountiesPayload = County[];
@@ -133,6 +142,13 @@ export interface PublicationPayload extends ArticleBase {
   docType?: string;
   attachment?: string;
   remoteUrl?: string;
+}
+
+export interface Project extends ArticleBase {
+  _type: "project";
+  duration?: Duration;
+  contacts?: Reference[];
+  active: boolean;
 }
 
 /*

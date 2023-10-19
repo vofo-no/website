@@ -1,11 +1,18 @@
 import { isSameDay, isSameMonth } from "date-fns";
 import { format, utcToZonedTime } from "date-fns-tz";
+import { LocaleName } from "types";
 import { RawTime } from "types/time";
 
-import { locale, timeZone } from "./time";
+import { getLocale, timeZone } from "./time";
 
-export default function eventTimeDisplay(start: RawTime, end: RawTime) {
+export default function eventTimeDisplay(
+  start: RawTime,
+  end: RawTime,
+  localeName?: LocaleName
+) {
   if (!start || !end) return null;
+
+  const locale = getLocale(localeName);
   const zonedStart = utcToZonedTime(start, timeZone);
   const zonedEnd = utcToZonedTime(end, timeZone);
 

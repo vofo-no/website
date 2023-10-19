@@ -3,6 +3,7 @@ import { defineArrayMember, defineField, defineType } from "sanity";
 import bodyField from "schemas/fields/bodyField";
 import descriptionField from "schemas/fields/descriptionField";
 import imageField from "schemas/fields/imageField";
+import localeField from "schemas/fields/localeField";
 
 export default defineType({
   name: "county",
@@ -59,5 +60,6 @@ export default defineType({
         sortable: false,
       },
     }),
+    localeField,
   ],
 });
