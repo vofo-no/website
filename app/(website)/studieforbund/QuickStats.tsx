@@ -12,7 +12,30 @@ interface Props {
   locale?: LocaleName;
 }
 
-export default async function QuickStats(props: Props) {
+export default function QuickStats(props: Props) {
+  return (
+    <React.Suspense fallback={<QuickStatsSkeleton />}>
+      <QuickStatsLayout {...props} />
+    </React.Suspense>
+  );
+}
+
+function QuickStatsSkeleton() {
+  return (
+    <div className="animate-pulse">
+      <p className="flex flex-col">
+        <span className="inline-block bg-gray-200 h-5 w-32 max-w-full my-1"></span>
+        <span className="inline-block bg-gray-200 h-6 w-44 max-w-full my-1"></span>
+        <span className="inline-block bg-gray-200 h-6 w-48 max-w-full my-1"></span>
+      </p>
+      <div>
+        <span className="inline-block bg-gray-200 h-10 w-48 max-w-full"></span>
+      </div>
+    </div>
+  );
+}
+
+async function QuickStatsLayout(props: Props) {
   const [data, intl] = await Promise.all([
     getQuickKursInfo(props.param),
     getIntl(props.locale),
