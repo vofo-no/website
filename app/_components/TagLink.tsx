@@ -1,13 +1,26 @@
 import classNames from "classnames";
+import { getTaggedById } from "lib/sanity.fetch";
 import { resolveHref } from "lib/sanity.links";
 import Link from "next/link";
-import { County, Project, Topic } from "types";
+import React from "react";
 
 interface Props {
-  item?: County | Topic | Project;
+  id: string;
 }
 
-export default function TagLink({ item }: Props) {
+export default function TagLink({ id }: Props) {
+  if (!id) return null;
+
+  return (
+    <React.Suspense fallback="...">
+      <TagLinkLayout id={id} />
+    </React.Suspense>
+  );
+}
+
+async function TagLinkLayout({ id }: Props) {
+  const item = await getTaggedById(id);
+
   if (!item) return null;
 
   return (
@@ -20,7 +33,7 @@ export default function TagLink({ item }: Props) {
           : "border border-blue-700 hover:border-crimson-500"
       )}
     >
-      {item._type === "county" ? item.name : item.title}
+      {item.name || item.title}
     </Link>
   );
 }
