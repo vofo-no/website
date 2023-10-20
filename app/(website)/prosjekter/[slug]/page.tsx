@@ -44,7 +44,7 @@ export default async function ProjectPage({ params }: Params) {
         />
       </Container>
       <Container prose>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-12 gap-y-4">
           <NewsList type="article" reference={data._id} locale={data.locale} />
           <NewsList
             type="publication"

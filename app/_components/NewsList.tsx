@@ -41,7 +41,9 @@ async function NewsListLayout({ reference, type, locale }: Props) {
   const intl = await getIntl(locale);
 
   const title = (
-    <h2 className="mt-0">{intl.formatMessage({ id: `${type}.list.title` })}</h2>
+    <h2 className="mt-2 mb-0">
+      {intl.formatMessage({ id: `${type}.list.title` })}
+    </h2>
   );
 
   if (!items || items.length === 0) {
