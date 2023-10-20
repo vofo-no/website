@@ -9,32 +9,41 @@ export type ImageType = Image & {
 type ColorSchemeType = "crimson" | "red" | "green" | "blue" | "teal";
 export type LocaleName = "nb-NO" | "nn-NO" | "en-US";
 
-interface ItemBase {
+interface Storeable {
   _id: string;
-  _updatedAt?: string;
   _type: string;
+  _updatedAt?: string;
+}
+
+interface Selectable {
   slug: string;
 }
 
-interface ArticleBase extends ItemBase {
-  title: string;
+interface Presentable {
   description?: string;
-  body?: PortableTextBlock[];
-  toc?: PortableTextBlock[];
+  title: string;
+  image?: ImageType;
   locale?: LocaleName;
   publishedAt?: string;
-  image?: ImageType;
-  relevance?: Array<County | Topic>;
+}
+
+interface Contactable {
+  contacts?: Reference[];
+}
+
+interface ArticleBase extends Storeable, Selectable, Presentable {
+  body?: PortableTextBlock[];
+  relevance?: Array<Reference>;
+  toc?: PortableTextBlock[];
 }
 
 interface Duration {
-  start?: string;
   end?: string;
+  start?: string;
 }
 
-export interface HomePagePayload {
-  title?: string;
-  description?: string;
+export interface HomePagePayload
+  extends Pick<Presentable, "title" | "description"> {
   banner?: {
     title: string;
     description?: string;
@@ -51,38 +60,24 @@ export interface AssociationsPagePayload {
   toc?: PortableTextBlock[];
 }
 
-export interface Organization {
-  _id: string;
-  name: string;
-  logo?: ImageType;
-  image?: ImageType;
-  email?: string;
-  phone?: string;
-  description?: string;
-}
-
 export interface MenuItem {
   title: string;
   url: string;
 }
 
-export interface DocumentPayload
+export interface Tagged extends Storeable, Selectable {
+  title?: string;
+  name?: string;
+}
+
+export interface MiniDocument
   extends Pick<
-    PublicationPayload,
+    Publication,
     "_id" | "_type" | "docType" | "title" | "description" | "image" | "slug"
   > {}
 
 export interface DocumentLinkItem {
   item: Reference;
-}
-
-export interface PersonPayload {
-  _id: string;
-  name: string;
-  title?: string;
-  image?: ImageType;
-  email?: string;
-  phone?: string;
 }
 
 export interface PersonItem {
@@ -104,28 +99,6 @@ export interface PrivacyPayload {
   _updatedAt?: string;
 }
 
-export interface Topic extends ItemBase {
-  _type: "topic";
-  title: string;
-  image?: ImageType;
-  description?: string;
-  body?: PortableTextBlock[];
-  contacts?: Reference[];
-}
-
-export interface County extends ItemBase {
-  _type: "county";
-  name: string;
-  image?: ImageType;
-  description?: string;
-  body?: PortableTextBlock[];
-  contacts?: Reference[];
-  countyCode?: string;
-  locale?: LocaleName;
-}
-
-export type CountiesPayload = County[];
-
 export interface PagePayload {
   title: string;
   description?: string;
@@ -133,23 +106,53 @@ export interface PagePayload {
   toc?: PortableTextBlock[];
 }
 
-export interface ArticlePayload extends ArticleBase {
+export interface Article extends ArticleBase {
   _type: "article";
 }
 
-export interface PublicationPayload extends ArticleBase {
+export interface County extends Omit<ArticleBase, "title">, Contactable {
+  _type: "county";
+  name: string;
+  countyCode?: string;
+}
+
+export interface Organization extends Storeable {
+  _type: "organization";
+  name: string;
+  logo?: ImageType;
+  image?: ImageType;
+  email?: string;
+  phone?: string;
+  description?: string;
+}
+
+export interface Person extends Storeable {
+  _type: "person";
+  name: string;
+  title?: string;
+  image?: ImageType;
+  email?: string;
+  phone?: string;
+}
+
+export interface Project extends ArticleBase, Contactable {
+  _type: "project";
+  duration?: Duration;
+  active?: boolean;
+}
+
+export interface Publication extends ArticleBase {
   _type: "publication";
   docType?: string;
   attachment?: string;
   remoteUrl?: string;
 }
 
-export interface Project extends ArticleBase {
-  _type: "project";
-  duration?: Duration;
-  contacts?: Reference[];
-  active: boolean;
+export interface Topic extends ArticleBase, Contactable {
+  _type: "topic";
 }
+
+export type NewsItemType = Article | Publication;
 
 /*
 

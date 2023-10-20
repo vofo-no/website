@@ -6,7 +6,7 @@ import { resolveHref } from "lib/sanity.links";
 import Image from "next/image";
 import Link from "next/link";
 import { Suspense } from "react";
-import { ArticlePayload, LocaleName, PublicationPayload } from "types";
+import { LocaleName, NewsItemType } from "types";
 
 import TagLink from "./TagLink";
 import DreamerImg from "./undraw_dreamer.svg";
@@ -83,7 +83,7 @@ function NewsListItem({
   refId,
   locale,
 }: {
-  item: PublicationPayload | ArticlePayload;
+  item: NewsItemType;
   refId?: string;
   locale?: LocaleName;
 }) {
@@ -123,9 +123,9 @@ function NewsListItem({
             {formatRelative(publishedAt, locale)}
           </div>
           {relevance
-            ?.filter((tag) => tag._id !== refId)
+            ?.filter((tag) => tag._ref !== refId)
             .map((tag) => (
-              <TagLink key={tag._id} item={tag} />
+              <TagLink key={`${item._id}__tags__${tag._ref}`} id={tag._ref} />
             ))}
         </div>
       </div>

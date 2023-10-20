@@ -6,13 +6,14 @@ import Container from "components/Container";
 import { getCountyBySlug } from "lib/sanity.fetch";
 import { defineMetadata } from "lib/utils.metadata";
 import { Metadata } from "next";
+import { notFound } from "next/navigation";
 
 interface Params {
   params: { fylke: string };
 }
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
-  const data = await getCountyBySlug(params.fylke);
+  const data = (await getCountyBySlug(params.fylke)) || notFound();
 
   return defineMetadata({
     title: data.name,
@@ -21,7 +22,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 }
 
 export default async function FylkePage({ params }: Params) {
-  const data = await getCountyBySlug(params.fylke);
+  const data = (await getCountyBySlug(params.fylke)) || notFound();
 
   return (
     <>

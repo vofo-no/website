@@ -22,34 +22,35 @@ import {
   projectBySlugQuery,
   publicationBySlugQuery,
   settingsQuery,
+  taggedByIdQuery,
   topicBySlugQuery,
 } from "lib/sanity.queries";
-import type {
-  ArticlePayload,
-  AssociationsPagePayload,
-  CountiesPayload,
-  County,
-  DocumentPayload,
-  HomePagePayload,
-  Organization,
-  PagePayload,
-  PersonPayload,
-  PrivacyPayload,
-  Project,
-  PublicationPayload,
-  //ProjectPayload,
-  SettingsPayload,
-  Topic,
+import {
+  type Article,
+  type AssociationsPagePayload,
+  type County,
+  type HomePagePayload,
+  type MiniDocument,
+  NewsItemType,
+  type Organization,
+  type PagePayload,
+  type Person,
+  type PrivacyPayload,
+  type Project,
+  type Publication,
+  type SettingsPayload,
+  Tagged,
+  type Topic,
 } from "types";
 
 import { revalidateSecret } from "./sanity.api";
 
-export const token = process.env.SANITY_API_READ_TOKEN;
+const token = process.env.SANITY_API_READ_TOKEN;
 
 const DEFAULT_PARAMS = {} as QueryParams;
 const DEFAULT_TAGS = [] as string[];
 
-export async function sanityFetch<QueryResponse>({
+async function sanityFetch<QueryResponse>({
   query,
   params = DEFAULT_PARAMS,
   tags = DEFAULT_TAGS,
@@ -64,6 +65,30 @@ export async function sanityFetch<QueryResponse>({
     next: {
       tags,
     },
+  });
+}
+
+function fetchBySlug<T>(type: string, query: string, slug: string) {
+  return sanityFetch<T | null>({
+    query,
+    params: { slug },
+    tags: [`${type}:${slug}`],
+  });
+}
+
+function fetchById<T>(query: string, id: string) {
+  return sanityFetch<T | null>({
+    query,
+    params: { id },
+    tags: [id],
+  });
+}
+
+function fetchList<T>(type: string, query: string, params?: QueryParams) {
+  return sanityFetch<T[]>({
+    query,
+    params,
+    tags: [type],
   });
 }
 
@@ -82,114 +107,69 @@ export function getPrivacy() {
 }
 
 export function getPageBySlug(slug: string) {
-  return sanityFetch<PagePayload | null>({
-    query: pagesBySlugQuery,
-    params: { slug },
-    tags: [`page:${slug}`],
-  });
+  return fetchBySlug<PagePayload>("page", pagesBySlugQuery, slug);
 }
 
 export function getNewsItems(type: "article" | "publication") {
-  return sanityFetch<Array<PublicationPayload | ArticlePayload> | null>({
-    query: getNewsItemsQuery,
-    params: { type },
-    tags: [type],
-  });
+  return fetchList<NewsItemType>(type, getNewsItemsQuery, { type });
 }
 
 export function getNewsItemsByReference(
   type: "article" | "publication",
   ref: string
 ) {
-  return sanityFetch<Array<PublicationPayload | ArticlePayload> | null>({
-    query: getNewsItemsByReferenceQuery,
-    params: { type, ref },
-    tags: [type],
+  return fetchList<NewsItemType>(type, getNewsItemsByReferenceQuery, {
+    type,
+    ref,
   });
 }
+
 export function getPublicationBySlug(slug: string) {
-  return sanityFetch<PublicationPayload | null>({
-    query: publicationBySlugQuery,
-    params: { slug },
-    tags: [`publication:${slug}`],
-  });
+  return fetchBySlug<Publication>("publication", publicationBySlugQuery, slug);
 }
 
 export function getArticleBySlug(slug: string) {
-  return sanityFetch<ArticlePayload | null>({
-    query: articleBySlugQuery,
-    params: { slug },
-    tags: [`article:${slug}`],
-  });
+  return fetchBySlug<Article>("article", articleBySlugQuery, slug);
 }
 
 export function getPersonById(id: string) {
-  return sanityFetch<PersonPayload | null>({
-    query: personByIdQuery,
-    params: { id },
-    tags: [id],
-  });
+  return fetchById<Person>(personByIdQuery, id);
 }
 
 export function getOrganizationById(id: string) {
-  return sanityFetch<Organization | null>({
-    query: organzationByIdQuery,
-    params: { id },
-    tags: [id],
-  });
+  return fetchById<Organization>(organzationByIdQuery, id);
 }
 
 export function getDocumentById(id: string) {
-  return sanityFetch<DocumentPayload | null>({
-    query: documentByIdQuery,
-    params: { id },
-    tags: [id],
-  });
+  return fetchById<MiniDocument>(documentByIdQuery, id);
+}
+
+export function getTaggedById(id: string) {
+  return fetchById<Tagged>(taggedByIdQuery, id);
 }
 
 export function getAllActiveCounties() {
-  return sanityFetch<CountiesPayload>({
-    query: allActiveCountiesQuery,
-    tags: ["county"],
-  });
+  return fetchList<County>("county", allActiveCountiesQuery);
 }
 
 export function getCountyBySlug(slug: string) {
-  return sanityFetch<County>({
-    query: countyBySlugQuery,
-    params: { slug },
-    tags: [`county:${slug}`],
-  });
+  return fetchBySlug<County>("county", countyBySlugQuery, slug);
 }
 
 export function getAllTopics() {
-  return sanityFetch<Topic[]>({
-    query: allTopicsQuery,
-    tags: ["topic"],
-  });
+  return fetchList<Topic>("topic", allTopicsQuery);
 }
 
 export function getTopicBySlug(slug: string) {
-  return sanityFetch<Topic | null>({
-    query: topicBySlugQuery,
-    params: { slug },
-    tags: [`topic:${slug}`],
-  });
+  return fetchBySlug<Topic>("topic", topicBySlugQuery, slug);
 }
 
 export function getAllProjects() {
-  return sanityFetch<Project[]>({
-    query: allProjectsQuery,
-    tags: ["project"],
-  });
+  return fetchList<Project>("project", allProjectsQuery);
 }
 
 export function getProjectBySlug(slug: string) {
-  return sanityFetch<Project | null>({
-    query: projectBySlugQuery,
-    params: { slug },
-    tags: [`project:${slug}`],
-  });
+  return fetchBySlug<Project>("project", projectBySlugQuery, slug);
 }
 
 export function getHomePage() {
@@ -205,26 +185,3 @@ export function getAssociationsPage() {
     tags: ["learningAssociation", "organization"],
   });
 }
-
-export function getHomePageTitle() {
-  return sanityFetch<string | null>({
-    query: homePageTitleQuery,
-    tags: ["home"],
-  });
-}
-
-export function getPagesPaths() {
-  return client.fetch<string[]>(
-    pagePaths,
-    {},
-    { token, perspective: "published" }
-  );
-}
-/*export function getProjectsPaths() {
-  return client.fetch<string[]>(
-    projectPaths,
-    {},
-    { token, perspective: "published" }
-  );
-}
-*/

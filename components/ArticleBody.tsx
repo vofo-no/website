@@ -3,13 +3,14 @@ import classNames from "classnames";
 import formatRelative from "lib/formatRelative";
 import { getIntl } from "lib/intl";
 import isSameDay from "lib/isSameDay";
+import { getTaggedById } from "lib/sanity.fetch";
 import { urlForImage } from "lib/sanity.image";
 import { resolveHref } from "lib/sanity.links";
 import Image from "next/image";
 import Link from "next/link";
-import { ReactNode } from "react";
-import { PortableTextBlock } from "sanity";
-import { County, ImageType, LocaleName, Project, Topic } from "types";
+import React, { ReactNode } from "react";
+import { PortableTextBlock, Reference } from "sanity";
+import { ImageType, LocaleName } from "types";
 
 import TextBody from "./TextBody";
 import Toc from "./Toc";
@@ -20,7 +21,7 @@ interface Props {
   locale?: LocaleName;
   media?: ImageType;
   publishedAt?: string;
-  relevance?: Array<Topic | County | Project>;
+  relevance?: Reference[];
   toc?: PortableTextBlock[];
   updatedAt?: string;
 }
@@ -119,19 +120,37 @@ export default async function ArticleBody({
         <div className="flex flex-col gap-4 md:sticky md:top-4">
           <Toc headers={toc} title={intl.formatMessage({ id: "contents" })} />
           {relevance?.map((item) => (
-            <h2 key={item._id} className="my-0">
-              <Link
-                href={resolveHref(item._type, item.slug)!}
-                className="no-underline flex items-center gap-1"
-              >
-                <ArrowRightIcon className="h-6 grow-0" />
-                {item._type === "county" ? item.name : item.title}
-              </Link>
-            </h2>
+            <React.Suspense
+              key={`relevance__${item._ref}`}
+              fallback={<RelevanceSkeleton />}
+            >
+              <RelevanceItem id={item._ref} />
+            </React.Suspense>
           ))}
           {aside && <div>{aside}</div>}
         </div>
       </aside>
     </div>
+  );
+}
+
+function RelevanceSkeleton() {
+  return <h2 className="my-0 animate-pulse text-gray-400">...</h2>;
+}
+
+async function RelevanceItem({ id }: { id: string }) {
+  const item = await getTaggedById(id);
+  if (!item) return null;
+
+  return (
+    <h2 className="my-0">
+      <Link
+        href={resolveHref(item._type, item.slug)!}
+        className="no-underline flex items-center gap-1"
+      >
+        <ArrowRightIcon className="h-6 grow-0" />
+        {item.name || item.title}
+      </Link>
+    </h2>
   );
 }

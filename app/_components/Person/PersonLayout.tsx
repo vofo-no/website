@@ -3,7 +3,7 @@ import classNames from "classnames";
 import ContactButton from "components/ContactButton";
 import { urlForImage } from "lib/sanity.image";
 import Image from "next/image";
-import { PersonPayload } from "types";
+import { Person } from "types";
 
 export default function PersonLayout({
   data,
@@ -12,7 +12,7 @@ export default function PersonLayout({
   compact = false,
   showContactInfo,
 }: {
-  data?: PersonPayload;
+  data?: Person;
   title?: string;
   className?: string;
   compact?: boolean;

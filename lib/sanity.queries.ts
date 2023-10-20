@@ -37,7 +37,7 @@ export const getNewsItemsQuery = groq`
     publishedAt,
     _updatedAt,
     "slug": slug.current,
-    relevance[]->{ _type,_id,name,title,"slug":slug.current},
+    relevance,
   }
 `;
 
@@ -52,7 +52,7 @@ export const getNewsItemsByReferenceQuery = groq`
     publishedAt,
     _updatedAt,
     "slug": slug.current,
-    relevance[]->{ _type,_id,name,title,"slug":slug.current},
+    relevance,
   }
 `;
 
@@ -69,7 +69,7 @@ export const articleBySlugQuery = groq`
     body,
     "toc": body[style == "h2"],
     locale,
-    relevance[]->{ _type,_id,name,title,"slug":slug.current},
+    relevance,
   }
 `;
 
@@ -88,7 +88,7 @@ export const publicationBySlugQuery = groq`
     "attachment": attachment.asset->url,
     remoteUrl,
     locale,
-    relevance[]->{ _type,_id,name,title,"slug":slug.current},
+    relevance,
   }
 `;
 
@@ -123,6 +123,16 @@ export const countyBySlugQuery = groq`
     contacts,
     countyCode,
     locale,
+  }
+`;
+
+export const taggedByIdQuery = groq`
+  *[_id == $id][0] {
+    _id,
+    _type,
+    title,
+    name,
+    "slug": slug.current,
   }
 `;
 
