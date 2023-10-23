@@ -4,6 +4,7 @@ import type { QueryParams } from "@sanity/client";
 import { client } from "lib/sanity.client";
 import {
   allActiveCountiesQuery,
+  allEventsQuery,
   allProjectsQuery,
   allTopicsQuery,
   articleBySlugQuery,
@@ -14,6 +15,7 @@ import {
   getNewsItemsByReferenceQuery,
   getNewsItemsQuery,
   homePageQuery,
+  linkableByIdQuery,
   organzationByIdQuery,
   pagesBySlugQuery,
   personByIdQuery,
@@ -30,6 +32,7 @@ import {
   type County,
   type Event,
   type HomePagePayload,
+  Linked,
   type MiniDocument,
   NewsItemType,
   type Organization,
@@ -136,6 +139,10 @@ export function getEventById(id: string) {
   return fetchById<Event>(eventByIdQuery, id);
 }
 
+export function getLinkedById(id: string) {
+  return fetchById<Linked>(linkableByIdQuery, id);
+}
+
 export function getPersonById(id: string) {
   return fetchById<Person>(personByIdQuery, id);
 }
@@ -158,6 +165,10 @@ export function getAllActiveCounties() {
 
 export function getCountyBySlug(slug: string) {
   return fetchBySlug<County>("county", countyBySlugQuery, slug);
+}
+
+export function getAllEvents() {
+  return fetchList<Event>("event", allEventsQuery);
 }
 
 export function getAllTopics() {

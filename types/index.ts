@@ -71,6 +71,11 @@ export interface Tagged extends Storeable, Selectable {
   name?: string;
 }
 
+export interface Linked
+  extends Storeable,
+    Selectable,
+    Pick<Presentable, "title" | "publishedAt"> {}
+
 export interface MiniDocument
   extends Pick<
     Publication,
@@ -127,6 +132,7 @@ export interface Event
     address?: string;
   };
   ownEvent?: boolean;
+  newsItems?: Array<{ _type: string; _id: string }>;
 }
 
 export interface Organization extends Storeable {

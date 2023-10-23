@@ -21,7 +21,7 @@ async function EventLayout({ id }: Props) {
 
   return (
     <div className="flex gap-4 -mx-4 p-4 my-6 first:mt-0 items-start bg-green-100 border-l-4 border-l-green-600">
-      <CalendarDaysIcon className="text-green-600 w-40" />
+      <CalendarDaysIcon className="text-green-600 w-12 shrink-0" />
       <div
         className={classNames("flex flex-col", {
           "animate-pulse": !data,

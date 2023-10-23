@@ -237,6 +237,7 @@ export const allEventsQuery = groq`
   duration,
   location,
   ownEvent,
+  "newsItems": *[_type in ["article", "publication"] && references(^._id)]{ _type, _id },
 }
 `;
 
@@ -249,6 +250,16 @@ export const eventByIdQuery = groq`
   duration,
   location,
   ownEvent,
+}
+`;
+
+export const linkableByIdQuery = groq`
+*[_type in ["article", "publication"] && _id == $id] [0] {
+  _id,
+  _type,
+  title,
+  "slug": slug.current,
+  publishedAt,
 }
 `;
 
