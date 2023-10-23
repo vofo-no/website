@@ -10,12 +10,11 @@ import {
   associationsPageQuery,
   countyBySlugQuery,
   documentByIdQuery,
+  eventByIdQuery,
   getNewsItemsByReferenceQuery,
   getNewsItemsQuery,
   homePageQuery,
-  homePageTitleQuery,
   organzationByIdQuery,
-  pagePaths,
   pagesBySlugQuery,
   personByIdQuery,
   privacyQuery,
@@ -29,6 +28,7 @@ import {
   type Article,
   type AssociationsPagePayload,
   type County,
+  type Event,
   type HomePagePayload,
   type MiniDocument,
   NewsItemType,
@@ -130,6 +130,10 @@ export function getPublicationBySlug(slug: string) {
 
 export function getArticleBySlug(slug: string) {
   return fetchBySlug<Article>("article", articleBySlugQuery, slug);
+}
+
+export function getEventById(id: string) {
+  return fetchById<Event>(eventByIdQuery, id);
 }
 
 export function getPersonById(id: string) {

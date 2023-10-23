@@ -1,4 +1,5 @@
 import { ArrowRightIcon } from "@heroicons/react/24/solid";
+import Event from "app/_components/Event";
 import classNames from "classnames";
 import formatRelative from "lib/formatRelative";
 import { getIntl } from "lib/intl";
@@ -18,6 +19,7 @@ import Toc from "./Toc";
 interface Props {
   aside?: ReactNode;
   body?: PortableTextBlock[];
+  event?: Reference;
   locale?: LocaleName;
   media?: ImageType;
   publishedAt?: string;
@@ -29,6 +31,7 @@ interface Props {
 export default async function ArticleBody({
   aside,
   body,
+  event,
   locale,
   media,
   publishedAt,
@@ -127,6 +130,7 @@ export default async function ArticleBody({
               <RelevanceItem id={item._ref} />
             </React.Suspense>
           ))}
+          {event && <Event id={event._ref} />}
           {aside && <div>{aside}</div>}
         </div>
       </aside>

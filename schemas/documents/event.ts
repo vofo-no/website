@@ -1,31 +1,17 @@
-import { MdEvent } from "react-icons/md";
+import { CalendarIcon } from "@sanity/icons";
+import eventTimeDisplay from "lib/eventTimeDisplay";
 import { defineField, defineType } from "sanity";
-import bodyField from "schemas/fields/bodyField";
 import descriptionField from "schemas/fields/descriptionField";
-import imageField from "schemas/fields/imageField";
-import publishedAtField from "schemas/fields/publishedAtField";
-import relevanceField from "schemas/fields/relevanceField";
 import titleField from "schemas/fields/titleField";
 
 export default defineType({
   name: "event",
   type: "document",
   title: "Hendelse",
-  icon: MdEvent,
+  icon: CalendarIcon,
   fields: [
     titleField,
-    defineField({
-      type: "slug",
-      name: "slug",
-      title: "Slug",
-      options: {
-        source: "title",
-      },
-      validation: (rule) => rule.required(),
-    }),
     descriptionField,
-    imageField,
-    bodyField,
     defineField({
       type: "duration",
       name: "duration",
@@ -41,7 +27,8 @@ export default defineType({
         {
           name: "name",
           title: "Stedsnavn",
-          description: "Oppgi by eller tettsted for fysiske arrangementer",
+          description:
+            "Oppgi by/tettsted for fysiske arrangementer eller plattform for digitale arrangementer",
           type: "string",
         },
         {
@@ -52,24 +39,25 @@ export default defineType({
         },
       ],
     }),
-    publishedAtField,
-    relevanceField,
+    defineField({
+      name: "ownEvent",
+      title: "Eget arrangement",
+      description: "Angir at arrangementet er i regi av Vofo",
+      type: "boolean",
+      initialValue: true,
+    }),
   ],
   preview: {
     select: {
       duration: "duration",
-      image: "image",
       title: "title",
     },
-    prepare({ duration, image, title }) {
+    prepare({ duration, title }) {
       return {
-        media: image,
-        subtitle: [
-          duration?.start && new Date(duration.start).getFullYear(),
-          duration?.end && new Date(duration.end).getFullYear(),
-        ]
-          .filter(Boolean)
-          .join(" - "),
+        subtitle:
+          duration?.start &&
+          duration?.end &&
+          eventTimeDisplay(duration.start, duration.end),
         title,
       };
     },

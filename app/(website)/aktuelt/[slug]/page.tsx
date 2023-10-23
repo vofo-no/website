@@ -25,6 +25,7 @@ export default async function Page({ params }: Params) {
     _updatedAt,
     body,
     description,
+    eventReference,
     image,
     locale,
     publishedAt,
@@ -42,6 +43,7 @@ export default async function Page({ params }: Params) {
       <Container paper prose lang={locale}>
         <ArticleBody
           body={body}
+          event={eventReference}
           locale={locale}
           media={image}
           publishedAt={publishedAt}

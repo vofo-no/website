@@ -33,6 +33,7 @@ interface Contactable {
 
 interface ArticleBase extends Storeable, Selectable, Presentable {
   body?: PortableTextBlock[];
+  eventReference?: Reference;
   relevance?: Array<Reference>;
   toc?: PortableTextBlock[];
 }
@@ -114,6 +115,18 @@ export interface County extends Omit<ArticleBase, "title">, Contactable {
   _type: "county";
   name: string;
   countyCode?: string;
+}
+
+export interface Event
+  extends Storeable,
+    Pick<Presentable, "title" | "description"> {
+  _type: "event";
+  duration?: Duration;
+  location?: {
+    name?: string;
+    address?: string;
+  };
+  ownEvent?: boolean;
 }
 
 export interface Organization extends Storeable {

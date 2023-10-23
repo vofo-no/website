@@ -3,6 +3,7 @@ import { MdOutlineArticle } from "react-icons/md";
 import { defineField, defineType } from "sanity";
 import bodyField from "schemas/fields/bodyField";
 import descriptionField from "schemas/fields/descriptionField";
+import eventReferenceField from "schemas/fields/eventReferenceField";
 import imageField from "schemas/fields/imageField";
 import localeField from "schemas/fields/localeField";
 import publishedAtField from "schemas/fields/publishedAtField";
@@ -29,6 +30,7 @@ export default defineType({
     imageField,
     bodyField,
     publishedAtField,
+    eventReferenceField,
     relevanceField,
     localeField,
   ],
