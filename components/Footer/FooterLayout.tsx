@@ -35,7 +35,7 @@ export default function Footer({ data }: FooterProps) {
               </Link>
             </address>
             <div className="print:hidden">
-              <a href="om-vofo/#ansatte" className="hover:underline">
+              <a href="/om-vofo/#ansatte" className="hover:underline">
                 Våre ansatte
                 <ChevronRightIcon className="w-4 h-4 inline-block ml-1" />
               </a>
@@ -48,6 +48,15 @@ export default function Footer({ data }: FooterProps) {
             </div>
           </div>
           <div className="flex flex-col gap-4 print:hidden">
+            <div>
+              <Link href="/arkiv" className="hover:underline">
+                Dokument- og nyhetsarkiv
+              </Link>
+              <Sep />
+              <Link href="/kalender" className="hover:underline">
+                Kalender
+              </Link>
+            </div>
             <div>
               Få siste nytt om studieforbund og voksnes læring hver måned:
               <form>

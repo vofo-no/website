@@ -1,11 +1,10 @@
 import { publicationDocTypes } from "lib/publicationDocTypes";
 
-const knownTypes = [
-  { title: "Artikkel", value: "article" },
-  { title: "Arrangement", value: "event" },
+export const newsDocTypes = [
+  { title: "Nyhet", value: "article" },
   ...publicationDocTypes,
 ];
 
 export default function docTypeDisplay(raw: string) {
-  return knownTypes.find((item) => item.value === raw)?.title || raw;
+  return newsDocTypes.find((item) => item.value === raw)?.title || raw;
 }
