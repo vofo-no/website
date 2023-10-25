@@ -38,7 +38,7 @@ export function NewsListItem({
           />
         </figure>
       )}
-      <div className="self-center">
+      <div className="self-center grow max-w-prose">
         <h3 className="mt-0">
           <Link href={resolveHref(_type, slug)!} className="no-underline">
             {title}
