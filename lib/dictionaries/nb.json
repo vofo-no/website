@@ -6,6 +6,8 @@
   "article.list.empty": "Ingen saker",
   "publication.list.title": "Dokumenter",
   "publication.list.empty": "Ingen dokumenter",
+  "archive.list.title": "Dokumenter",
+  "archive.list.empty": "Ingen dokumenter",
   "quickstats.body": "Studieforbundene har rapportert {courses} med {participants} i {year}",
   "quickstats.action": "Statistikk for {name}",
   "quickstats.courses": "{number} kurs",

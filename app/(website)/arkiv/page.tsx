@@ -1,3 +1,4 @@
+import NewsListResults from "app/_components/NewsListResults";
 import Container from "components/Container";
 import { newsDocTypes } from "lib/docTypeDisplay";
 import { getAllActiveCounties, getAllTopics } from "lib/sanity.fetch";
@@ -43,6 +44,34 @@ export default async function ArchivePage({
     ),
   ]);
 
+  if (searchParams.fylke) {
+    const refs = new Array<string>();
+
+    (typeof searchParams.fylke === "string"
+      ? [searchParams.fylke]
+      : searchParams.fylke
+    ).map((county) => {
+      const id = counties.find((c) => c.value === county)?._id;
+      if (id) refs.push(id);
+    });
+
+    if (refs.length) searchParams.counties = refs;
+  }
+
+  if (searchParams.tema) {
+    const refs = new Array<string>();
+
+    (typeof searchParams.tema === "string"
+      ? [searchParams.tema]
+      : searchParams.tema
+    ).map((topic) => {
+      const id = topics.find((t) => t.value === topic)?._id;
+      if (id) refs.push(id);
+    });
+
+    if (refs.length) searchParams.topics = refs;
+  }
+
   return (
     <>
       <Container prose>
@@ -53,7 +82,7 @@ export default async function ArchivePage({
         </p>
       </Container>
       <Container paper prose>
-        <div>
+        <div className="mb-8">
           <SearchBox
             name="q"
             value={searchParams.q}
@@ -86,7 +115,7 @@ export default async function ArchivePage({
             />
           </div>
         </div>
-        <p>{JSON.stringify(searchParams)}</p>
+        <NewsListResults searchParams={searchParams} type="archive" />
       </Container>
     </>
   );

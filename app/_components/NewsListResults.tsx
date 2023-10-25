@@ -1,5 +1,10 @@
 import { getIntl } from "lib/intl";
-import { getNewsItems, getNewsItemsByReference } from "lib/sanity.fetch";
+import { publicationDocTypes } from "lib/publicationDocTypes";
+import {
+  getNewsItems,
+  getNewsItemsByReference,
+  searchNewsItems,
+} from "lib/sanity.fetch";
 import Image from "next/image";
 import { LocaleName } from "types";
 
@@ -9,17 +14,19 @@ import DreamerImg from "./undraw_dreamer.svg";
 import FriendsImg from "./undraw_friends.svg";
 
 interface Props {
-  reference?: string;
-  type: "article" | "publication";
   locale?: LocaleName;
+  reference?: string;
+  searchParams?: { [key: string]: string | string[] | undefined };
+  type: "article" | "publication" | "archive";
 }
 
 const typeImage = {
   article: FriendsImg,
   publication: DreamerImg,
+  archive: DreamerImg,
 };
 
-export default function NewsList(props: Props) {
+export default function NewsListResults(props: Props) {
   return (
     <NewsListLoader>
       <div>
@@ -29,12 +36,16 @@ export default function NewsList(props: Props) {
   );
 }
 
-async function NewsListLayout({ reference, type, locale }: Props) {
-  const items = reference
-    ? await getNewsItemsByReference(type, reference)
-    : await getNewsItems(type);
-
-  const intl = await getIntl(locale);
+async function NewsListLayout({
+  locale,
+  reference,
+  searchParams,
+  type,
+}: Props) {
+  const [items, intl] = await Promise.all([
+    searchNewsItems(searchParams),
+    getIntl(locale),
+  ]);
 
   const title = (
     <h2 className="mt-2 mb-0">

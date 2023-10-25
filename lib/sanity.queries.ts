@@ -26,6 +26,27 @@ export const pagesBySlugQuery = groq`
   }
 `;
 
+export const searchNewsItemsQuery = groq`
+  *[
+    ((_type in $types) || ((_type == "publication") && (docType in $publicationDocTypes))) &&
+    (!defined($years) || string::split(publishedAt, "-")[0] in $years) &&
+    (!defined($counties) || references($counties)) &&
+    (!defined($topics) || references($topics)) &&
+    (!defined($q) || ([title, description, pt::text(body)] match $q))
+  ] | order(publishedAt desc) [0...25] {
+    _id,
+    _type,
+    docType,
+    title,
+    description,
+    image,
+    publishedAt,
+    _updatedAt,
+    "slug": slug.current,
+    relevance,
+  }
+`;
+
 export const getNewsItemsQuery = groq`
   *[_type == $type] | order(publishedAt desc) [0...6] {
     _id,

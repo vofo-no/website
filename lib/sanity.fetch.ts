@@ -22,6 +22,7 @@ import {
   privacyQuery,
   projectBySlugQuery,
   publicationBySlugQuery,
+  searchNewsItemsQuery,
   settingsQuery,
   taggedByIdQuery,
   topicBySlugQuery,
@@ -46,6 +47,7 @@ import {
   type Topic,
 } from "types";
 
+import { publicationDocTypes } from "./publicationDocTypes";
 import { revalidateSecret } from "./sanity.api";
 
 const token = process.env.SANITY_API_READ_TOKEN;
@@ -111,6 +113,77 @@ export function getPrivacy() {
 
 export function getPageBySlug(slug: string) {
   return fetchBySlug<PagePayload>("page", pagesBySlugQuery, slug);
+}
+
+const publicationDocTypeValues = publicationDocTypes.map((item) => item.value);
+
+export function searchNewsItems(
+  searchParams: {
+    [key: string]: string | string[] | undefined;
+  } = {}
+) {
+  const params: {
+    counties: string[] | null;
+    publicationDocTypes: string[];
+    q: string | null;
+    topics: string[] | null;
+    types: string[];
+    years: string[] | null;
+  } = {
+    counties: null,
+    publicationDocTypes: new Array<string>(),
+    q: null,
+    topics: null,
+    types: new Array<string>(),
+    years: null,
+  };
+
+  // TYPE
+  if (searchParams.type) {
+    if (typeof searchParams.type === "string")
+      searchParams.type = [searchParams.type];
+    searchParams.type.map((t) => {
+      if (publicationDocTypeValues.includes(t)) {
+        params.publicationDocTypes.push(t);
+      } else if (t === "article") {
+        params.types.push(t);
+      }
+    });
+  }
+
+  if (params.types.length === 0 && params.publicationDocTypes.length === 0) {
+    params.types = ["article", "publication"];
+  }
+
+  // TID
+  if (typeof searchParams.tid === "string")
+    searchParams.tid = [searchParams.tid];
+
+  params.years = searchParams.tid || null;
+
+  // TOPICS
+  params.topics =
+    (typeof searchParams.topics === "string"
+      ? [searchParams.topics]
+      : searchParams.topics) || null;
+
+  // COUNTIES
+  params.counties =
+    (typeof searchParams.counties === "string"
+      ? [searchParams.counties]
+      : searchParams.counties) || null;
+
+  // Q
+  params.q =
+    typeof searchParams.q === "string"
+      ? searchParams.q
+      : searchParams.q?.[0] || null;
+
+  return sanityFetch<NewsItemType[]>({
+    query: searchNewsItemsQuery,
+    params,
+    tags: ["article", "publication"],
+  });
 }
 
 export function getNewsItems(type: "article" | "publication") {

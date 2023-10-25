@@ -6,6 +6,8 @@
   "article.list.empty": "Nothing",
   "publication.list.title": "Documents",
   "publication.list.empty": "No documents",
+  "archive.list.title": "Documents",
+  "archive.list.empty": "No documents",
   "quickstats.body": "The learning associations report {courses} with {participants} for {year}",
   "quickstats.action": "Statistics for {name}",
   "quickstats.courses": "{number} courses",

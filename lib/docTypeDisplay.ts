@@ -1,7 +1,7 @@
 import { publicationDocTypes } from "lib/publicationDocTypes";
 
 export const newsDocTypes = [
-  { title: "Nyhet", value: "article" },
+  { title: "Nyhetssak", value: "article" },
   ...publicationDocTypes,
 ];
 
