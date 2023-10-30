@@ -142,6 +142,7 @@ export interface Organization extends Storeable {
   image?: ImageType;
   email?: string;
   phone?: string;
+  url?: string;
   description?: string;
 }
 

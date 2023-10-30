@@ -64,6 +64,7 @@ async function OrganizationLayout({ id, showContactInfo }: Props) {
               <ContactButton protocol="mailto" value={data.email} />
             )}
             {data.phone && <ContactButton protocol="tel" value={data.phone} />}
+            {data.url && <ContactButton protocol="url" value={data.url} />}
           </div>
         )}
       </div>

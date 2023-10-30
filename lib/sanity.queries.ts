@@ -179,6 +179,7 @@ export const organzationByIdQuery = groq`
     image,
     email,
     phone,
+    url,
   }
 `;
 
