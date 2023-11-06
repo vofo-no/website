@@ -1,11 +1,12 @@
 import { PortableText } from "@portabletext/react";
+import ArticleImage from "app/_components/ArticleImage";
 import DocumentLink from "app/_components/DocumentLink";
 import Organizations, {
   OrganizationsProps,
 } from "app/_components/Organizations";
 import People, { PeopleProps } from "app/_components/People";
 import slugify from "lib/slugify";
-import { DocumentLinkItem } from "types";
+import { DocumentLinkItem, ImageType } from "types";
 
 const myPortableTextComponents = {
   types: {
@@ -19,6 +20,7 @@ const myPortableTextComponents = {
         <Organizations showContactInfo={showContactInfo} members={members} />
       );
     },
+    image: ({ value }: { value: ImageType }) => <ArticleImage {...value} />,
     documentLink: ({ value }: { value: DocumentLinkItem }) => {
       return <DocumentLink id={value.item._ref} />;
     },
