@@ -1,5 +1,5 @@
 import { urlForImage } from "lib/sanity.image";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import type { Image } from "sanity";
 
 export function defineMetadata({
@@ -16,7 +16,6 @@ export function defineMetadata({
 
   return {
     title,
-    themeColor: "#000",
     description,
     openGraph: imageUrl
       ? {
@@ -25,3 +24,7 @@ export function defineMetadata({
       : undefined,
   } satisfies Metadata;
 }
+
+export const viewport: Viewport = {
+  themeColor: "#f3f4f6",
+};
