@@ -61,12 +61,15 @@ export default defineConfig({
     ],
   },
   plugins: [
-    media(),
     deskTool({
-      structure: pageStructure([home, learningAssociations, settings]),
+      structure: pageStructure({
+        singletonTypeDefs: [home, learningAssociations, settings],
+        hiddenTypes: ["media.tag"],
+      }),
     }),
     // Configures the global "new document" button, and document actions, to suit the Settings document singleton
-    singletonPlugin([home.name, settings.name]),
+    singletonPlugin({ types: [home.name, settings.name] }),
+    media(),
     visionTool({ defaultApiVersion: apiVersion }),
   ],
 });

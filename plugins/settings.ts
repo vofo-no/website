@@ -1,7 +1,3 @@
-/**
- * This plugin contains all the logic for setting up the singletons
- */
-
 import { definePlugin, type DocumentDefinition } from "sanity";
 import { type StructureResolver } from "sanity/desk";
 
@@ -16,12 +12,18 @@ function getPluralTitle(singularTitle: string) {
   );
 }
 
-export const singletonPlugin = (types: string[]) =>
-  definePlugin({
+type SingletonPluginOptions = {
+  types: string[];
+};
+
+/**
+ * This plugin contains all the logic for setting up the singletons
+ */
+export const singletonPlugin = definePlugin<SingletonPluginOptions>(
+  ({ types }) => ({
     name: "singletonPlugin",
     document: {
       // Hide 'Singletons (such as Home)' from new document options
-      // https://user-images.githubusercontent.com/81981/195728798-e0c6cf7e-d442-4e58-af3a-8cd99d7fcc28.png
       newDocumentOptions: (prev, { creationContext }) => {
         if (creationContext.type === "global") {
           return prev.filter(
@@ -40,17 +42,24 @@ export const singletonPlugin = (types: string[]) =>
         return prev;
       },
     },
-  });
+  })
+);
+
+type pageStructureOptions = {
+  singletonTypeDefs: DocumentDefinition[];
+  hiddenTypes?: string[];
+};
 
 // The StructureResolver is how we're changing the DeskTool structure to linking to document (named Singleton)
 // like how "Home" is handled.
-export const pageStructure = (
-  typeDefArray: DocumentDefinition[]
-): StructureResolver => {
+export const pageStructure = ({
+  singletonTypeDefs,
+  hiddenTypes,
+}: pageStructureOptions): StructureResolver => {
   return (S) => {
     // Goes through all of the singletons that were provided and translates them into something the
     // Desktool can understand
-    const singletonItems = typeDefArray.map((typeDef) => {
+    const singletonItems = singletonTypeDefs.map((typeDef) => {
       return S.listItem()
         .title(typeDef.title!)
         .icon(typeDef.icon)
@@ -70,8 +79,11 @@ export const pageStructure = (
     const defaultListItems = S.documentTypeListItems()
       .filter(
         (listItem) =>
-          !typeDefArray.find((singleton) => singleton.name === listItem.getId())
+          !singletonTypeDefs.find(
+            (singleton) => singleton.name === listItem.getId()
+          )
       )
+      .filter((listItem) => !hiddenTypes?.includes(listItem.getId() || ""))
       .map((itemBuilder) =>
         itemBuilder.title(getPluralTitle(itemBuilder.getTitle()!))
       );
