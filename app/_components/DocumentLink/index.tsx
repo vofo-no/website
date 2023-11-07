@@ -1,4 +1,5 @@
 import { ArrowRightCircleIcon } from "@heroicons/react/20/solid";
+import { resolveVirtualTypeFromDocType } from "lib/postTypes";
 import { getDocumentById } from "lib/sanity.fetch";
 import { urlForImage } from "lib/sanity.image";
 import { resolveHref } from "lib/sanity.links";
@@ -25,14 +26,16 @@ async function DocumentLayout({ id }: Props) {
 
   if (!data) return null;
 
-  const { _type, title, slug, description, image } = data;
+  const { docType, title, slug, description, image } = data;
   const imageUrl = image && urlForImage(image)?.size(320, 240).url();
   const imageBlurUrl =
     image && urlForImage(image)?.size(32, 24).quality(30).blur(50).url();
 
+  const resolvedType = resolveVirtualTypeFromDocType(docType);
+
   return (
     <Link
-      href={resolveHref(_type, slug)!}
+      href={resolveHref(resolvedType, slug)!}
       className="flex gap-4 -mx-4 bg-gray-50 border-l-4 border-l-blue-700 my-6 no-underline group items-center"
     >
       <div className="flex flex-col gap-1 shrink overflow-hidden px-4 py-4">

@@ -7,35 +7,31 @@ import {
   allEventsQuery,
   allProjectsQuery,
   allTopicsQuery,
-  articleBySlugQuery,
   associationsPageQuery,
   countyBySlugQuery,
   documentByIdQuery,
   eventByIdQuery,
-  getNewsItemsByReferenceQuery,
-  getNewsItemsQuery,
   homePageQuery,
   linkableByIdQuery,
+  listPublicationsByDocTypesAndReferenceQuery,
   organzationByIdQuery,
   pagesBySlugQuery,
   personByIdQuery,
   privacyQuery,
   projectBySlugQuery,
   publicationBySlugQuery,
-  searchNewsItemsQuery,
+  searchPublicationsQuery,
   settingsQuery,
   taggedByIdQuery,
   topicBySlugQuery,
 } from "lib/sanity.queries";
 import {
-  type Article,
   type AssociationsPagePayload,
   type County,
   type Event,
   type HomePagePayload,
   Linked,
   type MiniDocument,
-  NewsItemType,
   type Organization,
   type PagePayload,
   type Person,
@@ -47,7 +43,7 @@ import {
   type Topic,
 } from "types";
 
-import { publicationDocTypes } from "./publicationDocTypes";
+import { documentPostTypeValues, newsPostTypeValues } from "./postTypes";
 import { revalidateSecret } from "./sanity.api";
 
 const token = process.env.SANITY_API_READ_TOKEN;
@@ -115,45 +111,30 @@ export function getPageBySlug(slug: string) {
   return fetchBySlug<PagePayload>("page", pagesBySlugQuery, slug);
 }
 
-const publicationDocTypeValues = publicationDocTypes.map((item) => item.value);
-
-export function searchNewsItems(
+export function searchPublications(
   searchParams: {
     [key: string]: string | string[] | undefined;
   } = {}
 ) {
   const params: {
     counties: string[] | null;
-    publicationDocTypes: string[];
+    docTypes: string[] | null;
     q: string | null;
     topics: string[] | null;
-    types: string[];
     years: string[] | null;
   } = {
     counties: null,
-    publicationDocTypes: new Array<string>(),
+    docTypes: null,
     q: null,
     topics: null,
-    types: new Array<string>(),
     years: null,
   };
 
   // TYPE
-  if (searchParams.type) {
-    if (typeof searchParams.type === "string")
-      searchParams.type = [searchParams.type];
-    searchParams.type.map((t) => {
-      if (publicationDocTypeValues.includes(t)) {
-        params.publicationDocTypes.push(t);
-      } else if (t === "article") {
-        params.types.push(t);
-      }
-    });
-  }
-
-  if (params.types.length === 0 && params.publicationDocTypes.length === 0) {
-    params.types = ["article", "publication"];
-  }
+  params.docTypes =
+    (typeof searchParams.type === "string"
+      ? [searchParams.type]
+      : searchParams.type) || null;
 
   // TID
   if (typeof searchParams.tid === "string")
@@ -179,33 +160,24 @@ export function searchNewsItems(
       ? searchParams.q
       : searchParams.q?.[0] || null;
 
-  return sanityFetch<NewsItemType[]>({
-    query: searchNewsItemsQuery,
-    params,
-    tags: ["article", "publication"],
-  });
+  return fetchList<Publication>("publication", searchPublicationsQuery, params);
 }
 
-export function getNewsItems(type: "article" | "publication") {
-  return fetchList<NewsItemType>(type, getNewsItemsQuery, { type });
-}
-
-export function getNewsItemsByReference(
+export function getPublicationsByDocTypeAndReference(
   type: "article" | "publication",
-  ref: string
+  ref: string | null = null
 ) {
-  return fetchList<NewsItemType>(type, getNewsItemsByReferenceQuery, {
-    type,
-    ref,
-  });
+  const docTypes =
+    type === "article" ? newsPostTypeValues : documentPostTypeValues;
+  return fetchList<Publication>(
+    "publication",
+    listPublicationsByDocTypesAndReferenceQuery,
+    { docTypes, ref }
+  );
 }
 
 export function getPublicationBySlug(slug: string) {
   return fetchBySlug<Publication>("publication", publicationBySlugQuery, slug);
-}
-
-export function getArticleBySlug(slug: string) {
-  return fetchBySlug<Article>("article", articleBySlugQuery, slug);
 }
 
 export function getEventById(id: string) {

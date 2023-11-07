@@ -1,6 +1,6 @@
-import NewsListResults from "app/_components/NewsListResults";
+import NewsList from "app/_components/NewsList";
 import Container from "components/Container";
-import { newsDocTypes } from "lib/docTypeDisplay";
+import postTypes from "lib/postTypes";
 import { getAllActiveCounties, getAllTopics } from "lib/sanity.fetch";
 import { Metadata } from "next";
 import React from "react";
@@ -92,7 +92,7 @@ export default async function ArchivePage({
             <Select
               name="type"
               value={searchParams.type || ""}
-              options={newsDocTypes}
+              options={postTypes}
               label="Innholdstype"
             />
             <Select
@@ -115,7 +115,7 @@ export default async function ArchivePage({
             />
           </div>
         </div>
-        <NewsListResults searchParams={searchParams} type="archive" />
+        <NewsList searchParams={searchParams} type="archive" />
       </Container>
     </>
   );

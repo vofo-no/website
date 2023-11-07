@@ -1,9 +1,7 @@
 import { getIntl } from "lib/intl";
-import { publicationDocTypes } from "lib/publicationDocTypes";
 import {
-  getNewsItems,
-  getNewsItemsByReference,
-  searchNewsItems,
+  getPublicationsByDocTypeAndReference,
+  searchPublications,
 } from "lib/sanity.fetch";
 import Image from "next/image";
 import { LocaleName } from "types";
@@ -26,7 +24,7 @@ const typeImage = {
   archive: DreamerImg,
 };
 
-export default function NewsListResults(props: Props) {
+export default function NewsList(props: Props) {
   return (
     <NewsListLoader>
       <div>
@@ -43,7 +41,9 @@ async function NewsListLayout({
   type,
 }: Props) {
   const [items, intl] = await Promise.all([
-    searchNewsItems(searchParams),
+    type === "archive"
+      ? searchPublications(searchParams)
+      : getPublicationsByDocTypeAndReference(type, reference),
     getIntl(locale),
   ]);
 

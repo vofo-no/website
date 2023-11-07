@@ -11,6 +11,8 @@ export const metadata: Metadata = {
   },
 };
 
+export { viewport } from "lib/utils.metadata";
+
 export default function Layout({ children }: PropsWithChildren) {
   return (
     <div className="bg-gray-100">

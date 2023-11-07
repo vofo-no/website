@@ -1,23 +1,25 @@
 import formatRelative from "lib/formatRelative";
+import postTypes, { resolveVirtualTypeFromDocType } from "lib/postTypes";
 import { urlForImage } from "lib/sanity.image";
 import { resolveHref } from "lib/sanity.links";
 import Image from "next/image";
 import Link from "next/link";
-import { LocaleName, NewsItemType } from "types";
+import { LocaleName, Publication } from "types";
 
-import TagLink from "./TagLink";
+import TagLink from "../TagLink";
 
 export function NewsListItem({
   item,
   refId,
   locale,
 }: {
-  item: NewsItemType;
+  item: Publication;
   refId?: string;
   locale?: LocaleName;
 }) {
-  const { _type, title, slug, description, image, publishedAt, relevance } =
+  const { docType, title, slug, description, image, publishedAt, relevance } =
     item;
+  const virtualType = resolveVirtualTypeFromDocType(docType);
   const imageUrl = image && urlForImage(image)?.size(320, 320).url();
   const imageBlurUrl =
     image && urlForImage(image)?.size(32, 32).quality(30).blur(50).url();
@@ -40,7 +42,7 @@ export function NewsListItem({
       )}
       <div className="self-center grow max-w-prose">
         <h3 className="mt-0">
-          <Link href={resolveHref(_type, slug)!} className="no-underline">
+          <Link href={resolveHref(virtualType, slug)!} className="no-underline">
             {title}
           </Link>
         </h3>
@@ -48,6 +50,9 @@ export function NewsListItem({
           {description}
         </div>
         <div className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1">
+          <div className="text-gray-600 text-xs italic leading-normal">
+            {postTypes.find(({ value }) => value === docType)?.title}
+          </div>
           <div className="text-gray-600 text-xs leading-normal">
             {formatRelative(publishedAt, locale)}
           </div>

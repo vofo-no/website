@@ -1,5 +1,6 @@
-import { publicationDocTypes } from "lib/publicationDocTypes";
-import { MdOutlineAttachment } from "react-icons/md";
+import { DocumentTextIcon } from "@sanity/icons";
+import formatTime from "lib/formatTime";
+import postTypes from "lib/postTypes";
 import { defineField, defineType } from "sanity";
 import bodyField from "schemas/fields/bodyField";
 import descriptionField from "schemas/fields/descriptionField";
@@ -10,16 +11,11 @@ import publishedAtField from "schemas/fields/publishedAtField";
 import relevanceField from "schemas/fields/relevanceField";
 import titleField from "schemas/fields/titleField";
 
-const publicationBodyField: typeof bodyField = {
-  ...bodyField,
-  description: "Tekstversjon av dokumentet (valgfritt)",
-};
-
 export default defineType({
   name: "publication",
   type: "document",
-  title: "Dokument",
-  icon: MdOutlineAttachment,
+  title: "Innlegg",
+  icon: DocumentTextIcon,
   fields: [
     titleField,
     defineField({
@@ -27,7 +23,7 @@ export default defineType({
       type: "string",
       title: "Dokumenttype",
       options: {
-        list: publicationDocTypes,
+        list: postTypes,
       },
       validation: (rule) => rule.required(),
     }),
@@ -43,7 +39,7 @@ export default defineType({
     descriptionField,
     imageField,
     publishedAtField,
-    publicationBodyField,
+    bodyField,
     defineField({
       name: "attachment",
       type: "file",
@@ -60,4 +56,23 @@ export default defineType({
     relevanceField,
     localeField,
   ],
+  preview: {
+    select: {
+      title: "title",
+      publishedAt: "publishedAt",
+      media: "image",
+      docType: "docType",
+      description: "description",
+    },
+    prepare({ docType, description, title, publishedAt, media }) {
+      return {
+        title,
+        subtitle: `${formatTime(publishedAt, "Pp")} | ${
+          postTypes.find((i) => i.value === docType)?.title
+        }`,
+        media,
+        description,
+      };
+    },
+  },
 });

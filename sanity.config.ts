@@ -4,7 +4,6 @@ import { pageStructure, singletonPlugin } from "plugins/settings";
 import { defineConfig } from "sanity";
 import { deskTool } from "sanity/desk";
 import { media } from "sanity-plugin-media";
-import article from "schemas/documents/article";
 import county from "schemas/documents/county";
 import event from "schemas/documents/event";
 import organization from "schemas/documents/organization";
@@ -40,7 +39,6 @@ export default defineConfig({
       learningAssociations,
       settings,
       // Documents
-      article,
       publication,
       county,
       event,
@@ -68,7 +66,9 @@ export default defineConfig({
       }),
     }),
     // Configures the global "new document" button, and document actions, to suit the Settings document singleton
-    singletonPlugin({ types: [home.name, settings.name] }),
+    singletonPlugin({
+      types: [home.name, settings.name, "learningAssociations", "media.tag"],
+    }),
     media(),
     visionTool({ defaultApiVersion: apiVersion }),
   ],

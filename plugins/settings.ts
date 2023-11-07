@@ -2,7 +2,7 @@ import { definePlugin, type DocumentDefinition } from "sanity";
 import { type StructureResolver } from "sanity/desk";
 
 const pluralTitleExceptions: Record<string, string> = {
-  Artikkel: "Artikler",
+  Innlegg: "Innlegg",
 };
 
 function getPluralTitle(singularTitle: string) {

@@ -5,7 +5,7 @@ export function resolveHref(
   switch (documentType) {
     case "home":
       return "/";
-    case "article":
+    case "__artikkel":
       return slug ? `/aktuelt/${slug}` : undefined;
     case "county":
       return slug ? `/fylker/${slug}` : undefined;
@@ -13,7 +13,7 @@ export function resolveHref(
       return slug ? `/${slug}` : undefined;
     case "project":
       return slug ? `/prosjekter/${slug}` : undefined;
-    case "publication":
+    case "__dokument":
       return slug ? `/dokumenter/${slug}` : undefined;
     case "topic":
       return slug ? `/tema/${slug}` : undefined;

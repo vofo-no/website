@@ -2,7 +2,7 @@ import NewsList from "app/_components/NewsList";
 import Person from "app/_components/Person";
 import ArticleBody from "components/ArticleBody";
 import Container from "components/Container";
-import { getProjectBySlug, getTopicBySlug } from "lib/sanity.fetch";
+import { getTopicBySlug } from "lib/sanity.fetch";
 import { defineMetadata } from "lib/utils.metadata";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";

@@ -1,4 +1,6 @@
 import { ArrowRightIcon } from "@sanity/icons";
+import formatTime from "lib/formatTime";
+import postTypes from "lib/postTypes";
 import { defineField, defineType } from "sanity";
 
 export default defineType({
@@ -10,7 +12,7 @@ export default defineType({
     defineField({
       type: "reference",
       name: "item",
-      to: [{ type: "publication" }, { type: "article" }],
+      to: [{ type: "publication" }],
       validation: (rule) => rule.required(),
       options: { disableNew: true },
     }),
@@ -18,9 +20,20 @@ export default defineType({
   preview: {
     select: {
       title: "item.title",
+      publishedAt: "item.publishedAt",
+      media: "item.image",
+      docType: "item.docType",
+      description: "item.description",
     },
-    prepare({ title }) {
-      return { title };
+    prepare({ docType, description, title, publishedAt, media }) {
+      return {
+        title,
+        subtitle: `${formatTime(publishedAt, "Pp")} | ${
+          postTypes.find((i) => i.value === docType)?.title
+        }`,
+        media,
+        description,
+      };
     },
   },
 });

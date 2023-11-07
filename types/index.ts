@@ -74,7 +74,8 @@ export interface Tagged extends Storeable, Selectable {
 export interface Linked
   extends Storeable,
     Selectable,
-    Pick<Presentable, "title" | "publishedAt"> {}
+    Pick<Presentable, "title" | "publishedAt">,
+    Pick<Publication, "docType"> {}
 
 export interface MiniDocument
   extends Pick<
@@ -112,10 +113,6 @@ export interface PagePayload {
   toc?: PortableTextBlock[];
 }
 
-export interface Article extends ArticleBase {
-  _type: "article";
-}
-
 export interface County extends Omit<ArticleBase, "title">, Contactable {
   _type: "county";
   name: string;
@@ -132,7 +129,7 @@ export interface Event
     address?: string;
   };
   ownEvent?: boolean;
-  newsItems?: Array<{ _type: string; _id: string }>;
+  newsItems?: Array<{ _type: string; docType?: string; _id: string }>;
 }
 
 export interface Organization extends Storeable {
@@ -171,83 +168,3 @@ export interface Publication extends ArticleBase {
 export interface Topic extends ArticleBase, Contactable {
   _type: "topic";
 }
-
-export type NewsItemType = Article | Publication;
-
-/*
-
-type xItemBase = {
-  _id: string;
-  _updatedAt?: string;
-  slug: string;
-};
-
-type ContactItemType = {
-  _id: string;
-  job: string;
-  person: {
-    name: string;
-    email?: string;
-    phone?: string;
-    image: ImageType;
-  };
-};
-
-export type RegionItemType = ItemBase & {
-  _type: "region";
-  name: string;
-  description?: string;
-  image?: ImageType;
-  contacts?: Array<ContactItemType>;
-  news?: Array<NewsItemType>;
-  calendar?: Array<CalendarItemType>;
-};
-
-export type TopicItemType = ItemBase & {
-  _type: "topic";
-  name: string;
-  contacts?: Array<ContactItemType>;
-};
-
-export type CalendarItemType = ItemBase & {
-  _type: "event";
-  title: string;
-  description: string;
-  start: string;
-  end: string;
-  location?: { name?: string };
-};
-
-type NewsItemBase = ItemBase & {
-  docType?: string;
-  title: string;
-  description: string;
-  image: ImageType;
-  publishedAt: string;
-  body?: Array<any>;
-  relevance?: Array<RegionItemType>;
-};
-
-export type EventNewsItem = NewsItemBase & {
-  _type: "event";
-  start: string;
-  end: string;
-  location?: { name?: string };
-};
-
-export type PublicationNewsItem = NewsItemBase & {
-  _type: "publication";
-  docType: string;
-  attachment?: string;
-  remoteUrl?: string;
-};
-
-export type ArticleNewsItem = NewsItemBase & {
-  _type: "article";
-};
-
-export type NewsItemType =
-  | ArticleNewsItem
-  | EventNewsItem
-  | PublicationNewsItem;
-*/

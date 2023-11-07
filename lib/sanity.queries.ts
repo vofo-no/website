@@ -26,9 +26,10 @@ export const pagesBySlugQuery = groq`
   }
 `;
 
-export const searchNewsItemsQuery = groq`
+export const searchPublicationsQuery = groq`
   *[
-    ((_type in $types) || ((_type == "publication") && (docType in $publicationDocTypes))) &&
+    (_type == "publication") &&
+    (!defined($docTypes) || docType in $docTypes) &&
     (!defined($years) || string::split(publishedAt, "-")[0] in $years) &&
     (!defined($counties) || references($counties)) &&
     (!defined($topics) || references($topics)) &&
@@ -47,8 +48,12 @@ export const searchNewsItemsQuery = groq`
   }
 `;
 
-export const getNewsItemsQuery = groq`
-  *[_type == $type] | order(publishedAt desc) [0...6] {
+export const listPublicationsByDocTypesAndReferenceQuery = groq`
+  *[
+    (_type == "publication") && 
+    (docType in $docTypes) &&
+    (!defined($ref) || references($ref))
+  ] | order(publishedAt desc) [0...6] {
     _id,
     _type,
     docType,
@@ -59,39 +64,6 @@ export const getNewsItemsQuery = groq`
     _updatedAt,
     "slug": slug.current,
     relevance,
-  }
-`;
-
-export const getNewsItemsByReferenceQuery = groq`
-  *[_type == $type && references($ref)] | order(publishedAt desc) [0...6] {
-    _id,
-    _type,
-    docType,
-    title,
-    description,
-    image,
-    publishedAt,
-    _updatedAt,
-    "slug": slug.current,
-    relevance,
-  }
-`;
-
-export const articleBySlugQuery = groq`
-  *[_type == "article" && slug.current == $slug][0] {
-    _id,
-    _type,
-    title,
-    description,
-    image,
-    publishedAt,
-    _updatedAt,
-    "slug": slug.current,
-    body,
-    "toc": body[style == "h2"],
-    locale,
-    relevance,
-    eventReference,
   }
 `;
 
@@ -184,7 +156,7 @@ export const organzationByIdQuery = groq`
 `;
 
 export const documentByIdQuery = groq`
-  *[_type in ["article", "publication"] && _id == $id][0] {
+  *[_type == "publication" && _id == $id][0] {
     _id,
     _type,
     docType,
@@ -259,7 +231,7 @@ export const allEventsQuery = groq`
   duration,
   location,
   ownEvent,
-  "newsItems": *[_type in ["article", "publication"] && references(^._id)]{ _type, _id },
+  "newsItems": *[_type == "publication" && references(^._id)]{ _type, docType, _id },
 }
 `;
 
@@ -276,9 +248,10 @@ export const eventByIdQuery = groq`
 `;
 
 export const linkableByIdQuery = groq`
-*[_type in ["article", "publication"] && _id == $id] [0] {
+*[_type == "publication" && _id == $id] [0] {
   _id,
   _type,
+  docType,
   title,
   "slug": slug.current,
   publishedAt,
