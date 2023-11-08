@@ -7,7 +7,6 @@ import {
   allEventsQuery,
   allProjectsQuery,
   allTopicsQuery,
-  associationsPageQuery,
   countyBySlugQuery,
   documentByIdQuery,
   eventByIdQuery,
@@ -15,9 +14,8 @@ import {
   linkableByIdQuery,
   listPublicationsByDocTypesAndReferenceQuery,
   organzationByIdQuery,
-  pagesBySlugQuery,
+  pageBySlugQuery,
   personByIdQuery,
-  privacyQuery,
   projectBySlugQuery,
   publicationBySlugQuery,
   searchPublicationsQuery,
@@ -26,7 +24,6 @@ import {
   topicBySlugQuery,
 } from "lib/sanity.queries";
 import {
-  type AssociationsPagePayload,
   type County,
   type Event,
   type HomePagePayload,
@@ -35,7 +32,6 @@ import {
   type Organization,
   type PagePayload,
   type Person,
-  type PrivacyPayload,
   type Project,
   type Publication,
   type SettingsPayload,
@@ -96,19 +92,12 @@ function fetchList<T>(type: string, query: string, params?: QueryParams) {
 export function getSettings() {
   return sanityFetch<SettingsPayload>({
     query: settingsQuery,
-    tags: ["settings", "home", "page", "project"],
-  });
-}
-
-export function getPrivacy() {
-  return sanityFetch<PrivacyPayload>({
-    query: privacyQuery,
     tags: ["settings"],
   });
 }
 
 export function getPageBySlug(slug: string) {
-  return fetchBySlug<PagePayload>("page", pagesBySlugQuery, slug);
+  return fetchBySlug<PagePayload>("page", pageBySlugQuery, slug);
 }
 
 export function searchPublications(
@@ -236,12 +225,5 @@ export function getHomePage() {
   return sanityFetch<HomePagePayload | null>({
     query: homePageQuery,
     tags: ["home"],
-  });
-}
-
-export function getAssociationsPage() {
-  return sanityFetch<AssociationsPagePayload | null>({
-    query: associationsPageQuery,
-    tags: ["learningAssociation", "organization"],
   });
 }

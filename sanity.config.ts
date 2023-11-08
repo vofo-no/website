@@ -21,7 +21,6 @@ import people from "schemas/objects/people";
 import someLink from "schemas/objects/someLink";
 import timeline from "schemas/objects/timeline";
 import home from "schemas/singletons/home";
-import learningAssociations from "schemas/singletons/learningAssociations";
 import settings from "schemas/singletons/settings";
 
 const title = process.env.NEXT_PUBLIC_SANITY_PROJECT_TITLE || "Vofo";
@@ -36,7 +35,6 @@ export default defineConfig({
     types: [
       // Singletons
       home,
-      learningAssociations,
       settings,
       // Documents
       publication,
@@ -61,13 +59,13 @@ export default defineConfig({
   plugins: [
     deskTool({
       structure: pageStructure({
-        singletonTypeDefs: [home, learningAssociations, settings],
+        singletonTypeDefs: [home, settings],
         hiddenTypes: ["media.tag"],
       }),
     }),
     // Configures the global "new document" button, and document actions, to suit the Settings document singleton
     singletonPlugin({
-      types: [home.name, settings.name, "learningAssociations", "media.tag"],
+      types: [home.name, settings.name, "media.tag"],
     }),
     media(),
     visionTool({ defaultApiVersion: apiVersion }),

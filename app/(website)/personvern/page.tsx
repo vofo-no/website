@@ -1,36 +1,32 @@
 import ArticleBody from "components/ArticleBody";
 import Container from "components/Container";
-import { getPrivacy } from "lib/sanity.fetch";
+import { getPageBySlug } from "lib/sanity.fetch";
 import { defineMetadata } from "lib/utils.metadata";
 import { Metadata } from "next";
+import { notFound } from "next/navigation";
 
 export async function generateMetadata(): Promise<Metadata> {
+  const data = await getPageBySlug("personvern");
+
   return defineMetadata({
-    title: "Personvernerklæring",
+    title: data?.title,
+    description: data?.description,
   });
 }
 
 export default async function Page() {
-  const data = await getPrivacy();
+  const data = (await getPageBySlug("personvern")) || notFound();
+
+  const { title, description, body, toc, _updatedAt } = data ?? {};
 
   return (
     <>
       <Container prose>
-        <h1>Personvernerklæring</h1>
-        <p className="lead max-w-prose">
-          Personopplysninger er opplysninger som kan kobles til deg som person.
-          I denne personvernerklæringen kan du lese om hvilke personopplysninger
-          Vofo er behandlingsansvarlig for. Det er viktig for oss at du vet hva
-          slags personopplysninger vi behandler, slik at du kan ivareta dine
-          rettigheter etter personvernlovgivningen.
-        </p>
+        <h1>{title}</h1>
+        <p className="lead max-w-prose">{description}</p>
       </Container>
       <Container paper prose>
-        <ArticleBody
-          body={data.privacy}
-          toc={data.toc}
-          updatedAt={data._updatedAt}
-        />
+        <ArticleBody body={body} toc={toc} updatedAt={_updatedAt} />
       </Container>
     </>
   );

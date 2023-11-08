@@ -17,7 +17,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function Page() {
   const data = (await getPageBySlug("om-vofo")) || notFound();
 
-  const { title, description, body, toc } = data ?? {};
+  const { title, description, body, toc, _updatedAt } = data ?? {};
 
   return (
     <>
@@ -26,7 +26,7 @@ export default async function Page() {
         <p className="lead max-w-prose">{description}</p>
       </Container>
       <Container paper prose>
-        <ArticleBody body={body} toc={toc} />
+        <ArticleBody body={body} toc={toc} updatedAt={_updatedAt} />
       </Container>
     </>
   );

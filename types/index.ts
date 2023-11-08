@@ -54,13 +54,6 @@ export interface HomePagePayload
   };
 }
 
-export interface AssociationsPagePayload {
-  description?: string;
-  organizations?: Organization[];
-  body?: PortableTextBlock[];
-  toc?: PortableTextBlock[];
-}
-
 export interface MenuItem {
   title: string;
   url: string;
@@ -100,18 +93,7 @@ export interface SettingsPayload {
   ogImage?: Image;
 }
 
-export interface PrivacyPayload {
-  privacy?: PortableTextBlock[];
-  toc?: PortableTextBlock[];
-  _updatedAt?: string;
-}
-
-export interface PagePayload {
-  title: string;
-  description?: string;
-  body?: PortableTextBlock[];
-  toc?: PortableTextBlock[];
-}
+export interface PagePayload extends ArticleBase {}
 
 export interface County extends Omit<ArticleBase, "title">, Contactable {
   _type: "county";

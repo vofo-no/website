@@ -37,46 +37,6 @@ export default defineType({
         hotspot: true,
       },
     }),
-    defineField({
-      type: "array",
-      name: "privacy",
-      title: "Personvernerklæring",
-      description: "Vofo sin personvernerklæring",
-      of: [
-        defineArrayMember({
-          type: "block",
-          marks: {
-            decorators: [
-              { title: "Fet", value: "strong" },
-              { title: "Kursiv", value: "em" },
-            ],
-            annotations: [
-              {
-                name: "link",
-                type: "object",
-                title: "Link",
-                fields: [
-                  {
-                    name: "href",
-                    type: "url",
-                    title: "Url",
-                    validation: (rule) =>
-                      rule.uri({
-                        scheme: ["http", "https", "mailto", "tel"],
-                      }),
-                  },
-                ],
-              },
-            ],
-          },
-          styles: [
-            { title: "Normal", value: "normal" },
-            { title: "Overskrift", value: "h2" },
-          ],
-          lists: [{ title: "Punktliste", value: "bullet" }],
-        }),
-      ],
-    }),
   ],
   preview: {
     prepare() {

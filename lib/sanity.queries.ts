@@ -15,7 +15,7 @@ export const homePageQuery = groq`
   }
 `;
 
-export const pagesBySlugQuery = groq`
+export const pageBySlugQuery = groq`
   *[_type == "page" && slug.current == $slug][0] {
     _id,
     body,
@@ -23,6 +23,7 @@ export const pagesBySlugQuery = groq`
     description,
     title,
     "slug": slug.current,
+    _updatedAt,
   }
 `;
 
@@ -84,16 +85,6 @@ export const publicationBySlugQuery = groq`
     locale,
     relevance,
     eventReference,
-  }
-`;
-
-export const associationsPageQuery = groq`
-  *[_type == "learningAssociations"][0]{
-    _id,
-    description,
-    body,
-    "toc": body[style == "h2"],
-    organizations[]->,
   }
 `;
 
@@ -259,19 +250,6 @@ export const linkableByIdQuery = groq`
 }
 `;
 
-/** temp */
-export const homePageTitleQuery = groq`
-  *[_type == "home"][0].title
-`;
-
-export const projectPaths = groq`
-  *[_type == "project" && slug.current != null].slug.current
-`;
-
-export const pagePaths = groq`
-  *[_type == "page" && slug.current != null].slug.current
-`;
-
 export const settingsQuery = groq`
   *[_type == "settings"][0]{
     address,
@@ -282,13 +260,5 @@ export const settingsQuery = groq`
       url,
     },
     ogImage,
-  }
-`;
-
-export const privacyQuery = groq`
-  *[_type == "settings"][0]{
-    privacy,
-    "toc": privacy[style == "h2"],
-    _updatedAt,
   }
 `;
