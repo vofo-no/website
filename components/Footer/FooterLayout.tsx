@@ -51,32 +51,17 @@ export default function Footer({ data }: FooterProps) {
             <div>
               <Link href="/arkiv" className="hover:underline">
                 Dokument- og nyhetsarkiv
+                <ChevronRightIcon className="w-4 h-4 inline-block ml-1" />
               </Link>
-              <Sep />
+            </div>
+            <div>
               <Link href="/kalender" className="hover:underline">
                 Kalender
+                <ChevronRightIcon className="w-4 h-4 inline-block ml-1" />
               </Link>
             </div>
             <div>
-              Få siste nytt om studieforbund og voksnes læring hver måned:
-              <form>
-                <div className="flex flex-wrap mt-2 gap-2">
-                  <input
-                    type="email"
-                    placeholder="din.epost@eksempel.no"
-                    required
-                    className="py-1.5 px-3 bg-gray-900 rounded-md border-gray-600 border"
-                  />
-                  <button
-                    type="submit"
-                    className="bg-teal-600 hover:bg-teal-700 px-4 py-2 rounded-md font-semibold text-white inline-flex items-center overflow-ellipsis whitespace-nowrap overflow-hidden"
-                  >
-                    Meld deg på nyhetsbrev
-                  </button>
-                </div>
-              </form>
-            </div>
-            <div>
+              Følg oss: &nbsp;{" "}
               {some?.map(({ title, url }, index) => (
                 <React.Fragment key={url}>
                   {index ? <Sep /> : null}

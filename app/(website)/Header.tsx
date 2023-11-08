@@ -45,9 +45,6 @@ export default function Header() {
                 </Link>
               ))}
             </div>
-            <div className="md:mt-8 ml-4 hidden sm:block text-sm hover:text-crimson-500 active:text-crimson-500 hover:underline active:underline">
-              <Link href="/kontakt">Kontakt oss</Link>
-            </div>
           </div>
         </div>
       </nav>
