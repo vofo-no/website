@@ -27,10 +27,10 @@ async function TagLinkLayout({ id }: Props) {
     <Link
       href={resolveHref(item._type, item.slug) || ""}
       className={classNames(
-        " rounded-lg text-sm no-underline px-2",
+        "text-xs whitespace-nowrap uppercase no-underline px-1",
         item._type === "county"
-          ? "bg-blue-700 text-white hover:bg-crimson-500 hover:text-white"
-          : "border border-blue-700 hover:border-crimson-500"
+          ? "border border-teal-600 text-teal-600 hover:bg-teal-600 hover:text-white"
+          : "border border-crimson-500 text-crimson-500 hover:bg-crimson-500 hover:text-white"
       )}
     >
       {item.name || item.title}
