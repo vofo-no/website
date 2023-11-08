@@ -15,10 +15,7 @@ const myPortableTextComponents = {
       return <People showContactInfo={showContactInfo} members={members} />;
     },
     organizations: ({ value }: { value: OrganizationsProps }) => {
-      const { showContactInfo, members } = value || {};
-      return (
-        <Organizations showContactInfo={showContactInfo} members={members} />
-      );
+      return <Organizations {...value} />;
     },
     image: ({ value }: { value: ImageType }) => <ArticleImage {...value} />,
     documentLink: ({ value }: { value: DocumentLinkItem }) => {

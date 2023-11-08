@@ -32,7 +32,7 @@ export default function Button<T extends React.ElementType = "button">({
       className={classNames(
         className,
         getButtonColor(color),
-        "rounded font-medium inline-block py-2 px-4 whitespace-nowrap overflow-hidden max-w-full shrink text-ellipsis shadow transition hover:ring-1 hover:shadow-md active:shadow-sm"
+        "not-prose rounded font-medium inline-block py-2 px-4 whitespace-nowrap overflow-hidden max-w-full shrink text-ellipsis shadow transition hover:ring-1 hover:shadow-md active:shadow-sm"
       )}
     />
   );

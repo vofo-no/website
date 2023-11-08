@@ -33,6 +33,14 @@ export default defineType({
         "Angir om ev. tilgjengelig kontaktinformasjon skal knyttes til listen",
       initialValue: true,
     }),
+    defineField({
+      type: "boolean",
+      name: "showExtendedInfo",
+      title: "Vis ekstra informasjon for studieforbund",
+      description:
+        "Angir om ev. kursstatistikk og medlemsorganisasjoner skal knyttes til listen",
+      initialValue: true,
+    }),
   ],
   preview: {
     select: {

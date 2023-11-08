@@ -141,6 +141,7 @@ export interface Organization extends Storeable {
   phone?: string;
   url?: string;
   description?: string;
+  ssbCode?: string;
 }
 
 export interface Person extends Storeable {

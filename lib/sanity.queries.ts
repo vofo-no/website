@@ -152,6 +152,7 @@ export const organzationByIdQuery = groq`
     email,
     phone,
     url,
+    ssbCode,
   }
 `;
 
