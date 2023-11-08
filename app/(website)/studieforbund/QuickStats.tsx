@@ -147,7 +147,10 @@ async function QuickStatsLayout(props: Props) {
         } as Record<string, React.ReactElement | any>)}
       </p>
       <div className="not-prose">
-        <Button as={Link} href="/studieforbund/statistikk">
+        <Button
+          as={Link}
+          href={statisticsHref({ param: props.param, year: data.year })}
+        >
           <ChartBarIcon className="h-5 inline-block mr-1 align-text-bottom" />
           {intl.formatMessage(
             { id: "quickstats.action" },
