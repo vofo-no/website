@@ -227,6 +227,19 @@ export const allEventsQuery = groq`
 }
 `;
 
+export const allEventsByYearQuery = groq`
+*[_type == "event" && string::split(duration.start, "-")[0] == $year] | order(duration.start) [] {
+  _id,
+  _type,
+  title,
+  description,
+  duration,
+  location,
+  ownEvent,
+  "newsItems": *[_type == "publication" && references(^._id)]{ _type, docType, _id },
+}
+`;
+
 export const eventByIdQuery = groq`
 *[_type == "event" && _id == $id] [0] {
   _id,

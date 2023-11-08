@@ -4,6 +4,7 @@ import type { QueryParams } from "@sanity/client";
 import { client } from "lib/sanity.client";
 import {
   allActiveCountiesQuery,
+  allEventsByYearQuery,
   allEventsQuery,
   allProjectsQuery,
   allTopicsQuery,
@@ -203,6 +204,10 @@ export function getCountyBySlug(slug: string) {
 
 export function getAllEvents() {
   return fetchList<Event>("event", allEventsQuery);
+}
+
+export function getAllEventsByYear(year: string) {
+  return fetchList<Event>("event", allEventsByYearQuery, { year });
 }
 
 export function getAllTopics() {
