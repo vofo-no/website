@@ -2,6 +2,7 @@
   "published": "Publisert {publishedAt}",
   "updated": "Oppdatert {updatedAt}",
   "contents": "Innhald",
+  "backToTop": "Tilbake til toppen",
   "doctype.article": "Nyheit",
   "doctype.release": "Pressemelding",
   "doctype.memo": "Notat",

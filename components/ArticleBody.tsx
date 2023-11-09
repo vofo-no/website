@@ -13,6 +13,7 @@ import React, { ReactNode } from "react";
 import { PortableTextBlock, Reference } from "sanity";
 import { ImageType, LocaleName } from "types";
 
+import BackToTopButton from "./BackToTopButton";
 import TextBody from "./TextBody";
 import Toc from "./Toc";
 
@@ -130,6 +131,7 @@ export default async function ArticleBody({
               <RelevanceItem id={item._ref} />
             </React.Suspense>
           ))}
+          <BackToTopButton label={intl.formatMessage({ id: "backToTop" })} />
           {event && <Event id={event._ref} />}
           {aside && <div>{aside}</div>}
         </div>

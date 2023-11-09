@@ -2,6 +2,7 @@
   "published": "Published {publishedAt}",
   "updated": "Updated {updatedAt}",
   "contents": "Contents",
+  "backToTop": "Back to top",
   "doctype.article": "News",
   "doctype.release": "Press release",
   "doctype.memo": "Memo",
