@@ -8,18 +8,15 @@ import { PeopleList } from "./people-list";
 
 interface Props {
   value: any;
-  preview?: boolean;
 }
 
-export function PortableTextBody({ value, preview }: Props) {
+export function PortableTextBody({ value }: Props) {
   const portableTextComponents: PortableTextComponents = {
     types: {
-      people: (props) => <PeopleList {...props} preview={preview} />,
-      organizations: (props) => (
-        <OrganizationsList {...props} preview={preview} />
-      ),
+      people: PeopleList,
+      organizations: OrganizationsList,
       image: InlineImage,
-      documentLink: (props) => <DocumentLink {...props} preview={preview} />,
+      documentLink: DocumentLink,
     },
     block: {
       h2: H2WithAnchor,

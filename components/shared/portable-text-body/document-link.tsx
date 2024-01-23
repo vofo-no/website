@@ -6,13 +6,7 @@ interface DocumentLinkDef extends Reference {
 }
 
 export function DocumentLink(
-  props: PortableTextTypeComponentProps<DocumentLinkDef> & {
-    preview?: boolean;
-  },
+  props: PortableTextTypeComponentProps<DocumentLinkDef>,
 ) {
-  return (
-    <p>
-      DOCUMENT LINK {props.value._ref} (preview: {!!props.preview})
-    </p>
-  );
+  return <p>DOCUMENT LINK {props.value._ref}</p>;
 }

@@ -11,9 +11,7 @@ interface OrganizationsDef {
 //export const OrganizationsList: PortableTextTypeComponent<OrganizationsDef>
 
 export default function OrganizationsList(
-  props: PortableTextTypeComponentProps<OrganizationsDef> & {
-    preview?: boolean;
-  }
+  props: PortableTextTypeComponentProps<OrganizationsDef>,
 ) {
-  return <p>ORGANISATIONS (preview: {props.preview ? "JA" : "NEI"})</p>;
+  return <p>ORGANISATIONS</p>;
 }
