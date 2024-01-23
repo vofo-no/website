@@ -72,9 +72,53 @@ const config = {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
+      typography: ({ theme }) => ({
+        gray: {
+          css: {
+            "--tw-prose-links": theme("colors.blue.700"),
+            "--tw-prose-links-hover": theme("colors.primary"),
+          },
+        },
+        invert: {
+          css: {
+            "--tw-prose-links": theme("colors.blue.200"),
+            "--tw-prose-links-hover": theme("colors.primary"),
+          },
+        },
+        DEFAULT: {
+          css: {
+            a: {
+              "&:hover": {
+                color: "var(--tw-prose-links-hover)",
+              },
+            },
+            h2: {
+              fontWeight: "700",
+              marginBottom: theme("spacing.3"),
+              marginTop: theme("spacing.10"),
+              lineHeight: 1.25,
+            },
+            h3: {
+              fontWeight: "700",
+              marginBottom: theme("spacing.2"),
+              marginTop: theme("spacing.6"),
+              lineHeight: 1.25,
+            },
+            blockquote: {
+              borderLeftWidth: "2px",
+              borderLeftColor: theme("colors.border"),
+              fontWeight: "500",
+              fontStyle: "normal",
+              marginBottom: theme("spacing.2"),
+              marginTop: theme("spacing.6"),
+              paddingLeft: theme("spacing.4"),
+            },
+          },
+        },
+      }),
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography")],
 } satisfies Config;
 
 export default config;
