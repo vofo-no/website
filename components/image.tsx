@@ -17,7 +17,7 @@ export function SanityImage({ image, mode = "block" }: Props) {
 
   if (mode === "header") {
     return (
-      <figure className="md:col-span-2 md:row-span-2">
+      <figure className="md:col-span-2 md:row-span-2 -mx-4 md:mx-0">
         <Image
           src={url.size(2560, 1440).url()}
           alt={image.alt}
