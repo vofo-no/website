@@ -8,7 +8,10 @@ import {
   PageHeaderDescription,
   PageHeaderHeading,
 } from "@/components/page-header";
-import { PortableTextBody } from "@/components/shared/portable-text-body";
+import {
+  PortableTextBody,
+  PortableTextBodyTypeComponents,
+} from "@/components/shared/portable-text-body";
 import { Toc } from "@/components/toc";
 
 const dateFormat = new Intl.DateTimeFormat("nb-NO", {
@@ -20,6 +23,7 @@ const dateFormat = new Intl.DateTimeFormat("nb-NO", {
 export function PageLayout(props: {
   data: PagePayload;
   contacts?: React.ReactNode;
+  ptComponents?: PortableTextBodyTypeComponents;
 }) {
   const { title, description, body, toc, image, _updatedAt } = props.data ?? {};
 
@@ -47,7 +51,10 @@ export function PageLayout(props: {
             )}
           >
             <Toc title="Innhold" headers={toc} mobile />
-            <PortableTextBody value={body} />
+            <PortableTextBody
+              value={body}
+              typeComponents={props.ptComponents}
+            />
           </div>
           <aside
             className={cn(

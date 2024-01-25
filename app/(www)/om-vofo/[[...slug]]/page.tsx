@@ -6,9 +6,9 @@ import { pageBySlugQuery } from "@/sanity/lib/queries";
 import { loadQuery } from "@/sanity/loader/loadQuery";
 import { PagePayload } from "@/types";
 
+import { PageLayout } from "@/components/pages/page-layout";
 import { Person } from "@/components/shared/person";
-
-import { PageLayout } from "../../../../components/pages/page-layout";
+import { portableTextBodyTypeComponentsRSC } from "@/components/shared/portable-text-body/type-components";
 
 const PagePreview = dynamic(() => import("./preview"));
 
@@ -50,5 +50,11 @@ export default async function Page({ params }: PageProps) {
   if (draftMode().isEnabled)
     return <PagePreview initial={initial} slug={slug} contacts={contacts} />;
 
-  return <PageLayout data={initial.data} contacts={contacts} />;
+  return (
+    <PageLayout
+      data={initial.data}
+      contacts={contacts}
+      ptComponents={portableTextBodyTypeComponentsRSC}
+    />
+  );
 }

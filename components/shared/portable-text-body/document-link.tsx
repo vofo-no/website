@@ -1,12 +1,7 @@
-import { PortableTextTypeComponentProps } from "@portabletext/react";
-import { Reference } from "sanity";
+import { DocumentLink as DocumentLinkRSC } from "@/components/shared/document-link";
 
-interface DocumentLinkDef extends Reference {
-  _type: "documentLink";
-}
+import { DocumentLinkType } from "./types";
 
-export function DocumentLink(
-  props: PortableTextTypeComponentProps<DocumentLinkDef>,
-) {
-  return <p>DOCUMENT LINK {props.value._ref}</p>;
-}
+export const DocumentLink: DocumentLinkType = (props) => {
+  return <DocumentLinkRSC id={props.value._ref} />;
+};

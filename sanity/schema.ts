@@ -13,6 +13,7 @@ import topic from "./schemas/documents/topic";
 import documentLink from "./schemas/objects/documentLink";
 import duration from "./schemas/objects/duration";
 import link from "./schemas/objects/link";
+import people from "./schemas/objects/people";
 import someLink from "./schemas/objects/someLink";
 
 export const schema: { types: SchemaTypeDefinition[] } = {
@@ -33,6 +34,7 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     documentLink,
     duration,
     link,
+    people,
     someLink,
   ],
 };

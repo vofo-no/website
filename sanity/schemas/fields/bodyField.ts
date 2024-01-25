@@ -46,5 +46,9 @@ export default defineField({
       name: "documentLink",
       type: "documentLink",
     }),
+    defineArrayMember({
+      name: "people",
+      type: "people",
+    }),
   ],
 });

@@ -2,23 +2,28 @@ import { useMemo } from "react";
 import { PostPayload } from "@/types";
 
 import { cn } from "@/lib/utils";
+import { BackToTopButton } from "@/components/back-to-top-button";
+import { SanityImage } from "@/components/image";
 import {
   PageHeader,
   PageHeaderDescription,
   PageHeaderHeading,
 } from "@/components/page-header";
-
-import { BackToTopButton } from "../back-to-top-button";
-import { SanityImage } from "../image";
-import { PortableTextBody } from "../shared/portable-text-body";
-import { TagLink } from "../tag-link";
-import { Toc } from "../toc";
+import {
+  PortableTextBody,
+  PortableTextBodyTypeComponents,
+} from "@/components/shared/portable-text-body";
+import { TagLink } from "@/components/tag-link";
+import { Toc } from "@/components/toc";
 
 function isSameDate(datestr1: string = "", datestr2: string = "") {
   return datestr1.split("T")[0] === datestr2.split("T")[0];
 }
 
-export function PostPageLayout(props: { data: PostPayload }) {
+export function PostPageLayout(props: {
+  data: PostPayload;
+  ptComponents?: PortableTextBodyTypeComponents;
+}) {
   const {
     title,
     description,
@@ -67,7 +72,10 @@ export function PostPageLayout(props: { data: PostPayload }) {
             )}
           >
             <Toc title="Innhold" headers={toc} mobile />
-            <PortableTextBody value={body} />
+            <PortableTextBody
+              value={body}
+              typeComponents={props.ptComponents}
+            />
           </div>
           <aside
             className={cn(

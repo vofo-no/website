@@ -61,6 +61,16 @@ export const pageBySlugQuery = groq`
   }
 `;
 
+export const documentLinkByIdQuery = groq`
+  *[_type in ["page", "post"] && _id == $id][0] {
+    _type,
+    title,
+    description,
+    "slug": slug.current,
+    image,
+  }
+`;
+
 export const allActiveCountiesQuery = groq`
   *[_type == "county" && active == true][]{
     _id,

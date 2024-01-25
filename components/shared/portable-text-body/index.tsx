@@ -1,22 +1,28 @@
-import { PortableText, PortableTextComponents } from "@portabletext/react";
+import {
+  PortableText,
+  PortableTextComponents,
+  PortableTextTypeComponent,
+} from "@portabletext/react";
 
 import { InlineImage } from "./body-image";
-import { DocumentLink } from "./document-link";
 import { H2WithAnchor } from "./header";
-import OrganizationsList from "./OrganizationsList";
-import { PeopleList } from "./people-list";
+import { portableTextBodyTypeComponentsPreview } from "./type-components-preview";
+
+export type PortableTextBodyTypeComponents = Record<
+  string,
+  PortableTextTypeComponent<any>
+>;
 
 interface Props {
   value: any;
+  typeComponents?: PortableTextBodyTypeComponents;
 }
 
-export function PortableTextBody({ value }: Props) {
+export function PortableTextBody({ value, typeComponents }: Props) {
   const portableTextComponents: PortableTextComponents = {
     types: {
-      people: PeopleList,
-      organizations: OrganizationsList,
       image: InlineImage,
-      documentLink: DocumentLink,
+      ...(typeComponents || portableTextBodyTypeComponentsPreview),
     },
     block: {
       h2: H2WithAnchor,

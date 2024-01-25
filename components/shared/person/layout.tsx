@@ -19,7 +19,7 @@ export function PersonLayout(props: PersonLayoutProps) {
 
   return (
     <div className={"flex gap-4 my-4"}>
-      <Avatar className="h-24 w-24">
+      <Avatar className="h-24 w-24 not-prose">
         {imageUrl && <AvatarImage src={imageUrl} />}
         <AvatarFallback>
           <SmileIcon />
@@ -30,16 +30,16 @@ export function PersonLayout(props: PersonLayoutProps) {
           "animate-pulse": !props.data,
         })}
       >
-        <div className="text-base font-medium leading-tight">
+        <div className="text-lg font-medium leading-tight">
           {name ?? (
             <span className="w-36 inline-block bg-muted h-4 rounded-md "></span>
           )}
         </div>
-        <div className="text-muted-foreground text-sm leading-normal line-clamp-1">
+        <div className="text-muted-foreground text-base leading-normal line-clamp-1">
           {position}
         </div>
         {!props.hideContactInfo && (
-          <div className="flex justify-start flex-wrap gap-x-2 gap-y-1 mt-1 text-sm">
+          <div className="flex justify-start flex-wrap gap-x-2 gap-y-1 mt-1 text-base">
             {email && (
               <Link
                 href={`mailto:${email}`}

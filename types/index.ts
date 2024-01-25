@@ -99,3 +99,11 @@ export interface PersonPayload {
   email?: string;
   phone?: string;
 }
+
+export interface DocumentLinkPayload {
+  _type: string;
+  slug: string;
+  title: string;
+  description?: string;
+  image?: Image;
+}

@@ -13,6 +13,8 @@ export function resolveHref(
       return `/prosjekter/${slug}`;
     case "topic":
       return `/tema/${slug}`;
+    case "page":
+      return slug;
     default:
       console.warn("Invalid document type:", documentType);
       return undefined;

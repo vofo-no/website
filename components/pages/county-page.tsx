@@ -1,19 +1,22 @@
 import { CountyPayload } from "@/types";
 
 import { cn } from "@/lib/utils";
+import { SanityImage } from "@/components/image";
 import {
   PageHeader,
   PageHeaderDescription,
   PageHeaderHeading,
 } from "@/components/page-header";
-
-import { SanityImage } from "../image";
-import { PortableTextBody } from "../shared/portable-text-body";
+import {
+  PortableTextBody,
+  PortableTextBodyTypeComponents,
+} from "@/components/shared/portable-text-body";
 
 export function CountyPageLayout(
   props: React.PropsWithChildren<{
     data: CountyPayload;
     contacts?: React.ReactNode;
+    ptComponents?: PortableTextBodyTypeComponents;
   }>,
 ) {
   const { name, description, body, image, locale } = props.data ?? {};
@@ -33,7 +36,10 @@ export function CountyPageLayout(
               image ? "md:row-start-3" : "md:row-start-1 md:row-span-2",
             )}
           >
-            <PortableTextBody value={body} />
+            <PortableTextBody
+              value={body}
+              typeComponents={props.ptComponents}
+            />
           </div>
           <aside className={cn("md:col-start-3 md:row-span-2")}>
             <div className="flex flex-col gap-4 md:sticky md:top-28">

@@ -5,20 +5,19 @@ import { useQuery } from "@/sanity/loader/useQuery";
 import { PagePayload } from "@/types";
 import { QueryResponseInitial } from "@sanity/react-loader";
 
-import { PageLayout } from "../../../../components/pages/page-layout";
+import { PageLayout } from "@/components/pages/page-layout";
 
-type Props = {
+interface Props extends Omit<React.ComponentProps<typeof PageLayout>, "data"> {
   slug: string;
   initial: QueryResponseInitial<PagePayload>;
-  contacts?: React.ReactNode;
-};
+}
 
-export default function PostPagePreview({ slug, initial, contacts }: Props) {
+export default function PostPagePreview({ slug, initial, ...rest }: Props) {
   const { data } = useQuery<PagePayload>(
     pageBySlugQuery,
     { slug },
     { initial },
   );
 
-  return <PageLayout data={data} contacts={contacts} />;
+  return <PageLayout data={data} {...rest} />;
 }
