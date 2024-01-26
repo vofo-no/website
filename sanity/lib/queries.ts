@@ -74,23 +74,36 @@ export const documentLinkByIdQuery = groq`
 export const allActiveCountiesQuery = groq`
   *[_type == "county" && active == true][]{
     _id,
-    name,
+    "title": name,
     "slug": slug.current,
     description,
     image,
-  } | order(name asc)
+  } | order(title asc)
 `;
 
 export const countyBySlugQuery = groq`
   *[_type == "county" && slug.current == $slug][0] {
     _id,
-    name,
+    "title": name,
     "slug": slug.current,
     description,
     image,
     body,
     contacts,
     countyCode,
+    locale,
+  }
+`;
+
+export const topicBySlugQuery = groq`
+  *[_type == "topic" && slug.current == $slug][0] {
+    _id,
+    title,
+    "slug": slug.current,
+    description,
+    image,
+    body,
+    contacts,
     locale,
   }
 `;

@@ -13,26 +13,28 @@ const CountyPagePreview = dynamic(() => import("./preview"));
 
 interface CountyPageProps {
   params: {
-    fylke: string;
+    slug: string;
   };
 }
 
 export async function generateMetadata({
-  params: { fylke },
+  params: { slug },
 }: CountyPageProps): Promise<Metadata> {
   const { data } = await loadQuery<CountyPayload>(countyBySlugQuery, {
-    slug: fylke,
+    slug,
   });
 
   return {
-    title: data.name,
+    title: data.title,
     description: data.description,
   };
 }
 
-export default async function PostPage({ params: { fylke } }: CountyPageProps) {
+export default async function CountyPage({
+  params: { slug },
+}: CountyPageProps) {
   const initial = await loadQuery<CountyPayload>(countyBySlugQuery, {
-    slug: fylke,
+    slug,
   });
 
   const contacts = initial.data.contacts?.map((reference) => (
@@ -41,7 +43,7 @@ export default async function PostPage({ params: { fylke } }: CountyPageProps) {
 
   if (draftMode().isEnabled)
     return (
-      <CountyPagePreview initial={initial} slug={fylke} contacts={contacts}>
+      <CountyPagePreview initial={initial} slug={slug} contacts={contacts}>
         <PostList referencesId={initial.data._id} />
       </CountyPagePreview>
     );

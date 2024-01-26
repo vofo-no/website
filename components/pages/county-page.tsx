@@ -19,12 +19,12 @@ export function CountyPageLayout(
     ptComponents?: PortableTextBodyTypeComponents;
   }>,
 ) {
-  const { name, description, body, image, locale } = props.data ?? {};
+  const { title, description, body, image, locale } = props.data ?? {};
 
   return (
     <div className="container">
       <PageHeader>
-        <PageHeaderHeading>{name}</PageHeaderHeading>
+        <PageHeaderHeading>{title}</PageHeaderHeading>
         <PageHeaderDescription>{description}</PageHeaderDescription>
       </PageHeader>
       <div>
@@ -41,7 +41,7 @@ export function CountyPageLayout(
               typeComponents={props.ptComponents}
             />
           </div>
-          <aside className={cn("md:col-start-3 md:row-span-2")}>
+          <aside className={cn("md:col-start-3 md:row-span-3")}>
             <div className="flex flex-col gap-4 md:sticky md:top-28">
               {props.contacts && (
                 <section>

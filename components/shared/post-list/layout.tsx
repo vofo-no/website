@@ -47,10 +47,15 @@ function PostListItem(props: {
 export function PostListLayout(props: {
   data: PostListItemPayload[];
   referencesId?: string;
+  title?: string;
 }) {
   return (
     <section className="mb-4">
-      <h2 className="sr-only">Aktuelt</h2>
+      {props.title ? (
+        <h2 className="text-2xl font-serif mt-8 mb-4">{props.title}</h2>
+      ) : (
+        <h2 className="sr-only">Aktuelt</h2>
+      )}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 gap-y-8">
         {props.data.map((item) => (
           <PostListItem

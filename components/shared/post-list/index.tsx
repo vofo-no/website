@@ -10,6 +10,7 @@ const PostListPreview = dynamic(() => import("./preview"));
 
 export interface PostListProps {
   referencesId?: string;
+  title?: string;
 }
 
 export async function PostList(props: PostListProps) {
@@ -21,10 +22,18 @@ export async function PostList(props: PostListProps) {
 
   if (draftMode().isEnabled)
     return (
-      <PostListPreview referencesId={props.referencesId} initial={initial} />
+      <PostListPreview
+        referencesId={props.referencesId}
+        initial={initial}
+        title={props.title}
+      />
     );
 
   return (
-    <PostListLayout referencesId={props.referencesId} data={initial.data} />
+    <PostListLayout
+      referencesId={props.referencesId}
+      data={initial.data}
+      title={props.title}
+    />
   );
 }

@@ -65,18 +65,30 @@ export interface PostPayload extends PostListItemPayload {
   locale?: string;
 }
 
-export interface CountyListItemPayload {
+interface DocumentListItemPayload {
   _id: string;
-  name: string;
+  title: string;
   slug: string;
   description?: string;
   image?: Image;
 }
 
+export interface CountyListItemPayload extends DocumentListItemPayload {}
+
 export interface CountyPayload extends CountyListItemPayload {
   body: PortableTextBlock[];
   contacts?: Reference[];
   countyCode?: string[];
+  locale?: string;
+}
+
+export interface TopicListItemPayload extends DocumentListItemPayload {
+  county: Reference;
+}
+
+export interface TopicPayload extends TopicListItemPayload {
+  body: PortableTextBlock[];
+  contacts?: Reference[];
   locale?: string;
 }
 

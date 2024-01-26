@@ -7,17 +7,17 @@ import { QueryResponseInitial } from "@sanity/react-loader";
 
 import { PostListLayout } from "./layout";
 
-type Props = {
-  referencesId?: string;
+interface Props
+  extends Omit<React.ComponentProps<typeof PostListLayout>, "data"> {
   initial: QueryResponseInitial<PostListItemPayload[]>;
-};
+}
 
-export default function PostListPreview(props: Props) {
+export default function PostListPreview({ initial, ...rest }: Props) {
   const { data } = useQuery<PostListItemPayload[]>(
     postsByReferenceQuery,
-    { ref: props.referencesId ?? null },
-    { initial: props.initial },
+    { ref: rest.referencesId ?? null },
+    { initial },
   );
 
-  return <PostListLayout data={data} referencesId={props.referencesId} />;
+  return <PostListLayout data={data} {...rest} />;
 }

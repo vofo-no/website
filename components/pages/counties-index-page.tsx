@@ -10,7 +10,7 @@ import {
 } from "@/components/page-header";
 
 function CountyListItem(props: { data: CountyListItemPayload }) {
-  const { image, name, slug, description } = props.data ?? {};
+  const { image, title, slug, description } = props.data ?? {};
 
   return (
     <Link
@@ -24,12 +24,12 @@ function CountyListItem(props: { data: CountyListItemPayload }) {
           />
         )}
         <AvatarFallback className="text-3xl">
-          {name.substring(0, 1)}
+          {title.substring(0, 1)}
         </AvatarFallback>
       </Avatar>
       <div>
         <h2 className="text-xl font-bold mb-2 group-hover:text-primary group-hover:underline">
-          {name}
+          {title}
         </h2>
         <p className="text-muted-foreground line-clamp-3">{description}</p>
       </div>
