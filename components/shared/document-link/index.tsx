@@ -16,7 +16,7 @@ export async function DocumentLink({ id }: DocumentLinkProps) {
   const initial = await loadQuery<DocumentLinkPayload>(
     documentLinkByIdQuery,
     { id },
-    { next: { tags: [id] } },
+    { next: { tags: [`page:${id}`, `post:${id}`] } },
   );
 
   if (draftMode().isEnabled)

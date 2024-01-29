@@ -2,9 +2,7 @@ import { Metadata } from "next";
 import dynamic from "next/dynamic";
 import { draftMode } from "next/headers";
 import { notFound } from "next/navigation";
-import { topicBySlugQuery } from "@/sanity/lib/queries";
-import { loadQuery } from "@/sanity/loader/loadQuery";
-import { TopicPayload } from "@/types";
+import { loadTopic } from "@/sanity/loader/loadQuery";
 
 import { PageLayout } from "@/components/pages/page-layout";
 import { Person } from "@/components/shared/person";
@@ -21,9 +19,7 @@ interface TopicPageProps {
 export async function generateMetadata({
   params: { slug },
 }: TopicPageProps): Promise<Metadata> {
-  const { data } = await loadQuery<TopicPayload>(topicBySlugQuery, {
-    slug,
-  });
+  const { data } = await loadTopic(slug);
 
   if (!data) notFound();
 
@@ -34,9 +30,7 @@ export async function generateMetadata({
 }
 
 export default async function TopicPage({ params: { slug } }: TopicPageProps) {
-  const initial = await loadQuery<TopicPayload>(topicBySlugQuery, {
-    slug,
-  });
+  const initial = await loadTopic(slug);
 
   const contacts = initial.data.contacts?.map((reference) => (
     <Person key={`contactperson.${reference._ref}`} id={reference._ref} />

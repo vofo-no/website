@@ -14,6 +14,8 @@ export const metadata: Metadata = { title: "Fylker" };
 export default async function CountiesIndexPage() {
   const initial = await loadQuery<CountyListItemPayload[]>(
     allActiveCountiesQuery,
+    {},
+    { next: { tags: [`county`] } },
   );
 
   if (draftMode().isEnabled)

@@ -10,7 +10,7 @@
  * 4. Dataset: Choose desired dataset or leave at default "all datasets"
  * 5. Trigger on: "Create", "Update", and "Delete"
  * 6. Filter: Leave empty
- * 7. Projection: {_type, "slug": slug.current}
+ * 7. Projection: {_type, _id, "slug": slug.current}
  * 8. Status: Enable webhook
  * 9. HTTP method: POST
  * 10. HTTP Headers: Leave empty
@@ -31,7 +31,8 @@ export async function POST(req: NextRequest) {
   try {
     const { body, isValidSignature } = await parseBody<{
       _type: string;
-      slug?: string | undefined;
+      _id: string;
+      slug?: string;
     }>(req, revalidateSecret);
     if (!isValidSignature) {
       const message = "Invalid signature";
@@ -43,6 +44,7 @@ export async function POST(req: NextRequest) {
     }
 
     revalidateTag(body._type);
+    revalidateTag(`${body._type}:${body._id}`);
     if (body.slug) {
       revalidateTag(`${body._type}:${body.slug}`);
     }

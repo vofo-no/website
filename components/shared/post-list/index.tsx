@@ -17,7 +17,7 @@ export async function PostList(props: PostListProps) {
   const initial = await loadQuery<PostListItemPayload[]>(
     postsByReferenceQuery,
     { ref: props.referencesId ?? null },
-    { next: { tags: ["post", "county", "topic", "project"] } },
+    { next: { tags: ["post"] } },
   );
 
   if (draftMode().isEnabled)

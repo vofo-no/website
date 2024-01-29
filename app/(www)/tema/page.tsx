@@ -12,7 +12,11 @@ const TopicsIndexPagePreview = dynamic(() => import("./preview"));
 export const metadata: Metadata = { title: "Tema" };
 
 export default async function TopicsIndexPage() {
-  const initial = await loadQuery<TopicListItemPayload[]>(allActiveTopicsQuery);
+  const initial = await loadQuery<TopicListItemPayload[]>(
+    allActiveTopicsQuery,
+    {},
+    { next: { tags: [`topic`] } },
+  );
 
   if (draftMode().isEnabled)
     return <TopicsIndexPagePreview initial={initial} />;

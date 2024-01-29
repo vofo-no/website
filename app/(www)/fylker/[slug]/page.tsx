@@ -2,9 +2,7 @@ import { Metadata } from "next";
 import dynamic from "next/dynamic";
 import { draftMode } from "next/headers";
 import { notFound } from "next/navigation";
-import { countyBySlugQuery } from "@/sanity/lib/queries";
-import { loadQuery } from "@/sanity/loader/loadQuery";
-import { CountyPayload } from "@/types";
+import { loadCounty } from "@/sanity/loader/loadQuery";
 
 import { CountyPageLayout } from "@/components/pages/county-page";
 import { Person } from "@/components/shared/person";
@@ -21,9 +19,7 @@ interface CountyPageProps {
 export async function generateMetadata({
   params: { slug },
 }: CountyPageProps): Promise<Metadata> {
-  const { data } = await loadQuery<CountyPayload>(countyBySlugQuery, {
-    slug,
-  });
+  const { data } = await loadCounty(slug);
 
   if (!data) notFound();
 
@@ -36,9 +32,7 @@ export async function generateMetadata({
 export default async function CountyPage({
   params: { slug },
 }: CountyPageProps) {
-  const initial = await loadQuery<CountyPayload>(countyBySlugQuery, {
-    slug,
-  });
+  const initial = await loadCounty(slug);
 
   const contacts = initial.data.contacts?.map((reference) => (
     <Person key={`contactperson.${reference._ref}`} id={reference._ref} />

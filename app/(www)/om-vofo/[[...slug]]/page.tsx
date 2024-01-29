@@ -2,9 +2,7 @@ import { Metadata } from "next";
 import dynamic from "next/dynamic";
 import { draftMode } from "next/headers";
 import { notFound } from "next/navigation";
-import { pageBySlugQuery } from "@/sanity/lib/queries";
-import { loadQuery } from "@/sanity/loader/loadQuery";
-import { PagePayload } from "@/types";
+import { loadPage } from "@/sanity/loader/loadQuery";
 
 import { PageLayout } from "@/components/pages/page-layout";
 import { Person } from "@/components/shared/person";
@@ -25,9 +23,7 @@ function prefixSlug(slug: string[] = []) {
 export async function generateMetadata({
   params: { slug },
 }: PageProps): Promise<Metadata> {
-  const { data } = await loadQuery<PagePayload>(pageBySlugQuery, {
-    slug: prefixSlug(slug),
-  });
+  const { data } = await loadPage(prefixSlug(slug));
 
   if (!data) notFound();
 
@@ -39,9 +35,7 @@ export async function generateMetadata({
 
 export default async function Page({ params }: PageProps) {
   const slug = prefixSlug(params.slug);
-  const initial = await loadQuery<PagePayload>(pageBySlugQuery, {
-    slug,
-  });
+  const initial = await loadPage(slug);
 
   const contacts = initial.data.contacts?.map((reference) => (
     <Person key={`contactperson.${reference._ref}`} id={reference._ref} />

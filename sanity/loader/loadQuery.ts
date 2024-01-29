@@ -2,9 +2,21 @@ import "server-only";
 
 import { draftMode } from "next/headers";
 import { client } from "@/sanity/lib/client";
-import { settingsQuery } from "@/sanity/lib/queries";
+import {
+  countyBySlugQuery,
+  pageBySlugQuery,
+  postBySlugQuery,
+  settingsQuery,
+  topicBySlugQuery,
+} from "@/sanity/lib/queries";
 import { token } from "@/sanity/lib/token";
-import { SettingsPayload } from "@/types";
+import {
+  CountyPayload,
+  PagePayload,
+  PostPayload,
+  SettingsPayload,
+  TopicPayload,
+} from "@/types";
 import * as queryStore from "@sanity/react-loader";
 
 const serverClient = client.withConfig({
@@ -48,5 +60,45 @@ export function loadSettings() {
     settingsQuery,
     {},
     { next: { tags: ["settings"] } },
+  );
+}
+
+export function loadPost(slug: string) {
+  return loadQuery<PostPayload>(
+    postBySlugQuery,
+    {
+      slug,
+    },
+    { next: { tags: [`post:${slug}`] } },
+  );
+}
+
+export function loadCounty(slug: string) {
+  return loadQuery<CountyPayload>(
+    countyBySlugQuery,
+    {
+      slug,
+    },
+    { next: { tags: [`county:${slug}`] } },
+  );
+}
+
+export function loadPage(slug: string) {
+  return loadQuery<PagePayload>(
+    pageBySlugQuery,
+    {
+      slug,
+    },
+    { next: { tags: [`page:${slug}`] } },
+  );
+}
+
+export function loadTopic(slug: string) {
+  return loadQuery<TopicPayload>(
+    topicBySlugQuery,
+    {
+      slug,
+    },
+    { next: { tags: [`topic:${slug}`] } },
   );
 }

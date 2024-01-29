@@ -2,9 +2,7 @@ import { Metadata } from "next";
 import dynamic from "next/dynamic";
 import { draftMode } from "next/headers";
 import { notFound } from "next/navigation";
-import { postBySlugQuery } from "@/sanity/lib/queries";
-import { loadQuery } from "@/sanity/loader/loadQuery";
-import { PostPayload } from "@/types";
+import { loadPost } from "@/sanity/loader/loadQuery";
 
 import { PostPageLayout } from "@/components/pages/post-page";
 
@@ -19,9 +17,7 @@ interface PostPageProps {
 export async function generateMetadata({
   params: { slug },
 }: PostPageProps): Promise<Metadata> {
-  const { data } = await loadQuery<PostPayload>(postBySlugQuery, {
-    slug,
-  });
+  const { data } = await loadPost(slug);
 
   if (!data) notFound();
 
@@ -32,9 +28,7 @@ export async function generateMetadata({
 }
 
 export default async function PostPage({ params: { slug } }: PostPageProps) {
-  const initial = await loadQuery<PostPayload>(postBySlugQuery, {
-    slug,
-  });
+  const initial = await loadPost(slug);
 
   if (draftMode().isEnabled)
     return <PostPagePreview initial={initial} slug={slug} />;
