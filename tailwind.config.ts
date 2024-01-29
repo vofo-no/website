@@ -76,13 +76,13 @@ const config = {
         gray: {
           css: {
             "--tw-prose-links": theme("colors.blue.700"),
-            "--tw-prose-links-hover": theme("colors.primary"),
+            "--tw-prose-links-hover": theme("colors.primary.DEFAULT"),
           },
         },
         invert: {
           css: {
             "--tw-prose-links": theme("colors.blue.200"),
-            "--tw-prose-links-hover": theme("colors.primary"),
+            "--tw-prose-links-hover": theme("colors.primary.foreground"),
           },
         },
         DEFAULT: {
