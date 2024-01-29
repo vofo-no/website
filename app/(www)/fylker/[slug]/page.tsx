@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import dynamic from "next/dynamic";
 import { draftMode } from "next/headers";
+import { notFound } from "next/navigation";
 import { countyBySlugQuery } from "@/sanity/lib/queries";
 import { loadQuery } from "@/sanity/loader/loadQuery";
 import { CountyPayload } from "@/types";
@@ -23,6 +24,8 @@ export async function generateMetadata({
   const { data } = await loadQuery<CountyPayload>(countyBySlugQuery, {
     slug,
   });
+
+  if (!data) notFound();
 
   return {
     title: data.title,
