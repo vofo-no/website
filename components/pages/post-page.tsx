@@ -1,6 +1,6 @@
-import { useMemo } from "react";
 import { PostPayload } from "@/types";
 
+import { formatRelativeDate } from "@/lib/date";
 import { cn } from "@/lib/utils";
 import { BackToTopButton } from "@/components/back-to-top-button";
 import { SanityImage } from "@/components/image";
@@ -35,21 +35,11 @@ export function PostPageLayout(props: {
     _updatedAt,
     locale,
   } = props.data ?? {};
-  const dateFormat = useMemo(
-    () =>
-      new Intl.DateTimeFormat(locale || "nb-NO", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      }),
-    [locale],
-  );
-
   const meta = [
-    publishedAt && `Publisert ${dateFormat.format(new Date(publishedAt))}`,
+    publishedAt && `Publisert ${formatRelativeDate(publishedAt, locale)}`,
     _updatedAt &&
       !isSameDate(publishedAt, _updatedAt) &&
-      `Oppdatert ${dateFormat.format(new Date(_updatedAt))}`,
+      `Oppdatert ${formatRelativeDate(_updatedAt, locale)}`,
   ].filter(Boolean);
   return (
     <article className="container">
@@ -67,7 +57,7 @@ export function PostPageLayout(props: {
           {image && <SanityImage image={image} mode="header" />}
           <div
             className={cn(
-              "md:col-span-2 prose mx-auto",
+              "md:col-span-2 prose prose-gray dark:prose-invert mx-auto",
               image ? "md:row-start-3" : "md:row-start-1 md:row-span-2",
             )}
           >
