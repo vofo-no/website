@@ -95,14 +95,26 @@ export const countyBySlugQuery = groq`
   }
 `;
 
+export const allActiveTopicsQuery = groq`
+  *[_type == "topic" && active == true][]{
+    _id,
+    title,
+    "slug": slug.current,
+    description,
+    image,
+  } | order(title asc)
+`;
+
 export const topicBySlugQuery = groq`
   *[_type == "topic" && slug.current == $slug][0] {
     _id,
     title,
     "slug": slug.current,
     description,
+    _updatedAt,
     image,
     body,
+    "toc": body[style == "h2"],
     contacts,
     locale,
   }

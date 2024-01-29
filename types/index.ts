@@ -88,6 +88,7 @@ export interface TopicListItemPayload extends DocumentListItemPayload {
 
 export interface TopicPayload extends TopicListItemPayload {
   body: PortableTextBlock[];
+  toc: PortableTextBlock[];
   contacts?: Reference[];
   locale?: string;
 }
@@ -101,6 +102,7 @@ export interface PagePayload {
   toc: PortableTextBlock[];
   image?: Image;
   contacts?: Reference[];
+  locale?: string;
 }
 
 export interface PersonPayload {

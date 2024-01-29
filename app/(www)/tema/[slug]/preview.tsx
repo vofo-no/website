@@ -5,7 +5,7 @@ import { useQuery } from "@/sanity/loader/useQuery";
 import { TopicPayload } from "@/types";
 import { QueryResponseInitial } from "@sanity/react-loader";
 
-import { CountyPageLayout } from "@/components/pages/county-page";
+import { PageLayout } from "@/components/pages/page-layout";
 
 type Props = {
   slug: string;
@@ -27,8 +27,8 @@ export default function TopicPagePreview({
   );
 
   return (
-    <CountyPageLayout data={data} contacts={contacts}>
+    <PageLayout data={data} contacts={contacts}>
       {children}
-    </CountyPageLayout>
+    </PageLayout>
   );
 }

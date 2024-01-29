@@ -27,7 +27,7 @@ export function HomePageLayout(props: {
             Bli kjent med Vofo
           </Link>
           <Link
-            href="/studieforbund"
+            href="/tema/studieforbund"
             className={cn(buttonVariants({ variant: "outline" }))}
           >
             Om studieforbund

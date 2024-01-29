@@ -1,11 +1,12 @@
 import { Metadata } from "next";
 import dynamic from "next/dynamic";
 import { draftMode } from "next/headers";
+import { notFound } from "next/navigation";
 import { topicBySlugQuery } from "@/sanity/lib/queries";
 import { loadQuery } from "@/sanity/loader/loadQuery";
 import { TopicPayload } from "@/types";
 
-import { CountyPageLayout } from "@/components/pages/county-page";
+import { PageLayout } from "@/components/pages/page-layout";
 import { Person } from "@/components/shared/person";
 import { PostList } from "@/components/shared/post-list";
 
@@ -23,6 +24,8 @@ export async function generateMetadata({
   const { data } = await loadQuery<TopicPayload>(topicBySlugQuery, {
     slug,
   });
+
+  if (!data) notFound();
 
   return {
     title: data.title,
@@ -50,11 +53,11 @@ export default async function TopicPage({ params: { slug } }: TopicPageProps) {
     );
 
   return (
-    <CountyPageLayout data={initial.data} contacts={contacts}>
+    <PageLayout data={initial.data} contacts={contacts}>
       <PostList
         referencesId={initial.data._id}
         title={`Aktuelt om ${initial.data.title.toLocaleLowerCase()}`}
       />
-    </CountyPageLayout>
+    </PageLayout>
   );
 }
