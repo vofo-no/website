@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { urlForImage } from "@/sanity/lib/image";
 import { CountyListItemPayload } from "@/types";
+import Balancer from "react-wrap-balancer";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -15,7 +16,7 @@ function CountyListItem(props: { data: CountyListItemPayload }) {
   return (
     <Link
       href={`/fylker/${slug}`}
-      className="group flex flex-row md:odd:flex-row-reverse gap-4 items-center mr-auto md:odd:mr-0 md:odd:ml-auto"
+      className="group flex flex-row md:odd:flex-row-reverse gap-4 items-center mr-auto md:odd:mr-0 md:odd:ml-auto md:odd:text-right"
     >
       <Avatar className="h-20 w-20 border border-border shadow-sm group-hover:shadow-md group-hover:scale-105 transition-all">
         {image && (
@@ -28,10 +29,14 @@ function CountyListItem(props: { data: CountyListItemPayload }) {
         </AvatarFallback>
       </Avatar>
       <div>
-        <h2 className="text-xl font-bold mb-2 group-hover:text-primary group-hover:underline">
+        <h2 className="text-xl font-bold group-hover:text-primary group-hover:underline">
           {title}
         </h2>
-        <p className="text-muted-foreground line-clamp-3">{description}</p>
+        {description && (
+          <Balancer as="p" className="text-muted-foreground">
+            {description}
+          </Balancer>
+        )}
       </div>
     </Link>
   );
@@ -45,8 +50,8 @@ export function CountiesIndexPageLayout(props: {
       <PageHeader>
         <PageHeaderHeading>Voksne lærer i hele landet</PageHeaderHeading>
         <PageHeaderDescription>
-          Fylkesutvalgene våre jobber for samarbeid og bedre rammevilkår for
-          studieforbund på regionalt og lokalt nivå.
+          Samarbeid og bedre rammevilkår for studieforbund på regionalt og
+          lokalt nivå.
         </PageHeaderDescription>
       </PageHeader>
 

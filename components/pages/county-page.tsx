@@ -32,7 +32,7 @@ export function CountyPageLayout(
           {image && <SanityImage image={image} mode="header" />}
           <div
             className={cn(
-              "md:col-span-2 prose mx-auto",
+              "md:col-span-2 prose prose-gray dark:prose-invert mx-auto",
               image ? "md:row-start-3" : "md:row-start-1 md:row-span-2",
             )}
           >
