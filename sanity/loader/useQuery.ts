@@ -1,5 +1,13 @@
-import { settingsQuery } from "@/sanity/lib/queries";
-import { SettingsPayload } from "@/types";
+import {
+  allActiveCountiesQuery,
+  allActiveTopicsQuery,
+  settingsQuery,
+} from "@/sanity/lib/queries";
+import {
+  CountyListItemPayload,
+  SettingsPayload,
+  TopicListItemPayload,
+} from "@/types";
 import {
   type QueryParams,
   type QueryResponseInitial,
@@ -30,4 +38,24 @@ export const useQuery = <
 
 export function useSettings(initial: QueryResponseInitial<SettingsPayload>) {
   return useQuery<SettingsPayload>(settingsQuery, {}, { initial });
+}
+
+export function useAllCounties(
+  initial: QueryResponseInitial<CountyListItemPayload[]>,
+) {
+  return useQuery<CountyListItemPayload[]>(
+    allActiveCountiesQuery,
+    {},
+    { initial },
+  );
+}
+
+export function useAllTopics(
+  initial: QueryResponseInitial<TopicListItemPayload[]>,
+) {
+  return useQuery<TopicListItemPayload[]>(
+    allActiveTopicsQuery,
+    {},
+    { initial },
+  );
 }

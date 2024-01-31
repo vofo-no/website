@@ -1,53 +1,14 @@
 import Link from "next/link";
 import { PostListItemPayload } from "@/types";
-import { ArrowRightIcon, CalendarIcon } from "lucide-react";
-import Balancer from "react-wrap-balancer";
+import { ArrowRightIcon } from "lucide-react";
 
 import { buttonVariants } from "@/components/ui/button";
-import { SanityImage } from "@/components/image";
-import { TagLink } from "@/components/tag-link";
-
-const shortDate = new Intl.DateTimeFormat("nb-NO", {
-  month: "short",
-  day: "numeric",
-});
-
-function PostListItem(props: {
-  item: PostListItemPayload;
-  referencesId?: string;
-}) {
-  const { title, publishedAt, description, image, relevance, slug } =
-    props.item ?? {};
-  return (
-    <div>
-      {image && <SanityImage mode="listItem" image={image} />}
-      <div className="my-2 flex flex-wrap gap-x-2 gap-y-1">
-        <span className="text-xs text-muted-foreground flex items-center gap-1">
-          <CalendarIcon size={12} />
-          {shortDate.format(new Date(publishedAt))}
-        </span>
-        {relevance
-          ?.filter((tag) => tag._id !== props.referencesId)
-          .map((tag) => (
-            <TagLink key={tag._id} _type={tag._type} slug={tag.slug}>
-              {tag.title}
-            </TagLink>
-          ))}
-      </div>
-      <Link href={`/aktuelt/${slug}`} className="group">
-        <h3 className="text-xl font-bold mb-2 group-hover:text-primary group-hover:underline">
-          <Balancer>{title}</Balancer>
-        </h3>
-        <p className="text-muted-foreground line-clamp-3">{description}</p>
-      </Link>
-    </div>
-  );
-}
+import { PostListItem } from "@/components/post-list-item";
 
 export function PostListLayout(props: {
+  title?: string;
   data: PostListItemPayload[];
   referencesId?: string;
-  title?: string;
 }) {
   return (
     <section className="mb-4">
@@ -67,7 +28,7 @@ export function PostListLayout(props: {
       </div>
       <div className="mt-8 flex justify-center">
         <Link
-          href="/aktuelt/arkiv"
+          href="/aktuelt"
           className={buttonVariants({ variant: "outline" })}
         >
           Dokument- og nyhetsarkiv <ArrowRightIcon className="ml-1" />

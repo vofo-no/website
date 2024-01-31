@@ -13,7 +13,6 @@ import {
   PortableTextBody,
   PortableTextBodyTypeComponents,
 } from "@/components/shared/portable-text-body";
-import { TagLink } from "@/components/tag-link";
 import { Toc } from "@/components/toc";
 
 function isSameDate(datestr1: string = "", datestr2: string = "") {
@@ -22,6 +21,7 @@ function isSameDate(datestr1: string = "", datestr2: string = "") {
 
 export function PostPageLayout(props: {
   data: PostPayload;
+  relevance?: React.ReactNode;
   ptComponents?: PortableTextBodyTypeComponents;
 }) {
   const {
@@ -30,7 +30,6 @@ export function PostPageLayout(props: {
     body,
     toc,
     image,
-    relevance,
     publishedAt,
     _updatedAt,
     locale,
@@ -86,16 +85,7 @@ export function PostPageLayout(props: {
             )}
             <div className="flex flex-col gap-4 md:sticky md:top-28">
               <Toc headers={toc} title={"Innhold"} />
-              {relevance?.map((item) => (
-                <TagLink
-                  _type={item._type}
-                  slug={item.slug}
-                  size="lg"
-                  key={["relevanceitem", item._id].join(".")}
-                >
-                  {item.title}
-                </TagLink>
-              ))}
+              {props.relevance}
               <BackToTopButton label={"Tilbake til toppen"} />
             </div>
           </aside>

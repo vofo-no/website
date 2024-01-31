@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { loadPost } from "@/sanity/loader/loadQuery";
 
 import { PostPageLayout } from "@/components/pages/post-page";
+import { TagLink } from "@/components/shared/tag-link";
 
 const PostPagePreview = dynamic(() => import("./preview"));
 
@@ -30,8 +31,14 @@ export async function generateMetadata({
 export default async function PostPage({ params: { slug } }: PostPageProps) {
   const initial = await loadPost(slug);
 
-  if (draftMode().isEnabled)
-    return <PostPagePreview initial={initial} slug={slug} />;
+  const relevance = initial.data.relevance?.map((tag) => (
+    <TagLink id={tag._ref} size="lg" key={`taglink.${tag._ref}`} />
+  ));
 
-  return <PostPageLayout data={initial.data} />;
+  if (draftMode().isEnabled)
+    return (
+      <PostPagePreview initial={initial} slug={slug} relevance={relevance} />
+    );
+
+  return <PostPageLayout data={initial.data} relevance={relevance} />;
 }

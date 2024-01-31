@@ -17,7 +17,7 @@ export async function PostList(props: PostListProps) {
   const initial = await loadQuery<PostListItemPayload[]>(
     postsByReferenceQuery,
     { ref: props.referencesId ?? null },
-    { next: { tags: ["post"] } },
+    { next: { tags: ["post", "county", "topic"] } },
   );
 
   if (draftMode().isEnabled)
@@ -31,9 +31,9 @@ export async function PostList(props: PostListProps) {
 
   return (
     <PostListLayout
-      referencesId={props.referencesId}
-      data={initial.data}
       title={props.title}
+      data={initial.data}
+      referencesId={props.referencesId}
     />
   );
 }

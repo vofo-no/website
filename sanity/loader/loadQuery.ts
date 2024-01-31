@@ -3,6 +3,8 @@ import "server-only";
 import { draftMode } from "next/headers";
 import { client } from "@/sanity/lib/client";
 import {
+  allActiveCountiesQuery,
+  allActiveTopicsQuery,
   countyBySlugQuery,
   pageBySlugQuery,
   postBySlugQuery,
@@ -11,10 +13,12 @@ import {
 } from "@/sanity/lib/queries";
 import { token } from "@/sanity/lib/token";
 import {
+  CountyListItemPayload,
   CountyPayload,
   PagePayload,
   PostPayload,
   SettingsPayload,
+  TopicListItemPayload,
   TopicPayload,
 } from "@/types";
 import * as queryStore from "@sanity/react-loader";
@@ -73,6 +77,14 @@ export function loadPost(slug: string) {
   );
 }
 
+export function loadAllCounties() {
+  return loadQuery<CountyListItemPayload[]>(
+    allActiveCountiesQuery,
+    {},
+    { next: { tags: [`county`] } },
+  );
+}
+
 export function loadCounty(slug: string) {
   return loadQuery<CountyPayload>(
     countyBySlugQuery,
@@ -100,5 +112,13 @@ export function loadTopic(slug: string) {
       slug,
     },
     { next: { tags: [`topic:${slug}`] } },
+  );
+}
+
+export function loadAllTopics() {
+  return loadQuery<TopicListItemPayload[]>(
+    allActiveTopicsQuery,
+    {},
+    { next: { tags: [`topic`] } },
   );
 }

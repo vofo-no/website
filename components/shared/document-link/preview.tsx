@@ -12,7 +12,7 @@ type Props = {
   initial: QueryResponseInitial<DocumentLinkPayload>;
 };
 
-export default function PersonPreview({ id, initial }: Props) {
+export default function DocumentLinkPreview({ id, initial }: Props) {
   const { data } = useQuery<DocumentLinkPayload>(
     documentLinkByIdQuery,
     { id },

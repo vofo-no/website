@@ -48,3 +48,14 @@ export function formatRelativeDate(dateStr: string, locale?: string) {
     return getDateFormat(locale, { month: "long" }).format(date);
   }
 }
+
+export function formatShortDate(dateStr: string, locale?: string) {
+  const currentYear = new Date().getFullYear();
+  const date = new Date(dateStr);
+
+  return Intl.DateTimeFormat(locale || "nb-NO", {
+    month: "short",
+    day: "numeric",
+    year: date.getFullYear() === currentYear ? undefined : "2-digit",
+  }).format(date);
+}

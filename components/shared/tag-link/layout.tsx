@@ -1,4 +1,3 @@
-import * as React from "react";
 import Link from "next/link";
 import { cva, type VariantProps } from "class-variance-authority";
 
@@ -25,14 +24,19 @@ const buttonVariants = cva(
   },
 );
 
-export interface TagLinkProps
-  extends React.PropsWithChildren,
-    VariantProps<typeof buttonVariants> {
-  _type: string;
-  slug: string;
+export interface TagLinkProps extends VariantProps<typeof buttonVariants> {
+  data: {
+    _type: string;
+    slug: string;
+    title: string;
+  };
 }
 
-function TagLink({ _type, variant, size, slug, children }: TagLinkProps) {
+export function TagLinkLayout({
+  data: { _type, slug, title },
+  variant,
+  size,
+}: TagLinkProps) {
   return (
     <Link
       className={cn(
@@ -46,9 +50,7 @@ function TagLink({ _type, variant, size, slug, children }: TagLinkProps) {
       <svg viewBox="0 0 100 100" className="h-[0.8em]">
         <circle cx="50" cy="53" r="44" fill="currentColor" />
       </svg>
-      {children}
+      {title}
     </Link>
   );
 }
-
-export { TagLink };

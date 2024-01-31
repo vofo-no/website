@@ -56,13 +56,14 @@ export interface PostListItemPayload {
   }[];
 }
 
-export interface PostPayload extends PostListItemPayload {
+export interface PostPayload extends Omit<PostListItemPayload, "relevance"> {
   body: PortableTextBlock[];
   toc: PortableTextBlock[];
   docType: string;
   attachment?: string;
   remoteUrl?: string;
   locale?: string;
+  relevance?: Reference[];
 }
 
 interface DocumentListItemPayload {

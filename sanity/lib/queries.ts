@@ -23,6 +23,32 @@ export const postsByReferenceQuery = groq`
   }
 `;
 
+export const searchPostsQuery = groq`
+  *[
+    (_type == "post") &&
+    (!defined($docTypes) || docType in $docTypes) &&
+    (!defined($years) || string::split(publishedAt, "-")[0] in $years) &&
+    (!defined($refs) || references($refs)) &&
+    (!defined($q) || ([title, description, pt::text(body)] match $q))
+  ] | order(publishedAt desc) [0...30] {
+    _id,
+    _type,
+    docType,
+    title,
+    description,
+    image,
+    publishedAt,
+    _updatedAt,
+    "slug": slug.current,
+    "relevance": relevance[] -> {
+      _id,
+      _type,
+      "title": coalesce(name, title),
+      "slug": slug.current,
+    },
+  }
+`;
+
 export const postBySlugQuery = groq`
   *[_type == "post" && slug.current == $slug][0] {
     _id,
@@ -38,12 +64,7 @@ export const postBySlugQuery = groq`
     "attachment": attachment.asset->url,
     remoteUrl,
     locale,
-    "relevance": relevance[] -> {
-      _id,
-      _type,
-      "title": coalesce(name, title),
-      "slug": slug.current,
-    },
+    relevance,
   }
 `;
 
@@ -68,6 +89,14 @@ export const documentLinkByIdQuery = groq`
     description,
     "slug": slug.current,
     image,
+  }
+`;
+
+export const tagByIdQuery = groq`
+  *[_type in ["county", "topic"] && _id == $id][0] {
+    _type,
+    "title": coalesce(name, title),
+    "slug": slug.current,
   }
 `;
 
