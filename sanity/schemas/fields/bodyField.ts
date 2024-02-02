@@ -39,7 +39,10 @@ export default defineField({
         { title: "Underoverskrift", value: "h3" },
         { title: "Sitatblokk", value: "blockquote" },
       ],
-      lists: [{ title: "Punktliste", value: "bullet" }],
+      lists: [
+        { title: "Punktliste", value: "bullet" },
+        { title: "Nummerert", value: "number" },
+      ],
     }),
     imageField,
     defineArrayMember({
