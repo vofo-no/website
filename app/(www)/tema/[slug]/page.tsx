@@ -36,12 +36,15 @@ export default async function TopicPage({ params: { slug } }: TopicPageProps) {
     <Person key={`contactperson.${reference._ref}`} id={reference._ref} />
   ));
 
+  const archiveParams = new URLSearchParams({ tema: slug });
+
   if (draftMode().isEnabled)
     return (
       <TopicPagePreview initial={initial} slug={slug} contacts={contacts}>
         <PostList
           referencesId={initial.data._id}
           title={`Aktuelt om ${initial.data.title.toLocaleLowerCase()}`}
+          archiveParams={archiveParams}
         />
       </TopicPagePreview>
     );
@@ -51,6 +54,7 @@ export default async function TopicPage({ params: { slug } }: TopicPageProps) {
       <PostList
         referencesId={initial.data._id}
         title={`Aktuelt om ${initial.data.title.toLocaleLowerCase()}`}
+        archiveParams={archiveParams}
       />
     </PageLayout>
   );

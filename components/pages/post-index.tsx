@@ -1,5 +1,4 @@
 import { Suspense, useMemo } from "react";
-import { PostListItemPayload } from "@/types";
 
 import { postTypes } from "@/lib/postTypes";
 import {
@@ -7,7 +6,6 @@ import {
   PageHeader,
   PageHeaderHeading,
 } from "@/components/page-header";
-import { PostListItem } from "@/components/post-list-item";
 import { PostSearch } from "@/components/post-search";
 
 const FIRST_YEAR = 2022;
@@ -20,9 +18,9 @@ function yearRange() {
 }
 
 interface PostIndexPageProps {
-  data: PostListItemPayload[];
   counties: { title: string; value: string }[];
   topics: { title: string; value: string }[];
+  children: React.ReactNode;
 }
 
 export function PostsIndexPageLayout(props: PostIndexPageProps) {
@@ -44,9 +42,7 @@ export function PostsIndexPageLayout(props: PostIndexPageProps) {
         </PageActions>
       </PageHeader>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 gap-y-8 mb-8">
-        {props.data?.map((item) => <PostListItem key={item._id} item={item} />)}
-      </div>
+      {props.children}
     </div>
   );
 }

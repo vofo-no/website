@@ -1,25 +1,15 @@
 import { Metadata } from "next";
-import dynamic from "next/dynamic";
-import { draftMode } from "next/headers";
-import { searchPostsQuery } from "@/sanity/lib/queries";
-import {
-  loadAllCounties,
-  loadAllTopics,
-  loadQuery,
-} from "@/sanity/loader/loadQuery";
-import { PostListItemPayload } from "@/types";
+import { loadAllCounties, loadAllTopics } from "@/sanity/loader/loadQuery";
 
+import { parseSearch } from "@/lib/parse-search";
 import { PostsIndexPageLayout } from "@/components/pages/post-index";
+import { PostList } from "@/components/shared/post-list";
 
-import { parseSearch } from "./parse-search";
-
-const PostsIndexPagePreview = dynamic(() => import("./preview"));
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = { title: "Dokument- og nyhetsarkiv" };
 
-export default async function PostsIndexPage({
-  searchParams,
-}: {
+export default async function PostsIndexPage(props: {
   searchParams: {
     [key: string]: string | string[] | undefined;
   };
@@ -29,42 +19,30 @@ export default async function PostsIndexPage({
     loadAllTopics(),
   ]);
 
-  const initial = await loadQuery<PostListItemPayload[]>(
-    searchPostsQuery,
-    parseSearch(
-      new URLSearchParams(
-        Object.keys(searchParams)
-          .map((key) => {
-            const value = searchParams[key];
+  const searchParams = parseSearch(
+    new URLSearchParams(
+      Object.keys(props.searchParams)
+        .map((key) => {
+          const value = props.searchParams[key];
 
-            if (typeof value === "undefined") return undefined;
-            return [key, typeof value === "string" ? value : value[0]];
-          })
-          .filter(Boolean) as string[][],
-      ),
-      counties.data,
-      topics.data,
+          if (typeof value === "undefined") return undefined;
+          return [key, typeof value === "string" ? value : value[0]];
+        })
+        .filter(Boolean) as string[][],
     ),
-    { next: { tags: [`post`, `county`, `topic`] } },
+    counties.data,
+    topics.data,
   );
-
-  if (draftMode().isEnabled)
-    return (
-      <PostsIndexPagePreview
-        initial={initial}
-        counties={counties.data}
-        topics={topics.data}
-      />
-    );
 
   return (
     <PostsIndexPageLayout
-      data={initial.data}
       counties={counties.data.map(({ title, slug }) => ({
         title,
         value: slug,
       }))}
       topics={topics.data.map(({ title, slug }) => ({ title, value: slug }))}
-    />
+    >
+      <PostList searchParams={searchParams} />
+    </PostsIndexPageLayout>
   );
 }

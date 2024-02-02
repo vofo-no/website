@@ -17,17 +17,19 @@ export default async function HomePage() {
     { next: { tags: ["home"] } },
   );
 
+  const archiveParams = new URLSearchParams({});
+
   if (draftMode().isEnabled) {
     return (
       <HomePagePreview initial={initial}>
-        <PostList />
+        <PostList archiveParams={archiveParams} />
       </HomePagePreview>
     );
   }
 
   return (
     <HomePageLayout data={initial.data}>
-      <PostList />
+      <PostList archiveParams={archiveParams} />
     </HomePageLayout>
   );
 }

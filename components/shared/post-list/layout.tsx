@@ -9,6 +9,7 @@ export function PostListLayout(props: {
   title?: string;
   data: PostListItemPayload[];
   referencesId?: string;
+  archiveParams?: URLSearchParams;
 }) {
   return (
     <section className="mb-4">
@@ -26,14 +27,18 @@ export function PostListLayout(props: {
           />
         ))}
       </div>
-      <div className="mt-8 flex justify-center">
-        <Link
-          href="/aktuelt"
-          className={buttonVariants({ variant: "outline" })}
-        >
-          Dokument- og nyhetsarkiv <ArrowRightIcon className="ml-1" />
-        </Link>
-      </div>
+      {props.archiveParams && (
+        <div className="mt-8 flex justify-center">
+          <Link
+            href={["/aktuelt", props.archiveParams.toString()]
+              .filter(Boolean)
+              .join("?")}
+            className={buttonVariants({ variant: "outline" })}
+          >
+            Dokument- og nyhetsarkiv <ArrowRightIcon className="ml-1" />
+          </Link>
+        </div>
+      )}
     </section>
   );
 }
