@@ -1,9 +1,11 @@
 "use client";
 
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { SelectSeparator } from "@radix-ui/react-select";
 
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -65,6 +67,11 @@ export function PostSearch(props: PostSearchProps) {
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
+  const [q, setQ] = useState("");
+
+  useEffect(() => {
+    setQ(searchParams.get("q") || "");
+  }, [searchParams]);
 
   const updateSearch = useCallback(
     (name: string) => (value: string) => {
@@ -75,13 +82,30 @@ export function PostSearch(props: PostSearchProps) {
         params.delete(name);
       }
 
+      q ? params.set("q", q) : params.delete(q);
+
       router.push(pathname + "?" + params.toString());
     },
-    [pathname, router, searchParams],
+    [pathname, q, router, searchParams],
   );
 
   return (
-    <div className="flex flex-wrap gap-2">
+    <div className="grid grid-cols-2 md:grid-colds-4 gap-2">
+      <form
+        className="flex w-full col-span-2 md:col-span-4 items-center gap-2"
+        onSubmit={(e) => {
+          e.preventDefault();
+          updateSearch("q")(q);
+        }}
+      >
+        <Input
+          aria-label="Søkeord"
+          placeholder="Søk etter..."
+          value={q}
+          onChange={(e) => setQ(e.target.value)}
+        />
+        <Button type="submit">Søk</Button>
+      </form>
       <SearchSelect
         label="Innholdstype"
         value={searchParams.get("type")}
