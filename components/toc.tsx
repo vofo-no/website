@@ -1,11 +1,15 @@
 "use client";
 
+import { useMemo } from "react";
 import { Disclosure } from "@headlessui/react";
 import { toPlainText } from "@portabletext/react";
 import classNames from "classnames";
 import { ChevronRightIcon } from "lucide-react";
 
 import slugify from "@/lib/slugify";
+import { cn } from "@/lib/utils";
+
+import { useHeadersObserver } from "./hooks/useHeadersObserver";
 
 interface TocProps {
   headers?: any[];
@@ -14,6 +18,9 @@ interface TocProps {
 }
 
 export function Toc({ title, headers = [], mobile = false }: TocProps) {
+  const slugs = useMemo(() => headers.map(toPlainText).map(slugify), [headers]);
+  const activeHeaderId = useHeadersObserver(slugs);
+
   if (!(headers?.length > 2)) return null;
 
   if (mobile) {
@@ -70,7 +77,10 @@ export function Toc({ title, headers = [], mobile = false }: TocProps) {
             <li key={item._key} className="!pl-0 flex justify-start">
               <a
                 href={`#${anchor}`}
-                className="relative pl-4 leading-normal hover:underline"
+                className={cn(
+                  "relative pl-4 leading-normal hover:underline",
+                  anchor === activeHeaderId && "font-semibold",
+                )}
               >
                 <ChevronRightIcon className="w-5 top-0.5 -left-1 absolute" />
                 <span>{plain}</span>
