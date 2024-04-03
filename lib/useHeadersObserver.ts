@@ -13,16 +13,18 @@ export function useHeadersObserver(ids: string[] = []) {
   };
 
   useEffect(() => {
-    observer.current = new IntersectionObserver(handleObsever, {
-      rootMargin: "-20% 0% -35% 0px",
-    });
+    if (ids.length) {
+      observer.current = new IntersectionObserver(handleObsever, {
+        rootMargin: "-112px 0px 0px 0px",
+      });
 
-    const elements = document.querySelectorAll(
-      ids.map((value) => `#${value}`).join(", "),
-    );
-    elements.forEach((element) => observer.current!.observe(element));
+      const elements = document.querySelectorAll(
+        ids.map((value) => `#${value}`).join(", "),
+      );
+      elements.forEach((element) => observer.current!.observe(element));
 
-    return () => observer.current?.disconnect();
+      return () => observer.current?.disconnect();
+    }
   }, [ids]);
 
   return activeId;
