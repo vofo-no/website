@@ -18,7 +18,7 @@ export function PersonLayout(props: PersonLayoutProps) {
   const imageUrl = image && urlForImage(image)?.size(256, 256).url();
 
   return (
-    <div className={"flex gap-4 my-4"}>
+    <div className={"flex items-center gap-4 my-4 max-w-full not-prose"}>
       <Avatar className="h-24 w-24 not-prose">
         {imageUrl && <AvatarImage src={imageUrl} />}
         <AvatarFallback>
@@ -26,34 +26,42 @@ export function PersonLayout(props: PersonLayoutProps) {
         </AvatarFallback>
       </Avatar>
       <div
-        className={cn("flex flex-col self-center", {
+        className={cn("flex flex-col self-center overflow-hidden", {
           "animate-pulse": !props.data,
         })}
       >
-        <div className="text-lg font-medium leading-tight">
-          {name ?? (
-            <span className="w-36 inline-block bg-muted h-4 rounded-md "></span>
-          )}
-        </div>
-        <div className="text-muted-foreground text-base leading-normal line-clamp-1">
-          {position}
+        <div className="text-base truncate">
+          <p className="font-medium truncate">
+            {name ?? (
+              <span className="w-2/3 inline-block bg-muted h-4 rounded-md "></span>
+            )}
+          </p>
+          <p className="text-muted-foreground truncate">{position}</p>
         </div>
         {!props.hideContactInfo && (
-          <div className="flex justify-start flex-wrap gap-x-2 gap-y-1 mt-1 text-base">
+          <div className="flex justify-start flex-wrap gap-x-2 gap-y-1 mt-1 text-sm">
             {email && (
               <Link
                 href={`mailto:${email}`}
-                className="text-blue-700 hover:underline flex items-center gap-1"
+                className="text-blue-700 hover:underline truncate"
               >
-                <MailIcon size={14} /> {email}
+                <MailIcon
+                  size={14}
+                  className="align-middle inline-block mr-1"
+                />
+                {email}
               </Link>
             )}
             {phone && (
               <Link
                 href={`tel:${phone}`}
-                className="text-blue-700 hover:underline flex items-center gap-1"
+                className="text-blue-700 hover:underline"
               >
-                <PhoneIcon size={14} /> {formatPhone(phone)}
+                <PhoneIcon
+                  size={14}
+                  className="align-middle inline-block mr-1"
+                />
+                {formatPhone(phone)}
               </Link>
             )}
           </div>

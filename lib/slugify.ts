@@ -13,6 +13,7 @@ export default function slugify(string: string) {
     .replace(/&/g, "-og-")
     .replace(/[^\w\-]+/g, "")
     .replace(/\-\-+/g, "-")
+    .replace(/^(?:-*\d+)+/, "")
     .replace(/^-+/, "")
     .replace(/-+$/, "");
 }

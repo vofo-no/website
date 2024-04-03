@@ -8,7 +8,7 @@ export const H2WithAnchor: PortableTextBlockComponent = ({
 }) => {
   const anchor = slugify(toPlainText(value));
   return (
-    <h2 id={anchor} className="scroll-mt-16 md:scroll-mt-28">
+    <h2 id={anchor} className="scroll-mt-32 md:scroll-mt-28">
       {children}
     </h2>
   );

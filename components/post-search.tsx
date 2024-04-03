@@ -101,6 +101,7 @@ export function PostSearch(props: PostSearchProps) {
         <Input
           aria-label="Søkeord"
           placeholder="Søk etter..."
+          className="text-base"
           value={q}
           onChange={(e) => setQ(e.target.value)}
         />
