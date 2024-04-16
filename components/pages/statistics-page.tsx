@@ -1,14 +1,6 @@
 import data from "@/data/latest.json";
 import topics from "@/data/topics.json";
-import {
-  Card,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeaderCell,
-  TableRow,
-} from "@tremor/react";
+import { Card } from "@tremor/react";
 
 import { formatNumber } from "@/lib/formatNumber";
 import getOrganizationName from "@/lib/getOrganizationName";
@@ -427,7 +419,7 @@ export function StatisticsPageLayout() {
                   name="Fylke"
                   tabs={["Antall kurs", "Etter innbyggertall", "Deltakere"]}
                   values={["Kurs", "Kurs pr. 1000 innbyggere", "Deltakere"]}
-                  initial={25}
+                  initial={data.summary.fylker.length}
                   data={data.summary.fylker.map((bar) => ({
                     name: bar.navn,
                     values: [bar.kurs, bar.kurs / (bar.pop / 1000), bar.delt],
@@ -494,46 +486,26 @@ export function StatisticsPageLayout() {
                   forklaringene på hvorfor tilskuddet varierer mellom
                   studieforbund.
                 </p>
-                <Table className="not-prose">
-                  <TableHead>
-                    <TableRow className="border-b border-tremor-border dark:border-dark-tremor-border">
-                      <TableHeaderCell className="text-tremor-content-strong dark:text-dark-tremor-content-strong">
-                        Studieforbund
-                      </TableHeaderCell>
-                      <TableHeaderCell className="text-right text-tremor-content-strong dark:text-dark-tremor-content-strong">
-                        Kurs
-                      </TableHeaderCell>
-                      <TableHeaderCell className="text-right text-tremor-content-strong dark:text-dark-tremor-content-strong">
-                        Deltakere
-                      </TableHeaderCell>
-                      <TableHeaderCell className="text-right text-tremor-content-strong dark:text-dark-tremor-content-strong">
-                        Kurstimer
-                      </TableHeaderCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {data.summary.studieforbund.map((item) => (
-                      <TableRow key={item.sf}>
-                        <TableCell className="font-medium text-tremor-content-strong dark:text-dark-tremor-content-strong">
-                          {getOrganizationName(
-                            item.sf,
-                            null,
-                            data.history[0].aar,
-                          )}
-                        </TableCell>
-                        <TableCell className="text-right">
-                          {formatNumber(item.kurs)}
-                        </TableCell>
-                        <TableCell className="text-right">
-                          {formatNumber(item.delt)}
-                        </TableCell>
-                        <TableCell className="text-right">
-                          {formatNumber(item.timer)}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+                <TabBarList
+                  variant="solid"
+                  name="Studieforbund"
+                  tabs={["Timer", "Deltakere", "Kurs", "Statstilskudd"]}
+                  initial={data.summary.studieforbund.length}
+                  options={[{}, {}, {}, { style: "currency", currency: "NOK" }]}
+                  data={data.summary.studieforbund.map((item) => ({
+                    name: getOrganizationName(
+                      item.sf,
+                      null,
+                      data.history[0].aar,
+                    ),
+                    values: [
+                      item.timer,
+                      item.delt,
+                      item.kurs,
+                      item.timer * 100,
+                    ],
+                  }))}
+                />
               </div>
             </div>
             <div>
