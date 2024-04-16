@@ -10,6 +10,7 @@ interface ExpandableBarListProps {
   name: string;
   value: string;
   initial?: number;
+  formatOptions?: Intl.NumberFormatOptions;
 }
 
 export function ExpandableBarList(props: ExpandableBarListProps) {
@@ -34,7 +35,7 @@ export function ExpandableBarList(props: ExpandableBarListProps) {
       <BarList
         data={sortedData}
         className="mt-2"
-        valueFormatter={formatNumber}
+        valueFormatter={(v: number) => formatNumber(v, props.formatOptions)}
       />
       {expandable && (
         <button

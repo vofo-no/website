@@ -9,13 +9,15 @@ interface TabBarListProps
   extends Pick<ComponentProps<typeof ExpandableBarList>, "initial" | "name"> {
   variant: "line" | "solid";
   tabs: string[];
-  values: string[];
+  values?: string[];
+  options?: Intl.NumberFormatOptions[];
   data: { name: string; values: number[] }[];
 }
 
 export function TabBarList({
   tabs,
-  values,
+  values = [],
+  options = [],
   data,
   variant,
   ...rest
@@ -33,6 +35,7 @@ export function TabBarList({
         {...rest}
         value={values[tab] || tabs[tab]}
         data={data.map(({ name, values }) => ({ name, value: values[tab] }))}
+        formatOptions={options[tab]}
       />
     </TabGroup>
   );
