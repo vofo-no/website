@@ -413,11 +413,37 @@ export function StatisticsPageLayout() {
             <div className="md:col-span-2">
               <div className="prose max-w-prose mx-auto">
                 <h2>Geografi</h2>
-                <p>Studieforbundene har kurs over hele landet.</p>
+                <p>
+                  Studieforbundene har kurs over hele landet. Totalt sett ble
+                  det gjennomført{" "}
+                  <strong>flest kurs i {data.summary.fylker[0].navn}</strong>.
+                </p>
+                <p>
+                  I forhold til folketallet i de ulike fylkene ble det
+                  gjennomført{" "}
+                  <strong>
+                    flest kurs pr. innbygger i{" "}
+                    {
+                      data.summary.fylker.sort(
+                        (a, b) => b.kurs / b.pop - a.kurs / a.pop,
+                      )[0].navn
+                    }
+                  </strong>{" "}
+                  og{" "}
+                  <strong>
+                    færrest kurs pr. innbygger i{" "}
+                    {
+                      data.summary.fylker.sort(
+                        (a, b) => a.kurs / a.pop - b.kurs / b.pop,
+                      )[0].navn
+                    }
+                  </strong>
+                  .
+                </p>
                 <TabBarList
                   variant="solid"
                   name="Fylke"
-                  tabs={["Antall kurs", "Etter innbyggertall", "Deltakere"]}
+                  tabs={["Antall kurs", "Etter folketall", "Deltakere"]}
                   values={["Kurs", "Kurs pr. 1000 innbyggere", "Deltakere"]}
                   initial={data.summary.fylker.length}
                   data={data.summary.fylker.map((bar) => ({
@@ -461,7 +487,7 @@ export function StatisticsPageLayout() {
                   <TabBarList
                     variant="line"
                     name="Kommune"
-                    tabs={["Antall kurs", "Etter innbyggertall"]}
+                    tabs={["Antall kurs", "Etter folketall"]}
                     values={["Kurs", "Kurs pr. 1000 innbyggere"]}
                     initial={8}
                     data={data.summary.kommuner.map((bar) => ({
@@ -529,6 +555,84 @@ export function StatisticsPageLayout() {
                     }))}
                   />
                 </MetricWithDiff>
+              </div>
+            </div>
+          </div>
+          <div className="grid md:grid-cols-3 gap-6">
+            <div className="md:col-span-2">
+              <div className="prose max-w-prose mx-auto">
+                <h2>Produksjon og kilder</h2>
+                <p>Vi bruker ulike kilder for å lage denne statistikken.</p>
+                <dl>
+                  <dt>
+                    <a href="https://www.ssb.no/utdanning/voksenopplaering/statistikk/studieforbundenes-opplaeringsvirksomhet">
+                      Studieforbundenes opplæringsvirksomhet (SSB)
+                    </a>
+                  </dt>
+                  <dd>
+                    Studieforbundene leverer data til Vofo, som kontrollerer og
+                    sammenstiller datasettet sammen med SSB. Inneholder kodet
+                    data om alle kurs, herunder emne, kurssted, arrangør,
+                    varighet og antall deltakere.
+                  </dd>
+                  <dt>Offentlig rapportering til HK-dir</dt>
+                  <dd>
+                    Studieforbundene rapporterer om virksomheten sin og bruk av
+                    statstilskudd til HK-dir hvert år. Disse rapportene omfatter
+                    bl.a. brukt statstilskudd spesifisert på ulike fylker.
+                  </dd>
+                  <dt>Navn på studieforbund og organisasjoner</dt>
+                  <dd>
+                    Vofo ajourholder egne lister over studieforbundenes navn og
+                    medlemsorganisasjoner, som brukes til å identifisere
+                    organisajsoner og studieforbund i statistikken. Listene
+                    produseres i dialog med de enkelte studieforbundene og ved å
+                    se på årlig rapportering til HK-dir.
+                  </dd>
+                  <dt>Standard for enmeinndeling for voksenopplæring</dt>
+                  <dd>
+                    Emneinndeling for voksenopplæring ble utarbeidet av SSB i
+                    samarbeid med daværende Kirke-, utdannings- og
+                    forskningsdepartementet (KUF), Voksenopplæringsforbundet
+                    (Vofo), Norsk Forbund for Fjernundervisning (NFF) og
+                    folkehøyskolerådet (FHSR).
+                  </dd>
+                  <dt>Befolkningsstatistikk</dt>
+                  <dd>
+                    Folketall for fylker og kommuner hentes fra SSB sin{" "}
+                    <a href="https://www.ssb.no/befolkning/folketall/statistikk/befolkning">
+                      befolkningsstatistikk
+                    </a>{" "}
+                    pr. 1. januar det året statistikken gjelder for.
+                  </dd>
+                  <dt>Fylkesinndeling</dt>
+                  <dd>
+                    Fylkesinndelingen er basert på SSB sin{" "}
+                    <a href="https://www.ssb.no/klass/klassifikasjoner/104">
+                      standard for fylkesinndeling
+                    </a>
+                    . Vi tar utgangspukt i den inndelingen som var gjeldende det
+                    året statistikken gjelder for. Dersom fylker er delt eller
+                    sammenslått, forsøker vi å korrigere for dette bakover i tid
+                    - der dette er mulig - blant annet ved hjelp av
+                    kommunenummer.
+                  </dd>
+                  <dt>Kommuneinndeling</dt>
+                  <dd>
+                    Kommuneinndelingen er basert på SSB sin{" "}
+                    <a href="https://www.ssb.no/klass/klassifikasjoner/131">
+                      standard for kommuneinndeling
+                    </a>
+                    . Vi tar utgangspukt i den inndelingen som var gjeldende det
+                    året statistikken gjelder for. Dersom kommuner er delt eller
+                    sammenslått, forsøker vi å korrigere for dette bakover i tid
+                    - der dette er mulig. For kommuner som er sammenslått, vil
+                    vi slå sammen data om de to kommunene bakover i tid. For
+                    kommuner som er delt vil ikke dette være mulig, og det vi i
+                    så fall kunne mangle data om kommunen fra de årene den var
+                    sammenslått.
+                  </dd>
+                </dl>
               </div>
             </div>
           </div>
