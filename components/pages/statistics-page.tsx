@@ -16,13 +16,16 @@ import {
   PageHeaderHeading,
 } from "@/components/page-header";
 
+const thisYear = data.history.sort((a, b) => b.aar - a.aar)[0];
+const lastYear = data.history.find((a) => a.aar !== thisYear.aar)!;
+
 const coursesWithLessThan4Participants =
   (
     (data.histogram.find((bar) => bar.label === "0-3") ?? {}) as Record<
       string,
       number
     >
-  )[`${data.history[0].aar}`] ?? 0;
+  )[`${thisYear.aar}`] ?? 0;
 
 export function StatisticsPageLayout() {
   return (
@@ -31,7 +34,7 @@ export function StatisticsPageLayout() {
         <PageHeader>
           <PageHeaderHeading>Statistikk</PageHeaderHeading>
           <PageHeaderDescription>
-            Studieforbundenes kursaktivitet i {data.history[0].aar}
+            Studieforbundenes kursaktivitet i {thisYear.aar}
           </PageHeaderDescription>
         </PageHeader>
       </div>
@@ -63,7 +66,7 @@ export function StatisticsPageLayout() {
                 <p>
                   <strong>
                     {formatNumber(
-                      data.summary.kurs_bin[0].kurs / data.history[0].kurs,
+                      data.summary.kurs_bin[0].kurs / thisYear.kurs,
                       {
                         style: "percent",
                       },
@@ -120,18 +123,18 @@ export function StatisticsPageLayout() {
             <div className="order-1 md:order-2">
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-1">
                 <MetricWithDiff
-                  value={data.history[0].kurs}
-                  old={data.history[1].kurs}
+                  value={thisYear.kurs}
+                  old={lastYear.kurs}
                   label="Antall kurs"
                 />
                 <MetricWithDiff
-                  value={data.history[0].timer}
-                  old={data.history[1].timer}
+                  value={thisYear.timer}
+                  old={lastYear.timer}
                   label="Deltakere"
                 />
                 <MetricWithDiff
-                  value={data.history[0].timer_median}
-                  old={data.history[1].timer_median}
+                  value={thisYear.timer_median}
+                  old={lastYear.timer_median}
                   label="Varighet pr. kurs"
                   options={{
                     maximumFractionDigits: 1,
@@ -142,8 +145,8 @@ export function StatisticsPageLayout() {
                 />
                 <MetricWithDiff
                   label="Kursemner"
-                  value={data.history[0].emner}
-                  old={data.history[1].emner}
+                  value={thisYear.emner}
+                  old={lastYear.emner}
                 />
               </div>
             </div>
@@ -151,8 +154,8 @@ export function StatisticsPageLayout() {
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
             <MetricWithDiff
               label="Korte kurs (inntil 7 dager)"
-              value={data.history[0].korte_kurs}
-              old={data.history[1].korte_kurs}
+              value={thisYear.korte_kurs}
+              old={lastYear.korte_kurs}
             >
               <ExpandableBarList
                 name="Emne"
@@ -165,8 +168,8 @@ export function StatisticsPageLayout() {
             </MetricWithDiff>
             <MetricWithDiff
               label="Lange kurs (over 7 dager)"
-              value={data.history[0].lange_kurs}
-              old={data.history[1].lange_kurs}
+              value={thisYear.lange_kurs}
+              old={lastYear.lange_kurs}
             >
               <ExpandableBarList
                 name="Emne"
@@ -189,17 +192,14 @@ export function StatisticsPageLayout() {
                 </p>
                 <p>
                   De fleste kursene hadde om lag{" "}
-                  <strong>{data.history[0].deltakere_median} deltakere</strong>.
-                  Dette er{" "}
-                  {data.history[0].deltakere_median ===
-                  data.history[1].deltakere_median ? (
+                  <strong>{thisYear.deltakere_median} deltakere</strong>. Dette
+                  er{" "}
+                  {thisYear.deltakere_median === lastYear.deltakere_median ? (
                     "like mange som"
-                  ) : data.history[0].deltakere_median >
-                    data.history[1].deltakere_median ? (
+                  ) : thisYear.deltakere_median > lastYear.deltakere_median ? (
                     <>
                       <strong>
-                        {data.history[0].deltakere_median -
-                          data.history[1].deltakere_median}{" "}
+                        {thisYear.deltakere_median - lastYear.deltakere_median}{" "}
                         flere
                       </strong>{" "}
                       siden
@@ -207,8 +207,7 @@ export function StatisticsPageLayout() {
                   ) : (
                     <>
                       <strong>
-                        {data.history[1].deltakere_median -
-                          data.history[0].deltakere_median}{" "}
+                        {lastYear.deltakere_median - thisYear.deltakere_median}{" "}
                         færre
                       </strong>{" "}
                       siden
@@ -220,8 +219,8 @@ export function StatisticsPageLayout() {
                   data={data.histogram}
                   index="label"
                   categories={[
-                    data.history[1].aar.toString(),
-                    data.history[0].aar.toString(),
+                    lastYear.aar.toString(),
+                    thisYear.aar.toString(),
                   ]}
                 />
                 <p>
@@ -233,7 +232,7 @@ export function StatisticsPageLayout() {
                       </strong>{" "}
                       (
                       {formatNumber(
-                        coursesWithLessThan4Participants / data.history[0].kurs,
+                        coursesWithLessThan4Participants / thisYear.kurs,
                         { style: "percent" },
                       )}
                       )
@@ -248,8 +247,8 @@ export function StatisticsPageLayout() {
             <div>
               <MetricWithDiff
                 label="Deltakere"
-                value={data.history[0].deltakere}
-                old={data.history[1].deltakere}
+                value={thisYear.deltakere}
+                old={lastYear.deltakere}
               >
                 <ExpandableBarList
                   name="Emne"
@@ -268,17 +267,16 @@ export function StatisticsPageLayout() {
                   Det var{" "}
                   <strong>
                     flest{" "}
-                    {data.history[0].deltakere_kvinner >
-                    data.history[0].deltakere_menn
+                    {thisYear.deltakere_kvinner > thisYear.deltakere_menn
                       ? "kvinner"
                       : "menn"}
                   </strong>{" "}
                   (
                   {formatNumber(
                     Math.max(
-                      data.history[0].deltakere_kvinner,
-                      data.history[0].deltakere_menn,
-                    ) / data.history[0].deltakere,
+                      thisYear.deltakere_kvinner,
+                      thisYear.deltakere_menn,
+                    ) / thisYear.deltakere,
                     { style: "percent" },
                   )}
                   ) blant deltakerne på kurs.
@@ -289,8 +287,8 @@ export function StatisticsPageLayout() {
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
             <MetricWithDiff
               label="Kvinner"
-              value={data.history[0].deltakere_kvinner}
-              old={data.history[1].deltakere_kvinner}
+              value={thisYear.deltakere_kvinner}
+              old={lastYear.deltakere_kvinner}
             >
               <ExpandableBarList
                 name="Emne"
@@ -303,8 +301,8 @@ export function StatisticsPageLayout() {
             </MetricWithDiff>
             <MetricWithDiff
               label="Menn"
-              value={data.history[0].deltakere_menn}
-              old={data.history[1].deltakere_menn}
+              value={thisYear.deltakere_menn}
+              old={lastYear.deltakere_menn}
             >
               <ExpandableBarList
                 name="Emne"
@@ -326,8 +324,8 @@ export function StatisticsPageLayout() {
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             <MetricWithDiff
               label="Deltakere 14-19 år"
-              value={data.history[0].deltakere_10}
-              old={data.history[1].deltakere_10}
+              value={thisYear.deltakere_10}
+              old={lastYear.deltakere_10}
             >
               <ExpandableBarList
                 name="Emne"
@@ -340,8 +338,8 @@ export function StatisticsPageLayout() {
             </MetricWithDiff>
             <MetricWithDiff
               label="Deltakere 20-29 år"
-              value={data.history[0].deltakere_20}
-              old={data.history[1].deltakere_20}
+              value={thisYear.deltakere_20}
+              old={lastYear.deltakere_20}
             >
               <ExpandableBarList
                 name="Emne"
@@ -354,8 +352,8 @@ export function StatisticsPageLayout() {
             </MetricWithDiff>
             <MetricWithDiff
               label="Deltakere 30-39 år"
-              value={data.history[0].deltakere_30}
-              old={data.history[1].deltakere_30}
+              value={thisYear.deltakere_30}
+              old={lastYear.deltakere_30}
             >
               <ExpandableBarList
                 name="Emne"
@@ -368,8 +366,8 @@ export function StatisticsPageLayout() {
             </MetricWithDiff>
             <MetricWithDiff
               label="Deltakere 40-49 år"
-              value={data.history[0].deltakere_40}
-              old={data.history[1].deltakere_40}
+              value={thisYear.deltakere_40}
+              old={lastYear.deltakere_40}
             >
               <ExpandableBarList
                 name="Emne"
@@ -382,8 +380,8 @@ export function StatisticsPageLayout() {
             </MetricWithDiff>
             <MetricWithDiff
               label="Deltakere 50-59 år"
-              value={data.history[0].deltakere_50}
-              old={data.history[1].deltakere_50}
+              value={thisYear.deltakere_50}
+              old={lastYear.deltakere_50}
             >
               <ExpandableBarList
                 name="Emne"
@@ -396,8 +394,8 @@ export function StatisticsPageLayout() {
             </MetricWithDiff>
             <MetricWithDiff
               label="Deltakere over 60 år"
-              value={data.history[0].deltakere_60}
-              old={data.history[1].deltakere_60}
+              value={thisYear.deltakere_60}
+              old={lastYear.deltakere_60}
             >
               <ExpandableBarList
                 name="Emne"
@@ -416,7 +414,14 @@ export function StatisticsPageLayout() {
                 <p>
                   Studieforbundene har kurs over hele landet. Totalt sett ble
                   det gjennomført{" "}
-                  <strong>flest kurs i {data.summary.fylker[0].navn}</strong>.
+                  <strong>
+                    flest kurs i{" "}
+                    {
+                      data.summary.fylker.sort((a, b) => b.kurs - a.kurs)[0]
+                        .navn
+                    }
+                  </strong>
+                  .
                 </p>
                 <p>
                   I forhold til folketallet i de ulike fylkene ble det
@@ -519,11 +524,7 @@ export function StatisticsPageLayout() {
                   initial={data.summary.studieforbund.length}
                   options={[{}, {}, {}, { style: "currency", currency: "NOK" }]}
                   data={data.summary.studieforbund.map((item) => ({
-                    name: getOrganizationName(
-                      item.sf,
-                      null,
-                      data.history[0].aar,
-                    ),
+                    name: getOrganizationName(item.sf, null, thisYear.aar),
                     values: [
                       item.timer,
                       item.delt,
@@ -538,19 +539,15 @@ export function StatisticsPageLayout() {
               <div className="grid grid-cols-1 gap-6">
                 <MetricWithDiff
                   label="Organisasjoner"
-                  value={data.history[0].organisasjoner}
-                  old={data.history[1].organisasjoner}
+                  value={thisYear.organisasjoner}
+                  old={lastYear.organisasjoner}
                 >
                   <ExpandableBarList
                     name="Organisasjon"
                     value="Kurs"
                     initial={8}
                     data={data.summary.organisasjoner.map((bar) => ({
-                      name: getOrganizationName(
-                        bar.sf,
-                        bar.org,
-                        data.history[0].aar,
-                      ),
+                      name: getOrganizationName(bar.sf, bar.org, thisYear.aar),
                       value: bar.kurs,
                     }))}
                   />
