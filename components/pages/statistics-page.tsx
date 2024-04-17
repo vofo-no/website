@@ -184,6 +184,54 @@ export function StatisticsPageLayout() {
           <div className="grid md:grid-cols-3 gap-6">
             <div className="md:col-span-2">
               <div className="prose max-w-prose mx-auto">
+                <h2>Tilskudd og arrangører</h2>
+                <p>
+                  Tilskuddene til studieforbund fordeles etter antall kurstimer
+                  fra tidligere år. Studieforbundet fordeler statstilskuddet til
+                  sine egne organisasjonsledd og medlemsorganisasjoner som
+                  holder kurs.
+                </p>
+                <TabBarList
+                  variant="solid"
+                  name="Studieforbund"
+                  tabs={["Timer", "Deltakere", "Kurs", "Statstilskudd"]}
+                  initial={data.summary.studieforbund.length}
+                  options={[{}, {}, {}, { style: "currency", currency: "NOK" }]}
+                  data={data.summary.studieforbund.map((item) => ({
+                    name: getOrganizationName(item.sf, null, thisYear.aar),
+                    values: [
+                      item.timer,
+                      item.delt,
+                      item.kurs,
+                      item.timer * 100,
+                    ],
+                  }))}
+                />
+              </div>
+            </div>
+            <div>
+              <div className="grid grid-cols-1 gap-6">
+                <MetricWithDiff
+                  label="Organisasjoner"
+                  value={thisYear.organisasjoner}
+                  old={lastYear.organisasjoner}
+                >
+                  <ExpandableBarList
+                    name="Organisasjon"
+                    value="Kurs"
+                    initial={8}
+                    data={data.summary.organisasjoner.map((bar) => ({
+                      name: getOrganizationName(bar.sf, bar.org, thisYear.aar),
+                      value: bar.kurs,
+                    }))}
+                  />
+                </MetricWithDiff>
+              </div>
+            </div>
+          </div>
+          <div className="grid md:grid-cols-3 gap-6">
+            <div className="md:col-span-2">
+              <div className="prose max-w-prose mx-auto">
                 <h2>Om deltakerne</h2>
                 <p>
                   Vi teller deltakere som har vært med på mer enn 75 % av kurset
@@ -501,57 +549,6 @@ export function StatisticsPageLayout() {
                     }))}
                   />
                 </Card>
-              </div>
-            </div>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-6">
-            <div className="md:col-span-2">
-              <div className="prose max-w-prose mx-auto">
-                <h2>Tilskudd og arrangører</h2>
-                <p>
-                  Tilskuddene til studieforbund fordeles etter antall kurstimer
-                  fra tidligere år. Studieforbundet fordeler tilskuddet til
-                  organisasjonsledd og medlemsorganisasjoner som holder kurs.
-                  Variasjon i aktivitet og ulike prioriteringer er de viktigste
-                  forklaringene på hvorfor tilskuddet varierer mellom
-                  studieforbund.
-                </p>
-                <TabBarList
-                  variant="solid"
-                  name="Studieforbund"
-                  tabs={["Timer", "Deltakere", "Kurs", "Statstilskudd"]}
-                  initial={data.summary.studieforbund.length}
-                  options={[{}, {}, {}, { style: "currency", currency: "NOK" }]}
-                  data={data.summary.studieforbund.map((item) => ({
-                    name: getOrganizationName(item.sf, null, thisYear.aar),
-                    values: [
-                      item.timer,
-                      item.delt,
-                      item.kurs,
-                      item.timer * 100,
-                    ],
-                  }))}
-                />
-              </div>
-            </div>
-            <div>
-              <div className="grid grid-cols-1 gap-6">
-                <MetricWithDiff
-                  label="Organisasjoner"
-                  value={thisYear.organisasjoner}
-                  old={lastYear.organisasjoner}
-                >
-                  <ExpandableBarList
-                    name="Organisasjon"
-                    value="Kurs"
-                    initial={8}
-                    data={data.summary.organisasjoner.map((bar) => ({
-                      name: getOrganizationName(bar.sf, bar.org, thisYear.aar),
-                      value: bar.kurs,
-                    }))}
-                  />
-                </MetricWithDiff>
               </div>
             </div>
           </div>
