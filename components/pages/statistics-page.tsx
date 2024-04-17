@@ -1,4 +1,5 @@
-import data from "@/data/latest.json";
+import { useMemo } from "react";
+import type dataType from "@/data/latest.json";
 import topics from "@/data/topics.json";
 import { Card } from "@tremor/react";
 
@@ -16,23 +17,37 @@ import {
   PageHeaderHeading,
 } from "@/components/page-header";
 
-const thisYear = data.history.sort((a, b) => b.aar - a.aar)[0];
-const lastYear = data.history.find((a) => a.aar !== thisYear.aar)!;
+interface StatisticsPageLayoutProps {
+  data: typeof dataType & { title?: string };
+}
 
-const coursesWithLessThan4Participants =
-  (
-    (data.histogram.find((bar) => bar.label === "0-3") ?? {}) as Record<
-      string,
-      number
-    >
-  )[`${thisYear.aar}`] ?? 0;
+export function StatisticsPageLayout({ data }: StatisticsPageLayoutProps) {
+  const thisYear = useMemo(
+    () => data.history.sort((a, b) => b.aar - a.aar)[0],
+    [data.history],
+  );
+  const lastYear = useMemo(
+    () => data.history.find((a) => a.aar !== thisYear.aar)!,
+    [data.history, thisYear.aar],
+  );
+  const coursesWithLessThan4Participants = useMemo(
+    () =>
+      (
+        (data.histogram.find((bar) => bar.label === "0-3") ?? {}) as Record<
+          string,
+          number
+        >
+      )[`${thisYear.aar}`] ?? 0,
+    [data.histogram, thisYear.aar],
+  );
 
-export function StatisticsPageLayout() {
   return (
     <>
       <div className="container">
         <PageHeader>
-          <PageHeaderHeading>Statistikk</PageHeaderHeading>
+          <PageHeaderHeading>
+            Statistikk{data.title && ` for ${data.title}`}
+          </PageHeaderHeading>
           <PageHeaderDescription>
             Studieforbundenes kursaktivitet i {thisYear.aar}
           </PageHeaderDescription>
@@ -457,54 +472,56 @@ export function StatisticsPageLayout() {
           </div>
           <div className="grid md:grid-cols-3 gap-6">
             <div className="md:col-span-2">
-              <div className="prose max-w-prose mx-auto">
-                <h2>Geografi</h2>
-                <p>
-                  Studieforbundene har kurs over hele landet. Totalt sett ble
-                  det gjennomført{" "}
-                  <strong>
-                    flest kurs i{" "}
-                    {
-                      data.summary.fylker.sort((a, b) => b.kurs - a.kurs)[0]
-                        .navn
-                    }
-                  </strong>
-                  .
-                </p>
-                <p>
-                  I forhold til folketallet i de ulike fylkene ble det
-                  gjennomført{" "}
-                  <strong>
-                    flest kurs pr. innbygger i{" "}
-                    {
-                      data.summary.fylker.sort(
-                        (a, b) => b.kurs / b.pop - a.kurs / a.pop,
-                      )[0].navn
-                    }
-                  </strong>{" "}
-                  og{" "}
-                  <strong>
-                    færrest kurs pr. innbygger i{" "}
-                    {
-                      data.summary.fylker.sort(
-                        (a, b) => a.kurs / a.pop - b.kurs / b.pop,
-                      )[0].navn
-                    }
-                  </strong>
-                  .
-                </p>
-                <TabBarList
-                  variant="solid"
-                  name="Fylke"
-                  tabs={["Antall kurs", "Etter folketall", "Deltakere"]}
-                  values={["Kurs", "Kurs pr. 1000 innbyggere", "Deltakere"]}
-                  initial={data.summary.fylker.length}
-                  data={data.summary.fylker.map((bar) => ({
-                    name: bar.navn,
-                    values: [bar.kurs, bar.kurs / (bar.pop / 1000), bar.delt],
-                  }))}
-                />
-              </div>
+              {data.summary.fylker.length > 1 && (
+                <div className="prose max-w-prose mx-auto">
+                  <h2>Geografi</h2>
+                  <p>
+                    Studieforbundene har kurs over hele landet. Totalt sett ble
+                    det gjennomført{" "}
+                    <strong>
+                      flest kurs i{" "}
+                      {
+                        data.summary.fylker.sort((a, b) => b.kurs - a.kurs)[0]
+                          .navn
+                      }
+                    </strong>
+                    .
+                  </p>
+                  <p>
+                    I forhold til folketallet i de ulike fylkene ble det
+                    gjennomført{" "}
+                    <strong>
+                      flest kurs pr. innbygger i{" "}
+                      {
+                        data.summary.fylker.sort(
+                          (a, b) => b.kurs / b.pop - a.kurs / a.pop,
+                        )[0].navn
+                      }
+                    </strong>{" "}
+                    og{" "}
+                    <strong>
+                      færrest kurs pr. innbygger i{" "}
+                      {
+                        data.summary.fylker.sort(
+                          (a, b) => a.kurs / a.pop - b.kurs / b.pop,
+                        )[0].navn
+                      }
+                    </strong>
+                    .
+                  </p>
+                  <TabBarList
+                    variant="solid"
+                    name="Fylke"
+                    tabs={["Antall kurs", "Etter folketall", "Deltakere"]}
+                    values={["Kurs", "Kurs pr. 1000 innbyggere", "Deltakere"]}
+                    initial={data.summary.fylker.length}
+                    data={data.summary.fylker.map((bar) => ({
+                      name: bar.navn,
+                      values: [bar.kurs, bar.kurs / (bar.pop / 1000), bar.delt],
+                    }))}
+                  />
+                </div>
+              )}
             </div>
             <div>
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-1">

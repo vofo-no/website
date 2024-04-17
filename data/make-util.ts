@@ -1,6 +1,8 @@
 import fs from "fs";
+import { client } from "@/sanity/lib/client";
 import { desc, escape, loadCSV, loadJSON, op } from "arquero";
 import ColumnTable from "arquero/dist/types/table/column-table";
+import { groq } from "next-sanity";
 
 const LOWEST_YEAR = 2015;
 
@@ -167,16 +169,6 @@ async function loadData(year: number, recode?: Record<string, string>) {
     .reify();
 }
 
-const rollupSum = {
-  kurs: op.count(),
-  Deltakere: op.sum(col.deltakere),
-  Kurstimer: op.sum(col.timer),
-  t_trt: op.sum(col.timer_trt),
-  t_dig: op.sum(col.timer_digital),
-  timer_m: op.median(col.timer),
-  delt_m: op.median(col.deltakere),
-};
-
 function getFirstCount(t: ColumnTable) {
   const obj = t.count().objects() as { count: number }[];
   return obj[0].count;
@@ -186,8 +178,10 @@ function makeReport(
   oneYear: ColumnTable,
   twoYears: ColumnTable,
   ssb: ColumnTable,
+  title?: string,
 ) {
   const report = {
+    title,
     summary: {
       // Mediandager
       // Maks dager
@@ -428,36 +422,51 @@ export async function makeUtil(yearArg: string) {
 
   const shortData = data[0].concat(data[1]);
 
-  // Summary
-  //const sum = longData
-  //  .groupby(col.aar)
-  //  .rollup(rollupSum)
-  //  .orderby(desc(col.aar), desc("Kurstimer"));
-  //    .rollup({
-  //      Kurstimer: op.array_agg("Kurstimer"),
-  //      Deltakere: op.array_agg("Deltakere"),
-  //    })
-  //  const fylker = longData.groupby(col.aar, col.fylke).rollup(rollupSum);
-  /*const studieforbund = longData
-    .groupby(col.aar, col.studieforbund)
-    .rollup(rollupSum);
-*/
+  const fylker = await client.fetch<
+    { slug: string; name: string; countyCode: string[] }[]
+  >(groq`
+    *[_type == "county" && active == true && defined(countyCode)][]{
+    "slug": slug.current,
+    name,
+    countyCode,
+  }
+`);
 
-  const wstream = fs.createWriteStream(`data/latest.json`);
+  fylker.map((fylke) => {
+    const wstream2 = fs.createWriteStream(`data/${year}/${fylke.slug}.json`);
+    const filters = fylke.countyCode.map(Number);
+    wstream2.write(
+      JSON.stringify(
+        makeReport(
+          data[0].filter(
+            escape(
+              (d: { [x: string]: number }) =>
+                filters.includes(d[col.kommune]) ||
+                filters.includes(d[col.fylke]),
+            ),
+          ),
+          shortData.filter(
+            escape(
+              (d: { [x: string]: number }) =>
+                filters.includes(d[col.kommune]) ||
+                filters.includes(d[col.fylke]),
+            ),
+          ),
+          ssb.filter(
+            escape(
+              (d: { [x: string]: string }) =>
+                filters.includes(Number(d["code"])) ||
+                filters.includes(Math.trunc(Number(d["code"]) / 100)),
+            ),
+          ),
+          fylke.name,
+        ),
+      ),
+    );
+    wstream2.end();
+  });
+
+  const wstream = fs.createWriteStream(`data/${year}/nasjonal.json`);
   wstream.write(JSON.stringify(makeReport(data[0], shortData, ssb)));
   wstream.end();
-
-  //console.log(JSON.stringify(makeReport(data[0], shortData)));
-
-  /*longData
-    .groupby(col.studieforbund, col.aar)
-    .rollup({
-      timer: op.sum(col.timer),
-      timer_trt: op.sum(col.timer_trt),
-      timer_digital: op.sum(col.timer_digital),
-    })
-    .groupby(col.studieforbund)
-    .pivot(col.aar, ["timer", "timer_trt", "timer_digital"])
-    .orderby(desc(`timer_${year}`))
-    .print();*/
 }

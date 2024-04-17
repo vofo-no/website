@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "data-utils": "npx tsx data/utils.ts"
+    "data-utils": "npx tsx --env-file=.env.local data/utils.ts"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.18",
@@ -57,6 +57,7 @@
     "eslint": "^8",
     "eslint-config-next": "^14.0.4",
     "eslint-config-prettier": "^9.1.0",
+    "glob": "^10.3.12",
     "postcss": "^8",
     "tailwindcss": "^3.3.0",
     "typescript": "^5"
