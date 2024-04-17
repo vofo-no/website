@@ -17,6 +17,8 @@ import {
   PageHeaderHeading,
 } from "@/components/page-header";
 
+import { ProgressBarList } from "../ui/charts/progress-bar-list";
+
 interface StatisticsPageLayoutProps {
   data: typeof dataType & { title?: string };
 }
@@ -254,6 +256,24 @@ export function StatisticsPageLayout({ data }: StatisticsPageLayoutProps) {
                   hatt flere deltakere enn det som vises i statistikken.
                 </p>
                 <p>
+                  Det var{" "}
+                  <strong>
+                    flest{" "}
+                    {thisYear.deltakere_kvinner > thisYear.deltakere_menn
+                      ? "kvinner"
+                      : "menn"}
+                  </strong>{" "}
+                  (
+                  {formatNumber(
+                    Math.max(
+                      thisYear.deltakere_kvinner,
+                      thisYear.deltakere_menn,
+                    ) / thisYear.deltakere,
+                    { style: "percent" },
+                  )}
+                  ) blant deltakerne på kurs.
+                </p>
+                <p>
                   De fleste kursene hadde om lag{" "}
                   <strong>{thisYear.deltakere_median} deltakere</strong>. Dette
                   er{" "}
@@ -305,170 +325,77 @@ export function StatisticsPageLayout({ data }: StatisticsPageLayoutProps) {
                   )}{" "}
                   fikk dispensasjon fra dette kravet.
                 </p>
+                <h3>Aldersfordeling</h3>
+                <ProgressBarList
+                  sum={thisYear.deltakere}
+                  bars={[
+                    { name: "14-19 år", value: thisYear.deltakere_10 },
+                    { name: "20-29 år", value: thisYear.deltakere_20 },
+                    { name: "30-39 år", value: thisYear.deltakere_30 },
+                    { name: "40-49 år", value: thisYear.deltakere_40 },
+                    { name: "50-59 år", value: thisYear.deltakere_50 },
+                    { name: "60+ år", value: thisYear.deltakere_60 },
+                  ]}
+                />
               </div>
             </div>
             <div>
-              <MetricWithDiff
-                label="Deltakere"
-                value={thisYear.deltakere}
-                old={lastYear.deltakere}
-              >
-                <ExpandableBarList
-                  name="Emne"
-                  value="Deltakere"
-                  data={data.summary.emner.map((bar) => ({
-                    name: topics[String(bar.emne) as keyof typeof topics],
-                    value: bar.d,
-                  }))}
-                />
-              </MetricWithDiff>
-            </div>
-            <div className="md:col-span-2">
-              <div className="prose max-w-prose mx-auto">
-                <h3>Kjønnsfordeling</h3>
-                <p>
-                  Det var{" "}
-                  <strong>
-                    flest{" "}
-                    {thisYear.deltakere_kvinner > thisYear.deltakere_menn
-                      ? "kvinner"
-                      : "menn"}
-                  </strong>{" "}
-                  (
-                  {formatNumber(
-                    Math.max(
-                      thisYear.deltakere_kvinner,
-                      thisYear.deltakere_menn,
-                    ) / thisYear.deltakere,
-                    { style: "percent" },
-                  )}
-                  ) blant deltakerne på kurs.
-                </p>
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-1">
+                <MetricWithDiff
+                  label="Deltakere"
+                  value={thisYear.deltakere}
+                  old={lastYear.deltakere}
+                >
+                  <ProgressBarList
+                    sum={thisYear.deltakere}
+                    bars={[
+                      { name: "Kvinner", value: thisYear.deltakere_kvinner },
+                      { name: "Menn", value: thisYear.deltakere_menn },
+                    ]}
+                  />
+                  <TabBarList
+                    variant="line"
+                    name="Emne"
+                    tabs={["Alle deltakere", "Kvinner", "Menn"]}
+                    values={["Deltakere", "Kvinner", "Menn"]}
+                    data={data.summary.emner.map((bar) => ({
+                      name: topics[String(bar.emne) as keyof typeof topics],
+                      values: [bar.d, bar.k, bar.m],
+                    }))}
+                  />
+                </MetricWithDiff>
+                <Card>
+                  <div className="flex flex-col gap-2">
+                    <h3 className="text-tremor-title font-semibold text-tremor- text-tremor-content-strong dark:text-dark-tremor-content-strong">
+                      Kursemner etter aldersgruppe
+                    </h3>
+                    <TabBarList
+                      variant="line"
+                      name="Emne"
+                      tabs={[
+                        "14-19",
+                        "20-29",
+                        "30-39",
+                        "40-49",
+                        "50-59",
+                        "60+",
+                      ]}
+                      data={data.summary.emner.map((bar) => ({
+                        name: topics[String(bar.emne) as keyof typeof topics],
+                        values: [
+                          bar.d1,
+                          bar.d2,
+                          bar.d3,
+                          bar.d4,
+                          bar.d5,
+                          bar.d6,
+                        ],
+                      }))}
+                    />
+                  </div>
+                </Card>
               </div>
             </div>
-          </div>
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-            <MetricWithDiff
-              label="Kvinner"
-              value={thisYear.deltakere_kvinner}
-              old={lastYear.deltakere_kvinner}
-            >
-              <ExpandableBarList
-                name="Emne"
-                value="Kvinner"
-                data={data.summary.emner.map((bar) => ({
-                  name: topics[String(bar.emne) as keyof typeof topics],
-                  value: bar.k,
-                }))}
-              />
-            </MetricWithDiff>
-            <MetricWithDiff
-              label="Menn"
-              value={thisYear.deltakere_menn}
-              old={lastYear.deltakere_menn}
-            >
-              <ExpandableBarList
-                name="Emne"
-                value="Menn"
-                data={data.summary.emner.map((bar) => ({
-                  name: topics[String(bar.emne) as keyof typeof topics],
-                  value: bar.m,
-                }))}
-              />
-            </MetricWithDiff>
-          </div>
-          <div className="grid md:grid-cols-3 gap-6">
-            <div className="md:col-span-2">
-              <div className="prose max-w-prose mx-auto">
-                <h3>Aldersfordeling</h3>
-              </div>
-            </div>
-          </div>
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            <MetricWithDiff
-              label="Deltakere 14-19 år"
-              value={thisYear.deltakere_10}
-              old={lastYear.deltakere_10}
-            >
-              <ExpandableBarList
-                name="Emne"
-                value="Deltakere"
-                data={data.summary.emner.map((bar) => ({
-                  name: topics[String(bar.emne) as keyof typeof topics],
-                  value: bar.d1,
-                }))}
-              />
-            </MetricWithDiff>
-            <MetricWithDiff
-              label="Deltakere 20-29 år"
-              value={thisYear.deltakere_20}
-              old={lastYear.deltakere_20}
-            >
-              <ExpandableBarList
-                name="Emne"
-                value="Deltakere"
-                data={data.summary.emner.map((bar) => ({
-                  name: topics[String(bar.emne) as keyof typeof topics],
-                  value: bar.d2,
-                }))}
-              />
-            </MetricWithDiff>
-            <MetricWithDiff
-              label="Deltakere 30-39 år"
-              value={thisYear.deltakere_30}
-              old={lastYear.deltakere_30}
-            >
-              <ExpandableBarList
-                name="Emne"
-                value="Deltakere"
-                data={data.summary.emner.map((bar) => ({
-                  name: topics[String(bar.emne) as keyof typeof topics],
-                  value: bar.d3,
-                }))}
-              />
-            </MetricWithDiff>
-            <MetricWithDiff
-              label="Deltakere 40-49 år"
-              value={thisYear.deltakere_40}
-              old={lastYear.deltakere_40}
-            >
-              <ExpandableBarList
-                name="Emne"
-                value="Deltakere"
-                data={data.summary.emner.map((bar) => ({
-                  name: topics[String(bar.emne) as keyof typeof topics],
-                  value: bar.d4,
-                }))}
-              />
-            </MetricWithDiff>
-            <MetricWithDiff
-              label="Deltakere 50-59 år"
-              value={thisYear.deltakere_50}
-              old={lastYear.deltakere_50}
-            >
-              <ExpandableBarList
-                name="Emne"
-                value="Deltakere"
-                data={data.summary.emner.map((bar) => ({
-                  name: topics[String(bar.emne) as keyof typeof topics],
-                  value: bar.d5,
-                }))}
-              />
-            </MetricWithDiff>
-            <MetricWithDiff
-              label="Deltakere over 60 år"
-              value={thisYear.deltakere_60}
-              old={lastYear.deltakere_60}
-            >
-              <ExpandableBarList
-                name="Emne"
-                value="Deltakere"
-                data={data.summary.emner.map((bar) => ({
-                  name: topics[String(bar.emne) as keyof typeof topics],
-                  value: bar.d6,
-                }))}
-              />
-            </MetricWithDiff>
           </div>
           <div className="grid md:grid-cols-3 gap-6">
             <div className="md:col-span-2">
