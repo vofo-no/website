@@ -326,15 +326,16 @@ export function StatisticsPageLayout({ data }: StatisticsPageLayoutProps) {
                   fikk dispensasjon fra dette kravet.
                 </p>
                 <h3>Aldersfordeling</h3>
-                <ProgressBarList
-                  sum={thisYear.deltakere}
-                  bars={[
-                    { name: "14-19 år", value: thisYear.deltakere_10 },
-                    { name: "20-29 år", value: thisYear.deltakere_20 },
-                    { name: "30-39 år", value: thisYear.deltakere_30 },
-                    { name: "40-49 år", value: thisYear.deltakere_40 },
-                    { name: "50-59 år", value: thisYear.deltakere_50 },
-                    { name: "60+ år", value: thisYear.deltakere_60 },
+                <BarChart
+                  index="name"
+                  categories={["Deltakere"]}
+                  data={[
+                    { name: "14-19 år", Deltakere: thisYear.deltakere_10 },
+                    { name: "20-29 år", Deltakere: thisYear.deltakere_20 },
+                    { name: "30-39 år", Deltakere: thisYear.deltakere_30 },
+                    { name: "40-49 år", Deltakere: thisYear.deltakere_40 },
+                    { name: "50-59 år", Deltakere: thisYear.deltakere_50 },
+                    { name: "60+ år", Deltakere: thisYear.deltakere_60 },
                   ]}
                 />
               </div>
@@ -379,6 +380,14 @@ export function StatisticsPageLayout({ data }: StatisticsPageLayoutProps) {
                         "40-49",
                         "50-59",
                         "60+",
+                      ]}
+                      values={[
+                        "Deltakere",
+                        "Deltakere",
+                        "Deltakere",
+                        "Deltakere",
+                        "Deltakere",
+                        "Deltakere",
                       ]}
                       data={data.summary.emner.map((bar) => ({
                         name: topics[String(bar.emne) as keyof typeof topics],
