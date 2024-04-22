@@ -248,11 +248,18 @@ function makeReport(
           kurs: op.count(),
           pop: op.any("pop"),
           navn: op.any("name"),
+          delt: op.sum(col.deltakere),
         })
         .orderby(desc("kurs"))
         .objects(),
 
       kommunerAll: getFirstCount(ssb.filter((d) => d!["code"] > 99)),
+      kommunerMissing: ssb
+        .filter((d) => d!["code"] > 99)
+        .antijoin(oneYear, ["code", col.kommune])
+        .select({ name: "navn" })
+        .orderby("navn")
+        .objects(),
 
       // Fylker etter antall kurs
       fylker: oneYear

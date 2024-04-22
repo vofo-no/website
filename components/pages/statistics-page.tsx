@@ -1,8 +1,9 @@
 import { useMemo } from "react";
-import type dataType from "@/data/latest.json";
+import type schema from "@/data/schema.json";
 import topics from "@/data/topics.json";
 import { Card } from "@tremor/react";
 
+import { formatList } from "@/lib/formatList";
 import { formatNumber } from "@/lib/formatNumber";
 import getOrganizationName from "@/lib/getOrganizationName";
 import { BarChart } from "@/components/ui/charts/bar-chart";
@@ -20,7 +21,70 @@ import {
 import { ProgressBarList } from "../ui/charts/progress-bar-list";
 
 interface StatisticsPageLayoutProps {
-  data: typeof dataType & { title?: string };
+  data: typeof schema & { title?: string };
+}
+
+interface GeografiSectionProps {
+  data: {
+    kurs: number;
+    pop: number;
+    navn: string;
+    delt: number;
+  }[];
+  term: "Fylke" | "Kommune";
+  missing: { navn: string }[];
+}
+
+function GeografiSection({ data, missing, term }: GeografiSectionProps) {
+  return (
+    <div className="prose max-w-prose mx-auto">
+      <h2>Geografi</h2>
+      <p>
+        Studieforbundene har kurs over hele{" "}
+        {term === "Fylke" ? "landet" : "fylket"}. Totalt sett ble det
+        gjennomført{" "}
+        <strong>
+          flest kurs i {data.sort((a, b) => b.kurs - a.kurs)[0].navn}
+        </strong>
+        .
+      </p>
+      <p>
+        I forhold til folketallet i de ulike{" "}
+        {term === "Fylke" ? "fylkene" : "kommunene"} ble det gjennomført{" "}
+        <strong>
+          flest kurs pr. innbygger i{" "}
+          {data.sort((a, b) => b.kurs / b.pop - a.kurs / a.pop)[0].navn}
+        </strong>{" "}
+        og{" "}
+        <strong>
+          færrest kurs pr. innbygger i{" "}
+          {data.sort((a, b) => a.kurs / a.pop - b.kurs / b.pop)[0].navn}
+        </strong>
+        .
+      </p>
+      {missing.length ? (
+        <p>
+          Det ble ikke rapportert kurs i{" "}
+          {formatList(
+            missing.map((item) => item.navn),
+            { type: "disjunction" },
+          )}{" "}
+          kommune.
+        </p>
+      ) : null}
+      <TabBarList
+        variant="solid"
+        name={term}
+        tabs={["Antall kurs", "Etter folketall", "Deltakere"]}
+        values={["Kurs", "Kurs pr. 1000 innbyggere", "Deltakere"]}
+        initial={15}
+        data={data.map((bar) => ({
+          name: bar.navn,
+          values: [bar.kurs, bar.kurs / (bar.pop / 1000), bar.delt],
+        }))}
+      />
+    </div>
+  );
 }
 
 export function StatisticsPageLayout({ data }: StatisticsPageLayoutProps) {
@@ -400,61 +464,22 @@ export function StatisticsPageLayout({ data }: StatisticsPageLayoutProps) {
           </div>
           <div className="grid md:grid-cols-3 gap-6">
             <div className="md:col-span-2">
-              {data.summary.fylker.length > 1 && (
-                <div className="prose max-w-prose mx-auto">
-                  <h2>Geografi</h2>
-                  <p>
-                    Studieforbundene har kurs over hele landet. Totalt sett ble
-                    det gjennomført{" "}
-                    <strong>
-                      flest kurs i{" "}
-                      {
-                        data.summary.fylker.sort((a, b) => b.kurs - a.kurs)[0]
-                          .navn
-                      }
-                    </strong>
-                    .
-                  </p>
-                  <p>
-                    I forhold til folketallet i de ulike fylkene ble det
-                    gjennomført{" "}
-                    <strong>
-                      flest kurs pr. innbygger i{" "}
-                      {
-                        data.summary.fylker.sort(
-                          (a, b) => b.kurs / b.pop - a.kurs / a.pop,
-                        )[0].navn
-                      }
-                    </strong>{" "}
-                    og{" "}
-                    <strong>
-                      færrest kurs pr. innbygger i{" "}
-                      {
-                        data.summary.fylker.sort(
-                          (a, b) => a.kurs / a.pop - b.kurs / b.pop,
-                        )[0].navn
-                      }
-                    </strong>
-                    .
-                  </p>
-                  <TabBarList
-                    variant="solid"
-                    name="Fylke"
-                    tabs={["Antall kurs", "Etter folketall", "Deltakere"]}
-                    values={["Kurs", "Kurs pr. 1000 innbyggere", "Deltakere"]}
-                    initial={data.summary.fylker.length}
-                    data={data.summary.fylker.map((bar) => ({
-                      name: bar.navn,
-                      values: [bar.kurs, bar.kurs / (bar.pop / 1000), bar.delt],
-                    }))}
-                  />
-                </div>
+              {data.summary.kommuner.length > 1 && (
+                <GeografiSection
+                  term={data.summary.fylker.length > 1 ? "Fylke" : "Kommune"}
+                  missing={data.summary.kommunerMissing}
+                  data={
+                    data.summary.fylker.length > 1
+                      ? data.summary.fylker
+                      : data.summary.kommuner
+                  }
+                />
               )}
             </div>
             <div>
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-1">
                 <Card>
-                  <div className="flex justify-start space-x-5 mb-4 items-center">
+                  <div className="flex justify-start space-x-5 items-center">
                     <ProgressCircle
                       value={
                         (data.summary.kommuner.length /
@@ -482,17 +507,21 @@ export function StatisticsPageLayout({ data }: StatisticsPageLayoutProps) {
                       </p>
                     </div>
                   </div>
-                  <TabBarList
-                    variant="line"
-                    name="Kommune"
-                    tabs={["Antall kurs", "Etter folketall"]}
-                    values={["Kurs", "Kurs pr. 1000 innbyggere"]}
-                    initial={8}
-                    data={data.summary.kommuner.map((bar) => ({
-                      name: bar.navn,
-                      values: [bar.kurs, bar.kurs / (bar.pop / 1000)],
-                    }))}
-                  />
+                  {data.summary.fylker.length > 1 ? (
+                    <div className="mt-4">
+                      <TabBarList
+                        variant="line"
+                        name="Kommune"
+                        tabs={["Antall kurs", "Etter folketall"]}
+                        values={["Kurs", "Kurs pr. 1000 innbyggere"]}
+                        initial={8}
+                        data={data.summary.kommuner.map((bar) => ({
+                          name: bar.navn,
+                          values: [bar.kurs, bar.kurs / (bar.pop / 1000)],
+                        }))}
+                      />
+                    </div>
+                  ) : null}
                 </Card>
               </div>
             </div>
