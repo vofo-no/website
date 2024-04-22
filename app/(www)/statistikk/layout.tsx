@@ -90,9 +90,9 @@ export default async function StatisticsLayout({
               </p>
               <dl>
                 <dt>
-                  <a href="https://www.ssb.no/utdanning/voksenopplaering/statistikk/studieforbundenes-opplaeringsvirksomhet">
+                  <Link href="https://www.ssb.no/utdanning/voksenopplaering/statistikk/studieforbundenes-opplaeringsvirksomhet">
                     Studieforbundenes opplæringsvirksomhet (SSB)
-                  </a>
+                  </Link>
                 </dt>
                 <dd>
                   Studieforbundene leverer data til Vofo, som kontrollerer og
@@ -125,17 +125,17 @@ export default async function StatisticsLayout({
                 <dt>Befolkningsstatistikk</dt>
                 <dd>
                   Folketall for fylker og kommuner hentes fra SSB sin{" "}
-                  <a href="https://www.ssb.no/befolkning/folketall/statistikk/befolkning">
+                  <Link href="https://www.ssb.no/befolkning/folketall/statistikk/befolkning">
                     befolkningsstatistikk
-                  </a>{" "}
+                  </Link>{" "}
                   pr. 1. januar det året statistikken gjelder for.
                 </dd>
                 <dt>Fylkesinndeling</dt>
                 <dd>
                   Fylkesinndelingen er basert på SSB sin{" "}
-                  <a href="https://www.ssb.no/klass/klassifikasjoner/104">
+                  <Link href="https://www.ssb.no/klass/klassifikasjoner/104">
                     standard for fylkesinndeling
-                  </a>
+                  </Link>
                   . Vi tar utgangspukt i den inndelingen som var gjeldende det
                   året statistikken gjelder for. Dersom fylker er delt eller
                   sammenslått, forsøker vi å korrigere for dette bakover i tid -
@@ -144,9 +144,9 @@ export default async function StatisticsLayout({
                 <dt>Kommuneinndeling</dt>
                 <dd>
                   Kommuneinndelingen er basert på SSB sin{" "}
-                  <a href="https://www.ssb.no/klass/klassifikasjoner/131">
+                  <Link href="https://www.ssb.no/klass/klassifikasjoner/131">
                     standard for kommuneinndeling
-                  </a>
+                  </Link>
                   . Vi tar utgangspukt i den inndelingen som var gjeldende det
                   året statistikken gjelder for. Dersom kommuner er delt eller
                   sammenslått, forsøker vi å korrigere for dette bakover i tid -
