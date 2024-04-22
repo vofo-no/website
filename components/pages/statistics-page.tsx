@@ -260,12 +260,12 @@ export function StatisticsPageLayout({ data }: StatisticsPageLayoutProps) {
               <TabBarList
                 variant="solid"
                 name="Studieforbund"
-                tabs={["Timer", "Deltakere", "Kurs", "Statstilskudd"]}
+                tabs={["Timer", "Deltakere", "Kurs"]}
                 initial={data.summary.studieforbund.length}
-                options={[{}, {}, {}, { style: "currency", currency: "NOK" }]}
+                options={[{}, {}, {}]}
                 data={data.summary.studieforbund.map((item) => ({
                   name: getOrganizationName(item.sf, null, thisYear.aar),
-                  values: [item.timer, item.delt, item.kurs, item.timer * 100],
+                  values: [item.timer, item.delt, item.kurs],
                 }))}
               />
             </div>
