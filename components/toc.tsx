@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
+import Link from "next/link";
 import { Disclosure } from "@headlessui/react";
 import { toPlainText } from "@portabletext/react";
 import classNames from "classnames";
@@ -52,7 +53,7 @@ export function Toc({ title, headers = [], mobile = false }: TocProps) {
                   return (
                     <li key={item._key} className="flex justify-start">
                       <Disclosure.Button
-                        as="a"
+                        as={Link}
                         href={`#${anchor}`}
                         className={cn(
                           "relative pl-4 leading-tight hover:underline",
@@ -82,7 +83,7 @@ export function Toc({ title, headers = [], mobile = false }: TocProps) {
           const anchor = slugify(plain);
           return (
             <li key={item._key} className="flex justify-start">
-              <a
+              <Link
                 href={`#${anchor}`}
                 className={cn(
                   "relative pl-4 leading-tight hover:underline",
@@ -91,7 +92,7 @@ export function Toc({ title, headers = [], mobile = false }: TocProps) {
               >
                 <ChevronRightIcon className="w-5 top-0.5 -left-1 absolute" />
                 <span>{plain}</span>
-              </a>
+              </Link>
             </li>
           );
         })}
