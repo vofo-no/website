@@ -37,7 +37,7 @@ interface GeografiSectionProps {
 
 function GeografiSection({ data, missing, term }: GeografiSectionProps) {
   return (
-    <div className="prose max-w-prose mx-auto">
+    <>
       <h2>Geografi</h2>
       <p>
         Studieforbundene har kurs over hele{" "}
@@ -83,7 +83,7 @@ function GeografiSection({ data, missing, term }: GeografiSectionProps) {
           values: [bar.kurs, bar.kurs / (bar.pop / 1000), bar.delt],
         }))}
       />
-    </div>
+    </>
   );
 }
 
@@ -122,76 +122,70 @@ export function StatisticsPageLayout({ data }: StatisticsPageLayoutProps) {
       <div className="container">
         <div className="space-y-6">
           <div className="grid md:grid-cols-3 gap-6">
-            <div className="md:col-span-2 order-2 md:order-1">
-              <div className="prose max-w-prose mx-auto">
-                <h2>Kursaktiviteten</h2>
-                <p>
-                  Statistikken viser kursaktivitet i studieforbund som er
-                  godkjent og får tilskudd fra Kultur- og
-                  likestillingsdepartementet. Alle kursene er gjennomført etter
-                  kravene i voksenopplæringsloven.
-                </p>
-                <DonutWithLegend
-                  data={data.summary.kurs_bin}
-                  category="kurs"
-                  index="label"
-                />
-                <p>
-                  <strong>
-                    {formatNumber(
-                      data.summary.kurs_bin[0].kurs / thisYear.kurs,
-                      {
-                        style: "percent",
-                      },
-                    )}
-                  </strong>{" "}
-                  av kursene ble gjennomført på <strong>én dag</strong>.
-                  <br />
-                  En fjerdedel av kursene varte i{" "}
-                  <strong>
-                    mindre enn{" "}
-                    {formatNumber(data.summary.dager_q25, {
-                      unit: "day",
-                      unitDisplay: "long",
-                      style: "unit",
-                    })}
-                  </strong>
-                  .
-                </p>
-                <p>
-                  <strong>Halvparten av kursene</strong> ble gjennomført på{" "}
-                  <strong>
-                    under{" "}
-                    {formatNumber(data.summary.dager_median, {
-                      unit: "day",
-                      unitDisplay: "long",
-                      style: "unit",
-                    })}
-                  </strong>
-                  .<br />
-                </p>
-                <p>
-                  En fjerdedel av kursene varte i{" "}
-                  <strong>
-                    over{" "}
-                    {formatNumber(data.summary.dager_q75 / 30, {
-                      unit: "month",
-                      unitDisplay: "long",
-                      style: "unit",
-                    })}
-                  </strong>
-                  .<br /> Det aller <strong>lengste kurset</strong> varte i{" "}
-                  <strong>
-                    over{" "}
-                    {formatNumber(data.summary.dager_maks / 30, {
-                      unit: "month",
-                      unitDisplay: "long",
-                      style: "unit",
-                    })}
-                  </strong>
-                  .
-                </p>
-              </div>
+            <div className="md:col-span-2 order-2 md:order-1 prose prose-gray dark:prose-invert mx-auto">
+              <h2>Kursaktiviteten</h2>
+              <p>
+                Statistikken viser kursaktivitet i studieforbund som er godkjent
+                og får tilskudd fra Kultur- og likestillingsdepartementet. Alle
+                kursene er gjennomført etter kravene i voksenopplæringsloven.
+              </p>
+              <DonutWithLegend
+                data={data.summary.kurs_bin}
+                category="kurs"
+                index="label"
+              />
+              <p>
+                <strong>
+                  {formatNumber(data.summary.kurs_bin[0].kurs / thisYear.kurs, {
+                    style: "percent",
+                  })}
+                </strong>{" "}
+                av kursene ble gjennomført på <strong>én dag</strong>.
+                <br />
+                En fjerdedel av kursene varte i{" "}
+                <strong>
+                  mindre enn{" "}
+                  {formatNumber(data.summary.dager_q25, {
+                    unit: "day",
+                    unitDisplay: "long",
+                    style: "unit",
+                  })}
+                </strong>
+                .
+              </p>
+              <p>
+                <strong>Halvparten av kursene</strong> ble gjennomført på{" "}
+                <strong>
+                  under{" "}
+                  {formatNumber(data.summary.dager_median, {
+                    unit: "day",
+                    unitDisplay: "long",
+                    style: "unit",
+                  })}
+                </strong>
+                .<br />
+              </p>
+              <p>
+                En fjerdedel av kursene varte i{" "}
+                <strong>
+                  over{" "}
+                  {formatNumber(data.summary.dager_q75 / 30, {
+                    unit: "month",
+                    unitDisplay: "long",
+                    style: "unit",
+                  })}
+                </strong>
+                .<br /> Det aller <strong>lengste kurset</strong> varte i{" "}
+                <strong>
+                  over{" "}
+                  {formatNumber(data.summary.dager_maks / 30, {
+                    unit: "month",
+                    unitDisplay: "long",
+                    style: "unit",
+                  })}
+                </strong>
+                .
+              </p>
             </div>
             <div className="order-1 md:order-2">
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-1">
@@ -255,32 +249,25 @@ export function StatisticsPageLayout({ data }: StatisticsPageLayoutProps) {
             </MetricWithDiff>{" "}
           </div>
           <div className="grid md:grid-cols-3 gap-6">
-            <div className="md:col-span-2">
-              <div className="prose max-w-prose mx-auto">
-                <h2>Tilskudd og arrangører</h2>
-                <p>
-                  Tilskuddene til studieforbund fordeles etter antall kurstimer
-                  fra tidligere år. Studieforbundet fordeler statstilskuddet til
-                  sine egne organisasjonsledd og medlemsorganisasjoner som
-                  holder kurs.
-                </p>
-                <TabBarList
-                  variant="solid"
-                  name="Studieforbund"
-                  tabs={["Timer", "Deltakere", "Kurs", "Statstilskudd"]}
-                  initial={data.summary.studieforbund.length}
-                  options={[{}, {}, {}, { style: "currency", currency: "NOK" }]}
-                  data={data.summary.studieforbund.map((item) => ({
-                    name: getOrganizationName(item.sf, null, thisYear.aar),
-                    values: [
-                      item.timer,
-                      item.delt,
-                      item.kurs,
-                      item.timer * 100,
-                    ],
-                  }))}
-                />
-              </div>
+            <div className="md:col-span-2 prose prose-gray dark:prose-invert mx-auto">
+              <h2>Tilskudd og arrangører</h2>
+              <p>
+                Tilskuddene til studieforbund fordeles etter antall kurstimer
+                fra tidligere år. Studieforbundet fordeler statstilskuddet til
+                sine egne organisasjonsledd og medlemsorganisasjoner som holder
+                kurs.
+              </p>
+              <TabBarList
+                variant="solid"
+                name="Studieforbund"
+                tabs={["Timer", "Deltakere", "Kurs", "Statstilskudd"]}
+                initial={data.summary.studieforbund.length}
+                options={[{}, {}, {}, { style: "currency", currency: "NOK" }]}
+                data={data.summary.studieforbund.map((item) => ({
+                  name: getOrganizationName(item.sf, null, thisYear.aar),
+                  values: [item.timer, item.delt, item.kurs, item.timer * 100],
+                }))}
+              />
             </div>
             <div>
               <div className="grid grid-cols-1 gap-6">
@@ -303,98 +290,92 @@ export function StatisticsPageLayout({ data }: StatisticsPageLayoutProps) {
             </div>
           </div>
           <div className="grid md:grid-cols-3 gap-6">
-            <div className="md:col-span-2">
-              <div className="prose max-w-prose mx-auto">
-                <h2>Om deltakerne</h2>
-                <p>
-                  Vi teller deltakere som har vært med på mer enn 75 % av kurset
-                  og som er minst 14 år gamle. Dette betyr at mange kurs har
-                  hatt flere deltakere enn det som vises i statistikken.
-                </p>
-                <p>
-                  Det var{" "}
-                  <strong>
-                    flest{" "}
-                    {thisYear.deltakere_kvinner > thisYear.deltakere_menn
-                      ? "kvinner"
-                      : "menn"}
-                  </strong>{" "}
-                  (
-                  {formatNumber(
-                    Math.max(
-                      thisYear.deltakere_kvinner,
-                      thisYear.deltakere_menn,
-                    ) / thisYear.deltakere,
-                    { style: "percent" },
-                  )}
-                  ) blant deltakerne på kurs.
-                </p>
-                <p>
-                  De fleste kursene hadde om lag{" "}
-                  <strong>{thisYear.deltakere_median} deltakere</strong>. Dette
-                  er{" "}
-                  {thisYear.deltakere_median === lastYear.deltakere_median ? (
-                    "like mange som"
-                  ) : thisYear.deltakere_median > lastYear.deltakere_median ? (
-                    <>
-                      <strong>
-                        {thisYear.deltakere_median - lastYear.deltakere_median}{" "}
-                        flere
-                      </strong>{" "}
-                      siden
-                    </>
-                  ) : (
-                    <>
-                      <strong>
-                        {lastYear.deltakere_median - thisYear.deltakere_median}{" "}
-                        færre
-                      </strong>{" "}
-                      siden
-                    </>
-                  )}{" "}
-                  året før.
-                </p>
-                <BarChart
-                  data={data.histogram}
-                  index="label"
-                  categories={[
-                    lastYear.aar.toString(),
-                    thisYear.aar.toString(),
-                  ]}
-                />
-                <p>
-                  Det må være minst 4 tellende deltakere på hvert kurs.{" "}
-                  {coursesWithLessThan4Participants ? (
-                    <>
-                      <strong>
-                        {formatNumber(coursesWithLessThan4Participants)} kurs
-                      </strong>{" "}
-                      (
-                      {formatNumber(
-                        coursesWithLessThan4Participants / thisYear.kurs,
-                        { style: "percent" },
-                      )}
-                      )
-                    </>
-                  ) : (
-                    "Ingen kurs"
-                  )}{" "}
-                  fikk dispensasjon fra dette kravet.
-                </p>
-                <h3>Aldersfordeling</h3>
-                <BarChart
-                  index="name"
-                  categories={["Deltakere"]}
-                  data={[
-                    { name: "14-19 år", Deltakere: thisYear.deltakere_10 },
-                    { name: "20-29 år", Deltakere: thisYear.deltakere_20 },
-                    { name: "30-39 år", Deltakere: thisYear.deltakere_30 },
-                    { name: "40-49 år", Deltakere: thisYear.deltakere_40 },
-                    { name: "50-59 år", Deltakere: thisYear.deltakere_50 },
-                    { name: "60+ år", Deltakere: thisYear.deltakere_60 },
-                  ]}
-                />
-              </div>
+            <div className="md:col-span-2 prose prose-gray dark:prose-invert mx-auto">
+              <h2>Om deltakerne</h2>
+              <p>
+                Vi teller deltakere som har vært med på mer enn 75 % av kurset
+                og som er minst 14 år gamle. Dette betyr at mange kurs har hatt
+                flere deltakere enn det som vises i statistikken.
+              </p>
+              <p>
+                Det var{" "}
+                <strong>
+                  flest{" "}
+                  {thisYear.deltakere_kvinner > thisYear.deltakere_menn
+                    ? "kvinner"
+                    : "menn"}
+                </strong>{" "}
+                (
+                {formatNumber(
+                  Math.max(
+                    thisYear.deltakere_kvinner,
+                    thisYear.deltakere_menn,
+                  ) / thisYear.deltakere,
+                  { style: "percent" },
+                )}
+                ) blant deltakerne på kurs.
+              </p>
+              <p>
+                De fleste kursene hadde om lag{" "}
+                <strong>{thisYear.deltakere_median} deltakere</strong>. Dette er{" "}
+                {thisYear.deltakere_median === lastYear.deltakere_median ? (
+                  "like mange som"
+                ) : thisYear.deltakere_median > lastYear.deltakere_median ? (
+                  <>
+                    <strong>
+                      {thisYear.deltakere_median - lastYear.deltakere_median}{" "}
+                      flere
+                    </strong>{" "}
+                    siden
+                  </>
+                ) : (
+                  <>
+                    <strong>
+                      {lastYear.deltakere_median - thisYear.deltakere_median}{" "}
+                      færre
+                    </strong>{" "}
+                    siden
+                  </>
+                )}{" "}
+                året før.
+              </p>
+              <BarChart
+                data={data.histogram}
+                index="label"
+                categories={[lastYear.aar.toString(), thisYear.aar.toString()]}
+              />
+              <p>
+                Det må være minst 4 tellende deltakere på hvert kurs.{" "}
+                {coursesWithLessThan4Participants ? (
+                  <>
+                    <strong>
+                      {formatNumber(coursesWithLessThan4Participants)} kurs
+                    </strong>{" "}
+                    (
+                    {formatNumber(
+                      coursesWithLessThan4Participants / thisYear.kurs,
+                      { style: "percent" },
+                    )}
+                    )
+                  </>
+                ) : (
+                  "Ingen kurs"
+                )}{" "}
+                fikk dispensasjon fra dette kravet.
+              </p>
+              <h3>Aldersfordeling</h3>
+              <BarChart
+                index="name"
+                categories={["Deltakere"]}
+                data={[
+                  { name: "14-19 år", Deltakere: thisYear.deltakere_10 },
+                  { name: "20-29 år", Deltakere: thisYear.deltakere_20 },
+                  { name: "30-39 år", Deltakere: thisYear.deltakere_30 },
+                  { name: "40-49 år", Deltakere: thisYear.deltakere_40 },
+                  { name: "50-59 år", Deltakere: thisYear.deltakere_50 },
+                  { name: "60+ år", Deltakere: thisYear.deltakere_60 },
+                ]}
+              />
             </div>
             <div>
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-1">
@@ -463,7 +444,7 @@ export function StatisticsPageLayout({ data }: StatisticsPageLayoutProps) {
             </div>
           </div>
           <div className="grid md:grid-cols-3 gap-6">
-            <div className="md:col-span-2">
+            <div className="md:col-span-2 prose prose-gray dark:prose-invert mx-auto">
               {data.summary.kommuner.length > 1 && (
                 <GeografiSection
                   term={data.summary.fylker.length > 1 ? "Fylke" : "Kommune"}
