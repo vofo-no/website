@@ -53,10 +53,14 @@ export const pageStructure = (
     });
 
     // The default root list items (except custom ones)
-    const defaultListItems = S.documentTypeListItems().filter(
-      (listItem) =>
-        !typeDefArray.find((singleton) => singleton.name === listItem.getId()),
-    );
+    const defaultListItems = S.documentTypeListItems()
+      .filter((listItem) => listItem.getId() !== "media.tag")
+      .filter(
+        (listItem) =>
+          !typeDefArray.find(
+            (singleton) => singleton.name === listItem.getId(),
+          ),
+      );
 
     return S.list()
       .title("Innhold")
