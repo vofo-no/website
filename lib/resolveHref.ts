@@ -14,7 +14,7 @@ export function resolveHref(
     case "topic":
       return `/tema/${slug}`;
     case "page":
-      return slug;
+      return `/${slug}`;
     default:
       console.warn("Invalid document type:", documentType);
       return undefined;
