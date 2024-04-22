@@ -1,0 +1,62 @@
+{
+  "summary": {
+    "dager_q25": 0,
+    "dager_median": 0,
+    "dager_q75": 0,
+    "dager_maks": 0,
+    "emner": [
+      {
+        "emne": 0,
+        "d": 0,
+        "k": 0,
+        "m": 0,
+        "d1": 0,
+        "d2": 0,
+        "d3": 0,
+        "d4": 0,
+        "d5": 0,
+        "d6": 0
+      }
+    ],
+    "korte_kurs": [{ "emne": 0, "kurs": 0 }],
+    "lange_kurs": [{ "emne": 0, "kurs": 0 }],
+    "organisasjoner": [{ "sf": 0, "org": 0, "kurs": 0 }],
+    "kommuner": [{ "kom": 0, "kurs": 0, "pop": 0, "navn": "", "delt": 0 }],
+    "kommunerAll": 0,
+    "kommunerMissing": [{ "navn": "" }],
+    "fylker": [
+      {
+        "fylke": 0,
+        "kurs": 0,
+        "pop": 0,
+        "navn": "",
+        "delt": 0
+      }
+    ],
+    "studieforbund": [{ "sf": 0, "kurs": 0, "timer": 0, "delt": 0 }],
+    "kurs_bin": [{ "label": "", "kurs": 0 }]
+  },
+  "history": [
+    {
+      "korte_kurs": 0,
+      "lange_kurs": 0,
+      "aar": 0,
+      "kurs": 0,
+      "timer": 0,
+      "timer_median": 0,
+      "emner": 0,
+      "deltakere": 0,
+      "deltakere_median": 0,
+      "deltakere_kvinner": 0,
+      "deltakere_menn": 0,
+      "deltakere_10": 0,
+      "deltakere_20": 0,
+      "deltakere_30": 0,
+      "deltakere_40": 0,
+      "deltakere_50": 0,
+      "deltakere_60": 0,
+      "organisasjoner": 311
+    }
+  ],
+  "histogram": [{ "2022": 0, "2023": 0, "label": "" }]
+}
