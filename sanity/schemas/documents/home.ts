@@ -31,7 +31,6 @@ export default defineType({
           name: "emoji",
           title: "Emoji",
           description: "Valgfri emoji som vises foran kungjøringen",
-          validation: (rule) => rule.length(1),
         }),
         defineField({
           type: "string",
