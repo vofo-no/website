@@ -53,5 +53,8 @@ export default defineField({
       name: "people",
       type: "people",
     }),
+    defineArrayMember({
+      type: "youtube",
+    }),
   ],
 });

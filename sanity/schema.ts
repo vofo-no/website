@@ -15,6 +15,7 @@ import duration from "./schemas/objects/duration";
 import link from "./schemas/objects/link";
 import people from "./schemas/objects/people";
 import someLink from "./schemas/objects/someLink";
+import { youtube } from "./schemas/objects/youtube";
 
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
@@ -36,5 +37,6 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     link,
     people,
     someLink,
+    youtube,
   ],
 };
