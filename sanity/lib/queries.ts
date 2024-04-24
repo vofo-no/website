@@ -61,7 +61,7 @@ export const postBySlugQuery = groq`
     "slug": slug.current,
     body,
     "toc": body[style == "h2"],
-    "attachment": attachment.asset->url,
+    "attachments": attachments[].asset -> { url, originalFilename, mimeType, size },
     remoteUrl,
     locale,
     relevance,
