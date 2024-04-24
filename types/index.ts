@@ -1,3 +1,4 @@
+import type dataSchema from "@/data/schema.json";
 import type {
   PortableTextBlock,
   Reference,
@@ -122,3 +123,5 @@ export interface DocumentLinkPayload {
   description?: string;
   image?: Image;
 }
+
+export type StatisticsDataType = typeof dataSchema & { title?: string };
