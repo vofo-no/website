@@ -1,6 +1,6 @@
 import { useMemo } from "react";
-import type schema from "@/data/schema.json";
 import topics from "@/data/topics.json";
+import { StatisticsDataType } from "@/types";
 import { Card } from "@tremor/react";
 
 import { formatList } from "@/lib/formatList";
@@ -21,7 +21,7 @@ import {
 import { ProgressBarList } from "../ui/charts/progress-bar-list";
 
 interface StatisticsPageLayoutProps {
-  data: typeof schema & { title?: string };
+  data: StatisticsDataType;
 }
 
 interface GeografiSectionProps {

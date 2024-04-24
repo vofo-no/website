@@ -43,10 +43,11 @@ export default defineType({
     publishedAtField,
     bodyField,
     defineField({
-      name: "attachment",
-      type: "file",
+      name: "attachments",
+      type: "array",
+      of: [{ type: "file" }],
       title: "Filvedlegg",
-      description: "Filversjon av dokumentet til nedlasting (valgfritt)",
+      description: "Filer til nedlasting (valgfritt)",
     }),
     defineField({
       name: "remoteUrl",

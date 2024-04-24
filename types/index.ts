@@ -1,4 +1,6 @@
+import type dataSchema from "@/data/schema.json";
 import type {
+  FileAsset,
   PortableTextBlock,
   Reference,
   Image as SanityImage,
@@ -60,7 +62,7 @@ export interface PostPayload extends Omit<PostListItemPayload, "relevance"> {
   body: PortableTextBlock[];
   toc: PortableTextBlock[];
   docType: string;
-  attachment?: string;
+  attachments?: FileAsset[];
   remoteUrl?: string;
   locale?: string;
   relevance?: Reference[];
@@ -122,3 +124,5 @@ export interface DocumentLinkPayload {
   description?: string;
   image?: Image;
 }
+
+export type StatisticsDataType = typeof dataSchema & { title?: string };

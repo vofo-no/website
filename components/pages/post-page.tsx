@@ -15,6 +15,8 @@ import {
 } from "@/components/shared/portable-text-body";
 import { Toc } from "@/components/toc";
 
+import { FileDownload } from "../file-download";
+
 function isSameDate(datestr1: string = "", datestr2: string = "") {
   return datestr1.split("T")[0] === datestr2.split("T")[0];
 }
@@ -27,6 +29,7 @@ export function PostPageLayout(props: {
   const {
     title,
     description,
+    attachments,
     body,
     toc,
     image,
@@ -61,6 +64,9 @@ export function PostPageLayout(props: {
             )}
           >
             <Toc title="Innhold" headers={toc} mobile />
+            {attachments?.map((file) => (
+              <FileDownload file={file} key={file._id} />
+            ))}
             <PortableTextBody
               value={body}
               typeComponents={props.ptComponents}
