@@ -5,6 +5,7 @@ import {
 } from "@portabletext/react";
 
 import { InlineImage } from "./body-image";
+import { InlineVideo } from "./body-video";
 import { H2WithAnchor } from "./header";
 import { portableTextBodyTypeComponentsPreview } from "./type-components-preview";
 
@@ -22,6 +23,7 @@ export function PortableTextBody({ value, typeComponents }: Props) {
   const portableTextComponents: PortableTextComponents = {
     types: {
       image: InlineImage,
+      youtube: InlineVideo,
       ...(typeComponents || portableTextBodyTypeComponentsPreview),
     },
     block: {
