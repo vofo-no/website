@@ -9,6 +9,8 @@ export async function getDataFile(slug: string) {
     posix: true,
   }).then((files) => files.sort((a, b) => a.localeCompare(b))[0]);
 
+  if (!dataFile) return undefined;
+
   const file = await fs.readFile(path.resolve(dataFile), "utf-8");
 
   return JSON.parse(file) as StatisticsDataType;

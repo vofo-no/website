@@ -20,7 +20,7 @@
     ],
     "korte_kurs": [{ "emne": 0, "kurs": 0 }],
     "lange_kurs": [{ "emne": 0, "kurs": 0 }],
-    "organisasjoner": [{ "sf": 0, "org": 0, "kurs": 0 }],
+    "organisasjoner": [{ "sf": 0, "org": 0, "kurs": 0, "timer": 0, "delt": 0 }],
     "kommuner": [{ "kom": 0, "kurs": 0, "pop": 0, "navn": "", "delt": 0 }],
     "kommunerAll": 0,
     "kommunerMissing": [{ "navn": "" }],

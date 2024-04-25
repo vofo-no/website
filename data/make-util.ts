@@ -236,6 +236,8 @@ function makeReport(
         .groupby(col.studieforbund, col.organisasjon)
         .rollup({
           kurs: op.count(),
+          timer: op.sum(col.timer),
+          delt: op.sum(col.deltakere),
         })
         .orderby(desc("kurs"))
         .objects(),
@@ -440,9 +442,26 @@ export async function makeUtil(yearArg: string) {
 `);
 
   fylker.map((fylke) => {
-    const wstream2 = fs.createWriteStream(`data/${year}/${fylke.slug}.json`);
     const filters = fylke.countyCode.map(Number);
-    wstream2.write(
+
+    if (
+      getFirstCount(
+        shortData.filter(
+          escape(
+            (d: { [x: string]: number }) =>
+              filters.includes(d[col.kommune]) ||
+              filters.includes(d[col.fylke]),
+          ),
+        ),
+      ) < 10
+    ) {
+      return;
+    }
+
+    const fylkeFileStream = fs.createWriteStream(
+      `data/${year}/${fylke.slug}.json`,
+    );
+    fylkeFileStream.write(
       JSON.stringify(
         makeReport(
           data[0].filter(
@@ -470,7 +489,56 @@ export async function makeUtil(yearArg: string) {
         ),
       ),
     );
-    wstream2.end();
+    fylkeFileStream.end();
+  });
+
+  const studieforbund = await client.fetch<
+    { slug: string; name: string; ssbCode: string }[]
+  >(groq`
+    *[_type == "organization" && active == true && defined(ssbCode) && defined(slug)][]{
+    "slug": slug.current,
+    name,
+    ssbCode,
+  }
+`);
+
+  studieforbund.map((sf) => {
+    const filter = Number(sf.ssbCode);
+
+    if (
+      getFirstCount(
+        shortData.filter(
+          escape(
+            (d: { [x: string]: number }) => d[col.studieforbund] === filter,
+          ),
+        ),
+      ) < 10
+    ) {
+      return;
+    }
+
+    const studieforbundFileStream = fs.createWriteStream(
+      `data/${year}/${sf.slug}.json`,
+    );
+    studieforbundFileStream.write(
+      JSON.stringify(
+        makeReport(
+          data[0].filter(
+            escape(
+              (d: { [x: string]: number }) => d[col.studieforbund] === filter,
+            ),
+          ),
+          shortData.filter(
+            escape(
+              (d: { [x: string]: number }) => d[col.studieforbund] === filter,
+            ),
+          ),
+          ssb,
+          sf.name,
+        ),
+      ),
+    );
+    studieforbundFileStream.end();
   });
 
   const wstream = fs.createWriteStream(`data/${year}/nasjonal.json`);
