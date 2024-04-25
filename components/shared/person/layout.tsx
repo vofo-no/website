@@ -16,7 +16,7 @@ export interface PersonLayoutProps {
 export function PersonLayout(props: PersonLayoutProps) {
   const { name, image, position, phone, email } = props.data ?? {};
 
-  const imageUrl = image && urlForImage(image)?.size(256, 256).url();
+  const imageUrl = image && urlForImage(image)?.dpr(2).size(96, 96).url();
 
   return (
     <div
@@ -26,7 +26,7 @@ export function PersonLayout(props: PersonLayoutProps) {
       )}
     >
       <Avatar className="h-24 w-24 not-prose">
-        {imageUrl && <AvatarImage src={imageUrl} />}
+        {imageUrl && <AvatarImage src={imageUrl} alt={name} />}
         <AvatarFallback>
           <SmileIcon size={40} />
         </AvatarFallback>
