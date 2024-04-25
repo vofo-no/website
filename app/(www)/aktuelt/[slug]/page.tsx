@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { loadPost } from "@/sanity/loader/loadQuery";
 
 import { PostPageLayout } from "@/components/pages/post-page";
+import { portableTextBodyTypeComponentsRSC } from "@/components/shared/portable-text-body/type-components";
 import { TagLink } from "@/components/shared/tag-link";
 
 const PostPagePreview = dynamic(() => import("./preview"));
@@ -40,5 +41,11 @@ export default async function PostPage({ params: { slug } }: PostPageProps) {
       <PostPagePreview initial={initial} slug={slug} relevance={relevance} />
     );
 
-  return <PostPageLayout data={initial.data} relevance={relevance} />;
+  return (
+    <PostPageLayout
+      data={initial.data}
+      relevance={relevance}
+      ptComponents={portableTextBodyTypeComponentsRSC}
+    />
+  );
 }
