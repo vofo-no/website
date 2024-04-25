@@ -202,8 +202,8 @@ export function StatisticsPageLayout({ data }: StatisticsPageLayoutProps) {
                   label="Antall kurs"
                 />
                 <MetricWithDiff
-                  value={thisYear.timer}
-                  old={lastYear.timer}
+                  value={thisYear.deltakere}
+                  old={lastYear.deltakere}
                   label="Deltakere"
                 />
                 <MetricWithDiff
@@ -292,6 +292,11 @@ export function StatisticsPageLayout({ data }: StatisticsPageLayoutProps) {
             </div>
             <div>
               <div className="grid grid-cols-1 gap-6">
+                <MetricWithDiff
+                  value={thisYear.timer}
+                  old={lastYear.timer}
+                  label="Timer"
+                />
                 <MetricWithDiff
                   label="Organisasjoner"
                   value={thisYear.organisasjoner}
