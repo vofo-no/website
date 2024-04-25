@@ -6,6 +6,7 @@ import { loadCounty } from "@/sanity/loader/loadQuery";
 
 import { CountyPageLayout } from "@/components/pages/county-page";
 import { Person } from "@/components/shared/person";
+import { portableTextBodyTypeComponentsRSC } from "@/components/shared/portable-text-body/type-components";
 import { PostList } from "@/components/shared/post-list";
 
 const CountyPagePreview = dynamic(() => import("./preview"));
@@ -52,7 +53,11 @@ export default async function CountyPage({
     );
 
   return (
-    <CountyPageLayout data={initial.data} contacts={contacts}>
+    <CountyPageLayout
+      data={initial.data}
+      contacts={contacts}
+      ptComponents={portableTextBodyTypeComponentsRSC}
+    >
       <PostList
         referencesId={initial.data._id}
         title={`Aktuelt fra ${initial.data.title}`}

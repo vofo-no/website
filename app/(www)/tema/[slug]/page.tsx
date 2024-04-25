@@ -6,6 +6,7 @@ import { loadTopic } from "@/sanity/loader/loadQuery";
 
 import { PageLayout } from "@/components/pages/page-layout";
 import { Person } from "@/components/shared/person";
+import { portableTextBodyTypeComponentsRSC } from "@/components/shared/portable-text-body/type-components";
 import { PostList } from "@/components/shared/post-list";
 
 const TopicPagePreview = dynamic(() => import("./preview"));
@@ -50,7 +51,11 @@ export default async function TopicPage({ params: { slug } }: TopicPageProps) {
     );
 
   return (
-    <PageLayout data={initial.data} contacts={contacts}>
+    <PageLayout
+      data={initial.data}
+      contacts={contacts}
+      ptComponents={portableTextBodyTypeComponentsRSC}
+    >
       <PostList
         referencesId={initial.data._id}
         title={`Aktuelt om ${initial.data.title.toLocaleLowerCase()}`}
