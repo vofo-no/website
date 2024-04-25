@@ -27,6 +27,7 @@ export default defineField({
                 validation: (rule) =>
                   rule.uri({
                     scheme: ["http", "https", "mailto", "tel"],
+                    allowRelative: true,
                   }),
               },
             ],

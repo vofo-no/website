@@ -8,8 +8,9 @@ import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export interface PersonLayoutProps {
-  data: PersonPayload;
+  data?: PersonPayload;
   hideContactInfo?: boolean;
+  loading?: boolean;
 }
 
 export function PersonLayout(props: PersonLayoutProps) {
@@ -18,11 +19,16 @@ export function PersonLayout(props: PersonLayoutProps) {
   const imageUrl = image && urlForImage(image)?.size(256, 256).url();
 
   return (
-    <div className={"flex items-center gap-4 my-4 max-w-full not-prose"}>
+    <div
+      className={cn(
+        "flex items-center gap-4 my-4 max-w-full not-prose",
+        props.loading && "animate-pulse",
+      )}
+    >
       <Avatar className="h-24 w-24 not-prose">
         {imageUrl && <AvatarImage src={imageUrl} />}
         <AvatarFallback>
-          <SmileIcon />
+          <SmileIcon size={40} />
         </AvatarFallback>
       </Avatar>
       <div
