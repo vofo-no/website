@@ -1,9 +1,12 @@
 import { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { client } from "@/sanity/lib/client";
-import { allActiveCountiesQuery } from "@/sanity/lib/queries";
+import { allActiveCountiesQuery, allActiveSfQuery } from "@/sanity/lib/queries";
 
 import { getDataFile } from "@/lib/getDataFile";
 import { StatisticsPageLayout } from "@/components/pages/statistics-page";
+
+import { excludeSlugs } from "../excludeSlugs";
 
 interface SlugStatisticsPageProps {
   params: {
@@ -16,9 +19,11 @@ export async function generateMetadata({
 }: SlugStatisticsPageProps): Promise<Metadata> {
   const data = await getDataFile(slug);
 
+  const { title } = data ?? {};
+
   return {
-    title: `Statistikk for ${data.title}`,
-    description: `Oversikt over studieforbundenes kursaktivitet, medlemsorganisasjoner og bruk av statstilskudd i ${data.title}`,
+    title: `Statistikk for ${title}`,
+    description: `Oversikt over kursaktivitet, medlemsorganisasjoner og bruk av statstilskudd i ${title}`,
   };
 }
 
@@ -26,17 +31,24 @@ export const dynamic = "force-static";
 export const dynamicParams = false;
 
 export async function generateStaticParams() {
-  const data = await client.fetch<{ slug: string }[]>(allActiveCountiesQuery);
+  const [counties, sfs] = await Promise.all([
+    client.fetch<{ slug: string }[]>(allActiveCountiesQuery),
+    client.fetch<{ slug: string }[]>(allActiveSfQuery),
+  ]);
 
-  return data.map((item) => ({
-    slug: item.slug,
-  }));
+  return [...counties, ...sfs]
+    .filter((item) => !excludeSlugs.includes(item.slug))
+    .map((item) => ({
+      slug: item.slug,
+    }));
 }
 
 export default async function SlugStatisticsPage({
   params: { slug },
 }: SlugStatisticsPageProps) {
   const data = await getDataFile(slug);
+
+  if (!data) notFound();
 
   return <StatisticsPageLayout data={data} />;
 }

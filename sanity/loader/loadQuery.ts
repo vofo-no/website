@@ -4,6 +4,7 @@ import { draftMode } from "next/headers";
 import { client } from "@/sanity/lib/client";
 import {
   allActiveCountiesQuery,
+  allActiveSfQuery,
   allActiveTopicsQuery,
   countyBySlugQuery,
   pageBySlugQuery,
@@ -15,6 +16,7 @@ import { token } from "@/sanity/lib/token";
 import {
   CountyListItemPayload,
   CountyPayload,
+  OrganizationListItemPayload,
   PagePayload,
   PostPayload,
   SettingsPayload,
@@ -74,6 +76,14 @@ export function loadPost(slug: string) {
       slug,
     },
     { next: { tags: [`post:${slug}`] } },
+  );
+}
+
+export function loadAllSfs() {
+  return loadQuery<OrganizationListItemPayload[]>(
+    allActiveSfQuery,
+    {},
+    { next: { tags: [`organization`] } },
   );
 }
 

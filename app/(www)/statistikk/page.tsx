@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { notFound } from "next/navigation";
 
 import { getDataFile } from "@/lib/getDataFile";
 import { StatisticsPageLayout } from "@/components/pages/statistics-page";
@@ -12,6 +13,8 @@ export const metadata: Metadata = {
 
 export default async function StatisticsPage() {
   const data = await getDataFile("nasjonal");
+
+  if (!data) notFound();
 
   return <StatisticsPageLayout data={data} />;
 }
