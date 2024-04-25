@@ -100,6 +100,16 @@ export const tagByIdQuery = groq`
   }
 `;
 
+export const allActiveSfQuery = groq`
+  *[_type == "organization" && active == true && defined(ssbCode) && defined(slug)][]{
+    _id,
+    "title": name,
+    "slug": slug.current,
+    description,
+    image,
+  } | order(title asc)
+`;
+
 export const allActiveCountiesQuery = groq`
   *[_type == "county" && active == true][]{
     _id,

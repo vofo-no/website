@@ -1,7 +1,8 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { BarList } from "@tremor/react";
+import { BarList, Button } from "@tremor/react";
+import { ChevronDown, ChevronUp } from "lucide-react";
 
 import { formatNumber } from "@/lib/formatNumber";
 
@@ -13,17 +14,19 @@ interface ExpandableBarListProps {
   formatOptions?: Intl.NumberFormatOptions;
 }
 
+const DEFAULT_INITIAL = 4;
+
 export function ExpandableBarList(props: ExpandableBarListProps) {
   const [expanded, setExpanded] = useState(false);
 
-  const expandable = props.data.length > (props.initial ?? 0);
+  const expandable = props.data.length > (props.initial ?? DEFAULT_INITIAL);
 
   const sortedData = useMemo(() => {
     const sorted = props.data.sort((a, b) => b.value - a.value);
 
     if (expanded || !expandable) return sorted;
 
-    return sorted.slice(0, props.initial || 4);
+    return sorted.slice(0, props.initial || DEFAULT_INITIAL);
   }, [expandable, expanded, props.data, props.initial]);
 
   return (
@@ -38,12 +41,17 @@ export function ExpandableBarList(props: ExpandableBarListProps) {
         valueFormatter={(v: number) => formatNumber(v, props.formatOptions)}
       />
       {expandable && (
-        <button
-          className="text-tremor-default mt-2 print:hidden"
-          onClick={() => setExpanded(!expanded)}
-        >
-          {expanded ? "Vis mindre" : "Vis mer"}
-        </button>
+        <div className="print:hidden mt-2">
+          <Button
+            icon={expanded ? ChevronUp : ChevronDown}
+            iconPosition="right"
+            variant="light"
+            size="xs"
+            onClick={() => setExpanded(!expanded)}
+          >
+            {expanded ? "Vis mindre" : "Vis mer"}
+          </Button>
+        </div>
       )}
     </>
   );

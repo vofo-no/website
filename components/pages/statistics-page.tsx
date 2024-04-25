@@ -65,11 +65,13 @@ function GeografiSection({ data, missing, term }: GeografiSectionProps) {
       {missing.length ? (
         <p>
           Det ble ikke rapportert kurs i{" "}
-          {formatList(
-            missing.map((item) => item.navn),
-            { type: "disjunction" },
-          )}{" "}
-          kommune.
+          {missing.length > 9
+            ? `${missing.length} kommuner`
+            : `${formatList(
+                missing.map((item) => item.navn),
+                { type: "disjunction" },
+              )} kommune`}
+          .
         </p>
       ) : null}
       <TabBarList
@@ -136,9 +138,14 @@ export function StatisticsPageLayout({ data }: StatisticsPageLayoutProps) {
               />
               <p>
                 <strong>
-                  {formatNumber(data.summary.kurs_bin[0].kurs / thisYear.kurs, {
-                    style: "percent",
-                  })}
+                  {data.summary.kurs_bin[0].kurs
+                    ? formatNumber(
+                        data.summary.kurs_bin[0].kurs / thisYear.kurs,
+                        {
+                          style: "percent",
+                        },
+                      )
+                    : "Ingen"}
                 </strong>{" "}
                 av kursene ble gjennomført på <strong>én dag</strong>.
                 <br />
@@ -257,17 +264,31 @@ export function StatisticsPageLayout({ data }: StatisticsPageLayoutProps) {
                 sine egne organisasjonsledd og medlemsorganisasjoner som holder
                 kurs.
               </p>
-              <TabBarList
-                variant="solid"
-                name="Studieforbund"
-                tabs={["Timer", "Deltakere", "Kurs"]}
-                initial={data.summary.studieforbund.length}
-                options={[{}, {}, {}]}
-                data={data.summary.studieforbund.map((item) => ({
-                  name: getOrganizationName(item.sf, null, thisYear.aar),
-                  values: [item.timer, item.delt, item.kurs],
-                }))}
-              />
+              {data.summary.studieforbund.length > 1 ? (
+                <TabBarList
+                  variant="solid"
+                  name="Studieforbund"
+                  tabs={["Timer", "Deltakere", "Kurs"]}
+                  initial={data.summary.studieforbund.length}
+                  options={[{}, {}, {}]}
+                  data={data.summary.studieforbund.map((item) => ({
+                    name: getOrganizationName(item.sf, null, thisYear.aar),
+                    values: [item.timer, item.delt, item.kurs],
+                  }))}
+                />
+              ) : (
+                <TabBarList
+                  variant="solid"
+                  name="Organisasjon"
+                  tabs={["Timer", "Deltakere", "Kurs"]}
+                  initial={10}
+                  options={[{}, {}, {}]}
+                  data={data.summary.organisasjoner.map((item) => ({
+                    name: getOrganizationName(item.sf, item.org, thisYear.aar),
+                    values: [item.timer, item.delt, item.kurs],
+                  }))}
+                />
+              )}
             </div>
             <div>
               <div className="grid grid-cols-1 gap-6">
@@ -276,15 +297,21 @@ export function StatisticsPageLayout({ data }: StatisticsPageLayoutProps) {
                   value={thisYear.organisasjoner}
                   old={lastYear.organisasjoner}
                 >
-                  <ExpandableBarList
-                    name="Organisasjon"
-                    value="Kurs"
-                    initial={8}
-                    data={data.summary.organisasjoner.map((bar) => ({
-                      name: getOrganizationName(bar.sf, bar.org, thisYear.aar),
-                      value: bar.kurs,
-                    }))}
-                  />
+                  {data.summary.studieforbund.length > 1 ? (
+                    <ExpandableBarList
+                      name="Organisasjon"
+                      value="Kurs"
+                      initial={8}
+                      data={data.summary.organisasjoner.map((bar) => ({
+                        name: getOrganizationName(
+                          bar.sf,
+                          bar.org,
+                          thisYear.aar,
+                        ),
+                        value: bar.kurs,
+                      }))}
+                    />
+                  ) : null}
                 </MetricWithDiff>
               </div>
             </div>

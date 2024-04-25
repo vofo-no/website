@@ -1,12 +1,14 @@
 import Link from "next/link";
-import { loadAllCounties } from "@/sanity/loader/loadQuery";
+import { loadAllCounties, loadAllSfs } from "@/sanity/loader/loadQuery";
+
+import { excludeSlugs } from "./excludeSlugs";
 
 export default async function StatisticsLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const counties = await loadAllCounties();
+  const [counties, sfs] = await Promise.all([loadAllCounties(), loadAllSfs()]);
 
   return (
     <>
@@ -20,13 +22,32 @@ export default async function StatisticsLayout({
               <li>
                 <Link href="/statistikk">Statistikk for hele landet</Link>
               </li>
-              {counties.data.map((county) => (
-                <li key={county._id}>
-                  <Link href={`/statistikk/${county.slug}`}>
-                    Statistikk for {county.title}
-                  </Link>
-                </li>
-              ))}
+              <li>
+                <h4>Fylker</h4>
+                <ul>
+                  {counties.data
+                    .filter((item) => !excludeSlugs.includes(item.slug))
+                    .map((county) => (
+                      <li key={county._id}>
+                        <Link href={`/statistikk/${county.slug}`}>
+                          {county.title}
+                        </Link>
+                      </li>
+                    ))}
+                </ul>
+              </li>
+              <li>
+                <h4>Studieforbund</h4>
+                <ul>
+                  {sfs.data
+                    .filter((item) => !excludeSlugs.includes(item.slug))
+                    .map((sf) => (
+                      <li key={sf._id}>
+                        <Link href={`/statistikk/${sf.slug}`}>{sf.title}</Link>
+                      </li>
+                    ))}
+                </ul>
+              </li>
             </ul>
             <h3>Studieforbundenes egne kursstatistikker</h3>
             <ul>

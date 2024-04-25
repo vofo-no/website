@@ -76,6 +76,8 @@ interface DocumentListItemPayload {
   image?: Image;
 }
 
+export interface OrganizationListItemPayload extends DocumentListItemPayload {}
+
 export interface CountyListItemPayload extends DocumentListItemPayload {}
 
 export interface CountyPayload extends CountyListItemPayload {
