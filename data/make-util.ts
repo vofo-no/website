@@ -343,7 +343,6 @@ function makeReport(
         kurs: op.count(),
         timer: op.sum(col.timer),
         timer_median: op.median(col.timer),
-        emner: op.distinct(col.emne),
         deltakere: op.sum(col.deltakere),
         deltakere_median: op.median(col.deltakere),
         deltakere_kvinner: op.sum(col.deltakere_kvinner),

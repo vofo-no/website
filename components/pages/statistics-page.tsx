@@ -207,6 +207,11 @@ export function StatisticsPageLayout({ data }: StatisticsPageLayoutProps) {
                   label="Deltakere"
                 />
                 <MetricWithDiff
+                  value={thisYear.timer}
+                  old={lastYear.timer}
+                  label="Timer"
+                />
+                <MetricWithDiff
                   value={thisYear.timer_median}
                   old={lastYear.timer_median}
                   label="Varighet pr. kurs"
@@ -216,11 +221,6 @@ export function StatisticsPageLayout({ data }: StatisticsPageLayoutProps) {
                     style: "unit",
                     unitDisplay: "long",
                   }}
-                />
-                <MetricWithDiff
-                  label="Kursemner"
-                  value={thisYear.emner}
-                  old={lastYear.emner}
                 />
               </div>
             </div>
@@ -292,11 +292,6 @@ export function StatisticsPageLayout({ data }: StatisticsPageLayoutProps) {
             </div>
             <div>
               <div className="grid grid-cols-1 gap-6">
-                <MetricWithDiff
-                  value={thisYear.timer}
-                  old={lastYear.timer}
-                  label="Timer"
-                />
                 <MetricWithDiff
                   label="Organisasjoner"
                   value={thisYear.organisasjoner}
