@@ -21,29 +21,29 @@ export function PersonLayout(props: PersonLayoutProps) {
   return (
     <div
       className={cn(
-        "flex items-center gap-4 my-4 max-w-full not-prose",
+        "grid grid-cols-[96px_auto] items-center gap-4 my-4 max-w-full text-base not-prose",
         props.loading && "animate-pulse",
       )}
     >
-      <Avatar className="h-24 w-24 not-prose">
-        {imageUrl && <AvatarImage src={imageUrl} alt={name} />}
-        <AvatarFallback>
-          <SmileIcon size={40} />
-        </AvatarFallback>
-      </Avatar>
+      <div>
+        <Avatar className="h-24 w-24">
+          {imageUrl && <AvatarImage src={imageUrl} alt={name} />}
+          <AvatarFallback>
+            <SmileIcon size={40} className="opacity-50" />
+          </AvatarFallback>
+        </Avatar>
+      </div>
       <div
-        className={cn("flex flex-col self-center overflow-hidden", {
+        className={cn("self-center overflow-hidden", {
           "animate-pulse": !props.data,
         })}
       >
-        <div className="text-base truncate">
-          <p className="font-medium truncate">
-            {name ?? (
-              <span className="w-2/3 inline-block bg-muted h-4 rounded-md "></span>
-            )}
-          </p>
-          <p className="text-muted-foreground truncate">{position}</p>
-        </div>
+        <p className="font-medium truncate">
+          {name ?? (
+            <span className="w-2/3 inline-block bg-muted h-4 rounded-md "></span>
+          )}
+        </p>
+        <p className="text-muted-foreground truncate">{position}</p>
         {!props.hideContactInfo && (
           <div className="flex justify-start flex-wrap gap-x-2 gap-y-1 mt-1 text-sm">
             {email && (

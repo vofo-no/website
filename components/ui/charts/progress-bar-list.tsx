@@ -13,7 +13,7 @@ interface ProgressBarListProps {
 
 export function ProgressBarList(props: ProgressBarListProps) {
   return (
-    <div className="grid grid-cols-[max-content_auto] items-center gap-2 my-6">
+    <div className="grid grid-cols-[max-content_auto] items-center gap-2">
       {props.bars.map((bar) => (
         <React.Fragment key={bar.name}>
           <div className="flex gap-3 justify-between not-prose">

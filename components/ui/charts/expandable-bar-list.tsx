@@ -30,7 +30,7 @@ export function ExpandableBarList(props: ExpandableBarListProps) {
   }, [expandable, expanded, props.data, props.initial]);
 
   return (
-    <>
+    <div className="not-prose">
       <p className="mt-4 text-tremor-default flex items-center justify-between text-tremor-content dark:text-dark-tremor-content">
         <span>{props.name}</span>
         <span>{props.value}</span>
@@ -53,6 +53,6 @@ export function ExpandableBarList(props: ExpandableBarListProps) {
           </Button>
         </div>
       )}
-    </>
+    </div>
   );
 }
