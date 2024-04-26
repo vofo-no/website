@@ -48,7 +48,7 @@ function GeografiSection({
   tilskudd,
 }: GeografiSectionProps) {
   const tabs = tilskudd
-    ? ["Antall kurs", "Etter folketall", "Deltakere", "Tilskudd"]
+    ? ["Kurs", "Etter folketall", "Deltakere", "Tilskudd"]
     : ["Antall kurs", "Etter folketall", "Deltakere"];
   return (
     <>
