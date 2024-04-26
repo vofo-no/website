@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import Image from "next/image";
 import topics from "@/data/topics.json";
 import { StatisticsDataType } from "@/types";
 import { Card } from "@tremor/react";
@@ -10,6 +11,7 @@ import { BarChart } from "@/components/ui/charts/bar-chart";
 import { DonutWithLegend } from "@/components/ui/charts/donut-with-legend";
 import { ExpandableBarList } from "@/components/ui/charts/expandable-bar-list";
 import { MetricWithDiff } from "@/components/ui/charts/metric-with-diff";
+import { ProgressBarList } from "@/components/ui/charts/progress-bar-list";
 import { ProgressCircle } from "@/components/ui/charts/progress-circle";
 import { TabBarList } from "@/components/ui/charts/tab-bar-list";
 import {
@@ -18,7 +20,9 @@ import {
   PageHeaderHeading,
 } from "@/components/page-header";
 
-import { ProgressBarList } from "../ui/charts/progress-bar-list";
+import UndrawGrades from "./undraw_grades_re_j7d6.svg";
+import UndrawNavigator from "./undraw_navigator_a479.svg";
+import UndrawTeamCollaboration from "./undraw_team_collaboration_re_ow29.svg";
 
 interface StatisticsPageLayoutProps {
   data: StatisticsDataType;
@@ -276,6 +280,13 @@ export function StatisticsPageLayout({ data }: StatisticsPageLayoutProps) {
               />
             </MetricWithDiff>{" "}
           </div>
+          <div className="pt-16 pb-8">
+            <Image
+              src={UndrawTeamCollaboration}
+              alt="Tre personer som samarbeider"
+              className="w-5/6 max-w-md mx-auto"
+            />
+          </div>
           <div className="grid md:grid-cols-3 gap-6">
             <div className="md:col-span-2 prose prose-gray dark:prose-invert mx-auto">
               <h2>Tilskudd og arrangører</h2>
@@ -394,6 +405,13 @@ export function StatisticsPageLayout({ data }: StatisticsPageLayoutProps) {
                 </MetricWithDiff>
               </div>
             </div>
+          </div>
+          <div className="pt-16 pb-8">
+            <Image
+              src={UndrawGrades}
+              alt=""
+              className="w-5/6 max-w-md mx-auto"
+            />
           </div>
           <div className="grid md:grid-cols-3 gap-6">
             <div className="md:col-span-2 prose prose-gray dark:prose-invert mx-auto">
@@ -550,6 +568,13 @@ export function StatisticsPageLayout({ data }: StatisticsPageLayoutProps) {
                 </Card>
               </div>
             </div>
+          </div>
+          <div className="pt-16 pb-8">
+            <Image
+              src={UndrawNavigator}
+              alt="En bil som kjører på en lang vei mot et fjell"
+              className="w-5/6 max-w-md mx-auto"
+            />
           </div>
           <div className="grid md:grid-cols-3 gap-6">
             <div className="md:col-span-2 prose prose-gray dark:prose-invert mx-auto">
