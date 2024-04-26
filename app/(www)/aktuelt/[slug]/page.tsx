@@ -2,7 +2,9 @@ import { Metadata } from "next";
 import dynamic from "next/dynamic";
 import { draftMode } from "next/headers";
 import { notFound } from "next/navigation";
+import { client } from "@/sanity/lib/client";
 import { loadPost } from "@/sanity/loader/loadQuery";
+import { groq } from "next-sanity";
 
 import { PostPageLayout } from "@/components/pages/post-page";
 import { portableTextBodyTypeComponentsRSC } from "@/components/shared/portable-text-body/type-components";
@@ -27,6 +29,18 @@ export async function generateMetadata({
     title: data.title,
     description: data.description,
   };
+}
+
+export async function generateStaticParams() {
+  const data = await client.fetch<{ slug: string }[]>(
+    groq`*[_type == "post"][] { "slug": slug.current }`,
+    {},
+    { next: { tags: ["post"] } },
+  );
+
+  return data.map((item) => ({
+    slug: item.slug,
+  }));
 }
 
 export default async function PostPage({ params: { slug } }: PostPageProps) {

@@ -2,7 +2,9 @@ import { Metadata } from "next";
 import dynamic from "next/dynamic";
 import { draftMode } from "next/headers";
 import { notFound } from "next/navigation";
+import { client } from "@/sanity/lib/client";
 import { loadCounty } from "@/sanity/loader/loadQuery";
+import { groq } from "next-sanity";
 
 import { CountyPageLayout } from "@/components/pages/county-page";
 import { Person } from "@/components/shared/person";
@@ -28,6 +30,18 @@ export async function generateMetadata({
     title: data.title,
     description: data.description,
   };
+}
+
+export async function generateStaticParams() {
+  const data = await client.fetch<{ slug: string }[]>(
+    groq`*[_type == "county"][] { "slug": slug.current }`,
+    {},
+    { next: { tags: ["county"] } },
+  );
+
+  return data.map((item) => ({
+    slug: item.slug,
+  }));
 }
 
 export default async function CountyPage({
