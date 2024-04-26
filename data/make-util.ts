@@ -178,6 +178,7 @@ function makeReport(
   oneYear: ColumnTable,
   twoYears: ColumnTable,
   ssb: ColumnTable,
+  tilskudd: ColumnTable,
   title?: string,
 ) {
   const report = {
@@ -266,26 +267,46 @@ function makeReport(
       // Fylker etter antall kurs
       fylker: oneYear
         .join(ssb, [col.fylke, "code"])
+        .join_left(
+          tilskudd.groupby(col.fylke).rollup({ tilskudd: op.sum("tilskudd") }),
+          [col.fylke, col.fylke],
+        )
         .groupby(col.fylke)
         .rollup({
           kurs: op.count(),
           pop: op.any("pop"),
           navn: op.any("name"),
           delt: op.sum(col.deltakere),
+          tilskudd: op.any("tilskudd"),
         })
         .orderby(desc("kurs"))
         .objects(),
 
       // Studieforbund etter antall kurs
       studieforbund: oneYear
+        .join_left(
+          tilskudd
+            .groupby(col.studieforbund)
+            .rollup({ tilskudd: op.sum("tilskudd") }),
+          [col.studieforbund, col.studieforbund],
+        )
         .groupby(col.studieforbund)
         .rollup({
           kurs: op.count(),
           timer: op.sum(col.timer),
           delt: op.sum(col.deltakere),
+          tilskudd: op.any("tilskudd"),
         })
         .orderby(desc("timer"))
         .objects(),
+
+      tilskudd: tilskudd
+        .rollup({
+          ot: op.sum("ot"),
+          trt: op.sum("trt"),
+          gt: op.sum("gt"),
+        })
+        .objects()[0],
 
       kurs_bin: [
         // Antall kurs 1 dag
@@ -426,6 +447,21 @@ export async function makeUtil(yearArg: string) {
 
   const ssb = await loadJSON(`${dataFolder}/ssb.json`, {});
 
+  const tilskudd = await loadCSV(`${dataFolder}/tilskudd.csv`, {
+    delimiter: ";",
+    header: true,
+  }).then((table) =>
+    table
+      .filter(
+        escape(
+          (d: { [x: string]: number }) =>
+            !excludeSF.includes(d[col.studieforbund]),
+        ),
+      )
+      .derive({ tilskudd: (d) => d!["ot"] + d!["trt"] + d!["gt"] })
+      .reify(),
+  );
+
   const data = await Promise.all([loadData(year), loadData(year - 1, recode)]);
 
   const shortData = data[0].concat(data[1]);
@@ -484,6 +520,11 @@ export async function makeUtil(yearArg: string) {
                 filters.includes(Math.trunc(Number(d["code"]) / 100)),
             ),
           ),
+          tilskudd.filter(
+            escape((d: { [x: string]: number }) =>
+              filters.includes(d[col.fylke]),
+            ),
+          ),
           fylke.name,
         ),
       ),
@@ -533,6 +574,11 @@ export async function makeUtil(yearArg: string) {
             ),
           ),
           ssb,
+          tilskudd.filter(
+            escape(
+              (d: { [x: string]: number }) => d[col.studieforbund] === filter,
+            ),
+          ),
           sf.name,
         ),
       ),
@@ -541,6 +587,6 @@ export async function makeUtil(yearArg: string) {
   });
 
   const wstream = fs.createWriteStream(`data/${year}/nasjonal.json`);
-  wstream.write(JSON.stringify(makeReport(data[0], shortData, ssb)));
+  wstream.write(JSON.stringify(makeReport(data[0], shortData, ssb, tilskudd)));
   wstream.end();
 }

@@ -30,10 +30,14 @@
         "kurs": 0,
         "pop": 0,
         "navn": "",
-        "delt": 0
+        "delt": 0,
+        "tilskudd": 0
       }
     ],
-    "studieforbund": [{ "sf": 0, "kurs": 0, "timer": 0, "delt": 0 }],
+    "studieforbund": [
+      { "sf": 0, "kurs": 0, "timer": 0, "delt": 0, "tilskudd": 0 }
+    ],
+    "tilskudd": { "ot": 0, "trt": 0, "gt": 0 },
     "kurs_bin": [{ "label": "", "kurs": 0 }]
   },
   "history": [

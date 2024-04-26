@@ -30,12 +30,22 @@ interface GeografiSectionProps {
     pop: number;
     navn: string;
     delt: number;
+    tilskudd?: number;
   }[];
   term: "Fylke" | "Kommune";
   missing: { navn: string }[];
+  tilskudd?: boolean;
 }
 
-function GeografiSection({ data, missing, term }: GeografiSectionProps) {
+function GeografiSection({
+  data,
+  missing,
+  term,
+  tilskudd,
+}: GeografiSectionProps) {
+  const tabs = tilskudd
+    ? ["Antall kurs", "Etter folketall", "Deltakere", "Tilskudd"]
+    : ["Antall kurs", "Etter folketall", "Deltakere"];
   return (
     <>
       <h2>Geografi</h2>
@@ -77,12 +87,18 @@ function GeografiSection({ data, missing, term }: GeografiSectionProps) {
       <TabBarList
         variant="solid"
         name={term}
-        tabs={["Antall kurs", "Etter folketall", "Deltakere"]}
-        values={["Kurs", "Kurs pr. 1000 innbyggere", "Deltakere"]}
+        tabs={tabs}
+        options={[{}, {}, {}, { style: "currency", currency: "NOK" }]}
+        values={["Kurs", "Kurs pr. 1000 innbyggere", "Deltakere", "Tilskudd"]}
         initial={15}
         data={data.map((bar) => ({
           name: bar.navn,
-          values: [bar.kurs, bar.kurs / (bar.pop / 1000), bar.delt],
+          values: [
+            bar.kurs,
+            bar.kurs / (bar.pop / 1000),
+            bar.delt,
+            bar.tilskudd || 0,
+          ],
         }))}
       />
     </>
@@ -108,6 +124,11 @@ export function StatisticsPageLayout({ data }: StatisticsPageLayoutProps) {
       )[`${thisYear.aar}`] ?? 0,
     [data.histogram, thisYear.aar],
   );
+
+  const totaltTilskudd =
+    (data.summary.tilskudd.gt || 0) +
+    (data.summary.tilskudd.trt || 0) +
+    (data.summary.tilskudd.ot || 0);
 
   return (
     <>
@@ -258,6 +279,54 @@ export function StatisticsPageLayout({ data }: StatisticsPageLayoutProps) {
           <div className="grid md:grid-cols-3 gap-6">
             <div className="md:col-span-2 prose prose-gray dark:prose-invert mx-auto">
               <h2>Tilskudd og arrangører</h2>
+              {totaltTilskudd > 0 ? (
+                <>
+                  <p>
+                    Det ble brukt{" "}
+                    <strong>
+                      {formatNumber(totaltTilskudd, {
+                        compactDisplay: "long",
+                        notation: "compact",
+                        maximumFractionDigits: 1,
+                      })}{" "}
+                      kroner
+                    </strong>{" "}
+                    av statstilskuddet i {thisYear.aar}.
+                  </p>
+                  <Card className="not-prose">
+                    <div className="flex justify-between gap-2 relative">
+                      <h3 className="text-tremor-default text-tremor-content dark:text-dark-tremor-content">
+                        Statstilskudd
+                      </h3>
+                    </div>
+                    <p className="text-tremor-metric font-semibold text-tremor-content-strong dark:text-dark-tremor-content-strong">
+                      {formatNumber(totaltTilskudd, {
+                        style: "currency",
+                        currency: "NOK",
+                      })}
+                    </p>
+                    <div className="mt-6">
+                      <ProgressBarList
+                        sum={totaltTilskudd}
+                        bars={[
+                          {
+                            name: "Kurstilskudd",
+                            value: data.summary.tilskudd.ot,
+                          },
+                          {
+                            name: "Tilrettelegging",
+                            value: data.summary.tilskudd.trt,
+                          },
+                          {
+                            name: "Drift og administrasjon",
+                            value: data.summary.tilskudd.gt,
+                          },
+                        ].filter((item) => item.value)}
+                      />
+                    </div>
+                  </Card>
+                </>
+              ) : null}
               <p>
                 Tilskuddene til studieforbund fordeles etter antall kurstimer
                 fra tidligere år. Studieforbundet fordeler statstilskuddet til
@@ -268,12 +337,22 @@ export function StatisticsPageLayout({ data }: StatisticsPageLayoutProps) {
                 <TabBarList
                   variant="solid"
                   name="Studieforbund"
-                  tabs={["Timer", "Deltakere", "Kurs"]}
+                  tabs={
+                    data.summary.studieforbund.filter((item) => item.tilskudd)
+                      .length
+                      ? ["Timer", "Deltakere", "Kurs", "Tilskudd"]
+                      : ["Timer", "Deltakere", "Kurs"]
+                  }
                   initial={data.summary.studieforbund.length}
-                  options={[{}, {}, {}]}
+                  options={[{}, {}, {}, { style: "currency", currency: "NOK" }]}
                   data={data.summary.studieforbund.map((item) => ({
                     name: getOrganizationName(item.sf, null, thisYear.aar),
-                    values: [item.timer, item.delt, item.kurs],
+                    values: [
+                      item.timer,
+                      item.delt,
+                      item.kurs,
+                      item.tilskudd ?? 0,
+                    ],
                   }))}
                 />
               ) : (
@@ -411,13 +490,15 @@ export function StatisticsPageLayout({ data }: StatisticsPageLayoutProps) {
                   value={thisYear.deltakere}
                   old={lastYear.deltakere}
                 >
-                  <ProgressBarList
-                    sum={thisYear.deltakere}
-                    bars={[
-                      { name: "Kvinner", value: thisYear.deltakere_kvinner },
-                      { name: "Menn", value: thisYear.deltakere_menn },
-                    ]}
-                  />
+                  <div className="my-6">
+                    <ProgressBarList
+                      sum={thisYear.deltakere}
+                      bars={[
+                        { name: "Kvinner", value: thisYear.deltakere_kvinner },
+                        { name: "Menn", value: thisYear.deltakere_menn },
+                      ]}
+                    />
+                  </div>
                   <TabBarList
                     variant="line"
                     name="Emne"
@@ -480,6 +561,10 @@ export function StatisticsPageLayout({ data }: StatisticsPageLayoutProps) {
                     data.summary.fylker.length > 1
                       ? data.summary.fylker
                       : data.summary.kommuner
+                  }
+                  tilskudd={
+                    data.summary.fylker.length > 1 &&
+                    !!data.summary.fylker.filter((item) => item.tilskudd).length
                   }
                 />
               )}
