@@ -3,6 +3,7 @@ import dynamic from "next/dynamic";
 import { draftMode } from "next/headers";
 import { notFound } from "next/navigation";
 import { client } from "@/sanity/lib/client";
+import { urlForImage } from "@/sanity/lib/image";
 import { loadPost } from "@/sanity/loader/loadQuery";
 import { groq } from "next-sanity";
 
@@ -25,9 +26,14 @@ export async function generateMetadata({
 
   if (!data) notFound();
 
+  const image = data.image && urlForImage(data.image).size(1200, 630).url();
+
   return {
     title: data.title,
     description: data.description,
+    openGraph: {
+      images: image,
+    },
   };
 }
 
@@ -45,6 +51,8 @@ export async function generateStaticParams() {
 
 export default async function PostPage({ params: { slug } }: PostPageProps) {
   const initial = await loadPost(slug);
+
+  if (!initial.data) notFound();
 
   const relevance = initial.data.relevance?.map((tag) => (
     <TagLink id={tag._ref} size="lg" key={`taglink.${tag._ref}`} />
