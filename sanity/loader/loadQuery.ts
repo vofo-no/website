@@ -111,7 +111,7 @@ export function loadPage(slug: string) {
     {
       slug,
     },
-    { next: { tags: [`page:${slug.replaceAll("/", "--")}`] } },
+    { next: { tags: [`page:${slug}`] } },
   );
 }
 
