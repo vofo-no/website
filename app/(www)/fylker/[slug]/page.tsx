@@ -7,6 +7,7 @@ import { urlForImage } from "@/sanity/lib/image";
 import { loadCounty } from "@/sanity/loader/loadQuery";
 import { groq } from "next-sanity";
 
+import { resolveHref } from "@/lib/resolveHref";
 import { CountyPageLayout } from "@/components/pages/county-page";
 import { Person } from "@/components/shared/person";
 import { portableTextBodyTypeComponentsRSC } from "@/components/shared/portable-text-body/type-components";
@@ -34,6 +35,9 @@ export async function generateMetadata({
     description: data.description,
     openGraph: {
       images: image,
+      title: data.title,
+      type: "website",
+      url: `https://www.vofo.no${resolveHref("county", slug)}`,
     },
   };
 }

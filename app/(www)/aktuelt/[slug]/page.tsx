@@ -7,6 +7,7 @@ import { urlForImage } from "@/sanity/lib/image";
 import { loadPost } from "@/sanity/loader/loadQuery";
 import { groq } from "next-sanity";
 
+import { resolveHref } from "@/lib/resolveHref";
 import { PostPageLayout } from "@/components/pages/post-page";
 import { portableTextBodyTypeComponentsRSC } from "@/components/shared/portable-text-body/type-components";
 import { TagLink } from "@/components/shared/tag-link";
@@ -33,6 +34,11 @@ export async function generateMetadata({
     description: data.description,
     openGraph: {
       images: image,
+      title: data.title,
+      type: "article",
+      publishedTime: data.publishedAt,
+      modifiedTime: data._updatedAt,
+      url: `https://www.vofo.no${resolveHref("post", slug)}`,
     },
   };
 }
