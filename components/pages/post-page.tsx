@@ -9,10 +9,7 @@ import {
   PageHeaderDescription,
   PageHeaderHeading,
 } from "@/components/page-header";
-import {
-  PortableTextBody,
-  PortableTextBodyTypeComponents,
-} from "@/components/shared/portable-text-body";
+import { PortableTextBody } from "@/components/shared/portable-text-body";
 import { Toc } from "@/components/toc";
 
 import { FileDownload } from "../file-download";
@@ -24,7 +21,6 @@ function isSameDate(datestr1: string = "", datestr2: string = "") {
 export function PostPageLayout(props: {
   data: PostPayload;
   relevance?: React.ReactNode;
-  ptComponents?: PortableTextBodyTypeComponents;
 }) {
   const {
     title,
@@ -67,10 +63,7 @@ export function PostPageLayout(props: {
             {attachments?.map((file) => (
               <FileDownload file={file} key={file._id} />
             ))}
-            <PortableTextBody
-              value={body}
-              typeComponents={props.ptComponents}
-            />
+            <PortableTextBody value={body} />
           </div>
           <aside
             className={cn(
