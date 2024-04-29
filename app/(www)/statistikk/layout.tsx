@@ -25,7 +25,7 @@ export default async function StatisticsLayout({
               <li>
                 <h4>Fylker</h4>
                 <ul>
-                  {counties.data
+                  {counties
                     .filter((item) => !excludeSlugs.includes(item.slug))
                     .map((county) => (
                       <li key={county._id}>
@@ -39,7 +39,7 @@ export default async function StatisticsLayout({
               <li>
                 <h4>Studieforbund</h4>
                 <ul>
-                  {sfs.data
+                  {sfs
                     .filter((item) => !excludeSlugs.includes(item.slug))
                     .map((sf) => (
                       <li key={sf._id}>

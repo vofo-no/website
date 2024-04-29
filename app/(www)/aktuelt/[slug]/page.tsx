@@ -1,16 +1,11 @@
 import { Metadata } from "next";
-import _dynamic from "next/dynamic";
-import { draftMode } from "next/headers";
 import { notFound } from "next/navigation";
 import { urlForImage } from "@/sanity/lib/image";
 import { loadPost } from "@/sanity/loader/loadQuery";
 
 import { resolveHref } from "@/lib/resolveHref";
 import { PostPageLayout } from "@/components/pages/post-page";
-import { portableTextBodyTypeComponentsRSC } from "@/components/shared/portable-text-body/type-components";
 import { TagLink } from "@/components/shared/tag-link";
-
-const PostPagePreview = _dynamic(() => import("./preview"));
 
 interface PostPageProps {
   params: {
@@ -21,7 +16,7 @@ interface PostPageProps {
 export async function generateMetadata({
   params: { slug },
 }: PostPageProps): Promise<Metadata> {
-  const { data } = await loadPost(slug);
+  const data = await loadPost(slug);
 
   if (!data) notFound();
 
@@ -59,24 +54,13 @@ export async function generateStaticParams() {
 }
 
 export default async function PostPage({ params: { slug } }: PostPageProps) {
-  const initial = await loadPost(slug);
+  const data = await loadPost(slug);
 
-  if (!initial.data) notFound();
+  if (!data) notFound();
 
-  const relevance = initial.data.relevance?.map((tag) => (
+  const relevance = data.relevance?.map((tag) => (
     <TagLink id={tag._ref} size="lg" key={`taglink.${tag._ref}`} />
   ));
 
-  if (draftMode().isEnabled)
-    return (
-      <PostPagePreview initial={initial} slug={slug} relevance={relevance} />
-    );
-
-  return (
-    <PostPageLayout
-      data={initial.data}
-      relevance={relevance}
-      ptComponents={portableTextBodyTypeComponentsRSC}
-    />
-  );
+  return <PostPageLayout data={data} relevance={relevance} />;
 }

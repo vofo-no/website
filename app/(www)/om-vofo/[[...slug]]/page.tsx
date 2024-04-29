@@ -1,6 +1,4 @@
 import { Metadata, ResolvingMetadata } from "next";
-import _dynamic from "next/dynamic";
-import { draftMode } from "next/headers";
 import { notFound } from "next/navigation";
 import { urlForImage } from "@/sanity/lib/image";
 import { loadPage } from "@/sanity/loader/loadQuery";
@@ -8,9 +6,6 @@ import { loadPage } from "@/sanity/loader/loadQuery";
 import { resolveHref } from "@/lib/resolveHref";
 import { PageLayout } from "@/components/pages/page-layout";
 import { Person } from "@/components/shared/person";
-import { portableTextBodyTypeComponentsRSC } from "@/components/shared/portable-text-body/type-components";
-
-const PagePreview = _dynamic(() => import("./preview"));
 
 interface PageProps {
   params: {
@@ -26,7 +21,7 @@ export async function generateMetadata(
   { params: { slug } }: PageProps,
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
-  const { data } = await loadPage(prefixSlug(slug));
+  const data = await loadPage(prefixSlug(slug));
 
   if (!data) notFound();
 
@@ -64,22 +59,13 @@ export async function generateStaticParams() {
 
 export default async function Page({ params }: PageProps) {
   const slug = prefixSlug(params.slug);
-  const initial = await loadPage(slug);
+  const data = await loadPage(slug);
 
-  if (!initial.data) notFound();
+  if (!data) notFound();
 
-  const contacts = initial.data.contacts?.map((reference) => (
+  const contacts = data.contacts?.map((reference) => (
     <Person key={`contactperson.${reference._ref}`} id={reference._ref} />
   ));
 
-  if (draftMode().isEnabled)
-    return <PagePreview initial={initial} slug={slug} contacts={contacts} />;
-
-  return (
-    <PageLayout
-      data={initial.data}
-      contacts={contacts}
-      ptComponents={portableTextBodyTypeComponentsRSC}
-    />
-  );
+  return <PageLayout data={data} contacts={contacts} />;
 }

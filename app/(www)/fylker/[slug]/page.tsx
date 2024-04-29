@@ -1,6 +1,4 @@
 import { Metadata } from "next";
-import _dynamic from "next/dynamic";
-import { draftMode } from "next/headers";
 import { notFound } from "next/navigation";
 import { urlForImage } from "@/sanity/lib/image";
 import { loadCounty } from "@/sanity/loader/loadQuery";
@@ -8,10 +6,7 @@ import { loadCounty } from "@/sanity/loader/loadQuery";
 import { resolveHref } from "@/lib/resolveHref";
 import { CountyPageLayout } from "@/components/pages/county-page";
 import { Person } from "@/components/shared/person";
-import { portableTextBodyTypeComponentsRSC } from "@/components/shared/portable-text-body/type-components";
 import { PostList } from "@/components/shared/post-list";
-
-const CountyPagePreview = _dynamic(() => import("./preview"));
 
 interface CountyPageProps {
   params: {
@@ -22,7 +17,7 @@ interface CountyPageProps {
 export async function generateMetadata({
   params: { slug },
 }: CountyPageProps): Promise<Metadata> {
-  const { data } = await loadCounty(slug);
+  const data = await loadCounty(slug);
 
   if (!data) notFound();
 
@@ -60,36 +55,21 @@ export async function generateStaticParams() {
 export default async function CountyPage({
   params: { slug },
 }: CountyPageProps) {
-  const initial = await loadCounty(slug);
+  const data = await loadCounty(slug);
 
-  if (!initial.data) notFound();
+  if (!data) notFound();
 
-  const contacts = initial.data.contacts?.map((reference) => (
+  const contacts = data.contacts?.map((reference) => (
     <Person key={`contactperson.${reference._ref}`} id={reference._ref} />
   ));
 
   const archiveParams = new URLSearchParams({ fylke: slug });
 
-  if (draftMode().isEnabled)
-    return (
-      <CountyPagePreview initial={initial} slug={slug} contacts={contacts}>
-        <PostList
-          referencesId={initial.data._id}
-          title={`Aktuelt fra ${initial.data.title}`}
-          archiveParams={archiveParams}
-        />
-      </CountyPagePreview>
-    );
-
   return (
-    <CountyPageLayout
-      data={initial.data}
-      contacts={contacts}
-      ptComponents={portableTextBodyTypeComponentsRSC}
-    >
+    <CountyPageLayout data={data} contacts={contacts}>
       <PostList
-        referencesId={initial.data._id}
-        title={`Aktuelt fra ${initial.data.title}`}
+        referencesId={data._id}
+        title={`Aktuelt fra ${data.title}`}
         archiveParams={archiveParams}
       />
     </CountyPageLayout>

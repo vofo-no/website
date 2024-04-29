@@ -1,6 +1,4 @@
 import { Metadata } from "next";
-import _dynamic from "next/dynamic";
-import { draftMode } from "next/headers";
 import { notFound } from "next/navigation";
 import { urlForImage } from "@/sanity/lib/image";
 import { loadTopic } from "@/sanity/loader/loadQuery";
@@ -8,10 +6,7 @@ import { loadTopic } from "@/sanity/loader/loadQuery";
 import { resolveHref } from "@/lib/resolveHref";
 import { PageLayout } from "@/components/pages/page-layout";
 import { Person } from "@/components/shared/person";
-import { portableTextBodyTypeComponentsRSC } from "@/components/shared/portable-text-body/type-components";
 import { PostList } from "@/components/shared/post-list";
-
-const TopicPagePreview = _dynamic(() => import("./preview"));
 
 interface TopicPageProps {
   params: {
@@ -22,7 +17,7 @@ interface TopicPageProps {
 export async function generateMetadata({
   params: { slug },
 }: TopicPageProps): Promise<Metadata> {
-  const { data } = await loadTopic(slug);
+  const data = await loadTopic(slug);
 
   if (!data) notFound();
 
@@ -58,36 +53,21 @@ export async function generateStaticParams() {
 }
 
 export default async function TopicPage({ params: { slug } }: TopicPageProps) {
-  const initial = await loadTopic(slug);
+  const data = await loadTopic(slug);
 
-  if (!initial.data) notFound();
+  if (!data) notFound();
 
-  const contacts = initial.data.contacts?.map((reference) => (
+  const contacts = data.contacts?.map((reference) => (
     <Person key={`contactperson.${reference._ref}`} id={reference._ref} />
   ));
 
   const archiveParams = new URLSearchParams({ tema: slug });
 
-  if (draftMode().isEnabled)
-    return (
-      <TopicPagePreview initial={initial} slug={slug} contacts={contacts}>
-        <PostList
-          referencesId={initial.data._id}
-          title={`Aktuelt om ${initial.data.title.toLocaleLowerCase()}`}
-          archiveParams={archiveParams}
-        />
-      </TopicPagePreview>
-    );
-
   return (
-    <PageLayout
-      data={initial.data}
-      contacts={contacts}
-      ptComponents={portableTextBodyTypeComponentsRSC}
-    >
+    <PageLayout data={data} contacts={contacts}>
       <PostList
-        referencesId={initial.data._id}
-        title={`Aktuelt om ${initial.data.title.toLocaleLowerCase()}`}
+        referencesId={data._id}
+        title={`Aktuelt om ${data.title.toLocaleLowerCase()}`}
         archiveParams={archiveParams}
       />
     </PageLayout>

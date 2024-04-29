@@ -30,17 +30,17 @@ export default async function PostsIndexPage(props: {
         })
         .filter(Boolean) as string[][],
     ),
-    counties.data,
-    topics.data,
+    counties,
+    topics,
   );
 
   return (
     <PostsIndexPageLayout
-      counties={counties.data.map(({ title, slug }) => ({
+      counties={counties.map(({ title, slug }) => ({
         title,
         value: slug,
       }))}
-      topics={topics.data.map(({ title, slug }) => ({ title, value: slug }))}
+      topics={topics.map(({ title, slug }) => ({ title, value: slug }))}
     >
       <PostList searchParams={searchParams} />
     </PostsIndexPageLayout>

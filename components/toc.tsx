@@ -3,9 +3,9 @@
 import { useMemo } from "react";
 import Link from "next/link";
 import { Disclosure } from "@headlessui/react";
-import { toPlainText } from "@portabletext/react";
 import classNames from "classnames";
 import { ChevronRightIcon } from "lucide-react";
+import { toPlainText } from "next-sanity";
 
 import slugify from "@/lib/slugify";
 import { useHeadersObserver } from "@/lib/useHeadersObserver";
