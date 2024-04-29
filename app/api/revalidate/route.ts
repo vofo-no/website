@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
     revalidateTag(body._type);
     revalidateTag(`${body._type}:${body._id}`);
     if (body.slug) {
-      revalidateTag(`${body._type}:${body.slug}`);
+      revalidateTag(`${body._type}:${body.slug.replaceAll("/", "--")}`);
     }
     return NextResponse.json({
       status: 200,
