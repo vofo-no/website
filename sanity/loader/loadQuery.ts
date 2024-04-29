@@ -1,134 +1,143 @@
-import "server-only";
-
-import { draftMode } from "next/headers";
-import { client } from "@/sanity/lib/client";
+import { sanityFetch } from "@/sanity/lib/fetch";
 import {
   allActiveCountiesQuery,
   allActiveSfQuery,
   allActiveTopicsQuery,
   countyBySlugQuery,
+  documentLinkByIdQuery,
+  homeQuery,
   pageBySlugQuery,
+  personByIdQuery,
   postBySlugQuery,
+  postsByReferenceQuery,
+  searchPostsQuery,
   settingsQuery,
+  tagByIdQuery,
   topicBySlugQuery,
 } from "@/sanity/lib/queries";
-import { token } from "@/sanity/lib/token";
 import {
   CountyListItemPayload,
   CountyPayload,
+  DocumentLinkPayload,
+  HomePayload,
   OrganizationListItemPayload,
   PagePayload,
+  PersonPayload,
+  PostListItemPayload,
   PostPayload,
   SettingsPayload,
   TopicListItemPayload,
   TopicPayload,
 } from "@/types";
-import * as queryStore from "@sanity/react-loader";
 
-const serverClient = client.withConfig({
-  token,
-  stega: {
-    enabled: process.env.VERCEL_ENV === "preview",
-  },
-});
-
-queryStore.setServerClient(serverClient);
-
-const usingCdn = serverClient.config().useCdn;
-
-export const loadQuery = ((query, params = {}, options = {}) => {
-  const {
-    perspective = draftMode().isEnabled ? "previewDrafts" : "published",
-  } = options;
-  let revalidate: NextFetchRequestConfig["revalidate"] = 0;
-  if (!usingCdn && Array.isArray(options.next?.tags)) {
-    revalidate = false;
-  } else if (usingCdn) {
-    revalidate = 60;
-  }
-  return queryStore.loadQuery(query, params, {
-    ...options,
-    next: {
-      revalidate,
-      ...(options.next || {}),
-    },
-    perspective,
-    stega: { enabled: draftMode().isEnabled },
-  });
-}) satisfies typeof queryStore.loadQuery;
-
-/**
- * Loaders that are used in more than one place are declared here, otherwise they're colocated with the component
- */
+export function loadHome() {
+  return sanityFetch<HomePayload>({ query: homeQuery, tags: ["home"] });
+}
 
 export function loadSettings() {
-  return loadQuery<SettingsPayload>(
-    settingsQuery,
-    {},
-    { next: { tags: ["settings"] } },
-  );
+  return sanityFetch<SettingsPayload>({
+    query: settingsQuery,
+    tags: ["settings"],
+  });
 }
 
 export function loadPost(slug: string) {
-  return loadQuery<PostPayload>(
-    postBySlugQuery,
-    {
+  return sanityFetch<PostPayload | null>({
+    query: postBySlugQuery,
+    params: {
       slug,
     },
-    { next: { tags: [`post:${slug}`] } },
-  );
+    tags: [`post:${slug}`],
+  });
+}
+
+export function loadPostList(
+  referencesId?: string,
+  searchParams?: {
+    docTypes: string[] | null;
+    q: string | null;
+    refs: string[] | null;
+    years: string[] | null;
+  },
+) {
+  return sanityFetch<PostListItemPayload[]>({
+    query: searchParams ? searchPostsQuery : postsByReferenceQuery,
+    params: searchParams || { ref: referencesId ?? null },
+    tags: ["post", "county", "topic"],
+  });
 }
 
 export function loadAllSfs() {
-  return loadQuery<OrganizationListItemPayload[]>(
-    allActiveSfQuery,
-    {},
-    { next: { tags: [`organization`] } },
-  );
+  return sanityFetch<OrganizationListItemPayload[]>({
+    query: allActiveSfQuery,
+    tags: [`organization`],
+  });
 }
 
 export function loadAllCounties() {
-  return loadQuery<CountyListItemPayload[]>(
-    allActiveCountiesQuery,
-    {},
-    { next: { tags: [`county`] } },
-  );
+  return sanityFetch<CountyListItemPayload[]>({
+    query: allActiveCountiesQuery,
+    tags: [`county`],
+  });
 }
 
 export function loadCounty(slug: string) {
-  return loadQuery<CountyPayload>(
-    countyBySlugQuery,
-    {
+  return sanityFetch<CountyPayload | null>({
+    query: countyBySlugQuery,
+    params: {
       slug,
     },
-    { next: { tags: [`county:${slug}`] } },
-  );
+    tags: [`county:${slug}`],
+  });
 }
 
 export function loadPage(slug: string) {
-  return loadQuery<PagePayload>(
-    pageBySlugQuery,
-    {
+  return sanityFetch<PagePayload | null>({
+    query: pageBySlugQuery,
+    params: {
       slug,
     },
-    { next: { tags: [`page:${slug}`] } },
-  );
+    tags: [`page:${slug}`],
+  });
 }
 
 export function loadTopic(slug: string) {
-  return loadQuery<TopicPayload>(
-    topicBySlugQuery,
-    {
+  return sanityFetch<TopicPayload | null>({
+    query: topicBySlugQuery,
+    params: {
       slug,
     },
-    { next: { tags: [`topic:${slug}`] } },
-  );
+    tags: [`topic:${slug}`],
+  });
 }
 
 export function loadAllTopics() {
-  return loadQuery<TopicListItemPayload[]>(
-    allActiveTopicsQuery,
-    {},
-    { next: { tags: [`topic`] } },
-  );
+  return sanityFetch<TopicListItemPayload[]>({
+    query: allActiveTopicsQuery,
+    tags: [`topic`],
+  });
+}
+
+export function loadDocumentLink(id: string) {
+  return sanityFetch<DocumentLinkPayload | null>({
+    query: documentLinkByIdQuery,
+    params: { id },
+    tags: [`page:${id}`, `post:${id}`],
+  });
+}
+
+export function loadPerson(id: string) {
+  return sanityFetch<PersonPayload | null>({
+    query: personByIdQuery,
+    params: { id },
+    tags: [`person:${id}`],
+  });
+}
+
+export function loadTag(id: string) {
+  return sanityFetch<DocumentLinkPayload | null>({
+    query: tagByIdQuery,
+    params: { id },
+    tags: [`county:${id}`, `topic:${id}`],
+  });
 }

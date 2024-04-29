@@ -1,4 +1,4 @@
-import { PortableTextTypeComponent } from "@portabletext/react";
+import { PortableTextTypeComponent } from "next-sanity";
 import { Reference } from "sanity";
 
 interface DocumentLinkDef extends Reference {

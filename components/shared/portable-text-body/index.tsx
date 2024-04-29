@@ -2,12 +2,13 @@ import {
   PortableText,
   PortableTextComponents,
   PortableTextTypeComponent,
-} from "@portabletext/react";
+} from "next-sanity";
 
 import { InlineImage } from "./body-image";
 import { InlineVideo } from "./body-video";
+import { DocumentLink } from "./document-link";
 import { H2WithAnchor } from "./header";
-import { portableTextBodyTypeComponentsPreview } from "./type-components-preview";
+import { PeopleList } from "./people-list";
 
 export type PortableTextBodyTypeComponents = Record<
   string,
@@ -16,15 +17,15 @@ export type PortableTextBodyTypeComponents = Record<
 
 interface Props {
   value: any;
-  typeComponents?: PortableTextBodyTypeComponents;
 }
 
-export function PortableTextBody({ value, typeComponents }: Props) {
+export function PortableTextBody({ value }: Props) {
   const portableTextComponents: PortableTextComponents = {
     types: {
       image: InlineImage,
       youtube: InlineVideo,
-      ...(typeComponents || portableTextBodyTypeComponentsPreview),
+      documentLink: DocumentLink,
+      people: PeopleList,
     },
     block: {
       h2: H2WithAnchor,

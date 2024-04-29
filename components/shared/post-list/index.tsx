@@ -1,12 +1,6 @@
-import dynamic from "next/dynamic";
-import { draftMode } from "next/headers";
-import { postsByReferenceQuery, searchPostsQuery } from "@/sanity/lib/queries";
-import { loadQuery } from "@/sanity/loader/loadQuery";
-import { PostListItemPayload } from "@/types";
+import { loadPostList } from "@/sanity/loader/loadQuery";
 
 import { PostListLayout } from "./layout";
-
-const PostListPreview = dynamic(() => import("./preview"));
 
 export interface PostListProps {
   referencesId?: string;
@@ -21,26 +15,12 @@ export interface PostListProps {
 }
 
 export async function PostList(props: PostListProps) {
-  const initial = await loadQuery<PostListItemPayload[]>(
-    props.searchParams ? searchPostsQuery : postsByReferenceQuery,
-    props.searchParams || { ref: props.referencesId ?? null },
-    { next: { tags: ["post", "county", "topic"] } },
-  );
-
-  if (draftMode().isEnabled)
-    return (
-      <PostListPreview
-        referencesId={props.referencesId}
-        initial={initial}
-        title={props.title}
-        archiveParams={props.archiveParams}
-      />
-    );
+  const data = await loadPostList(props.referencesId, props.searchParams);
 
   return (
     <PostListLayout
       title={props.title}
-      data={initial.data}
+      data={data}
       referencesId={props.referencesId}
       archiveParams={props.archiveParams}
     />

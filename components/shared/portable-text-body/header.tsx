@@ -1,4 +1,4 @@
-import { PortableTextBlockComponent, toPlainText } from "@portabletext/react";
+import { PortableTextBlockComponent, toPlainText } from "next-sanity";
 
 import slugify from "@/lib/slugify";
 

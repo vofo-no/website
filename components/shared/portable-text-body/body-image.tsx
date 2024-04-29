@@ -1,5 +1,5 @@
 import { Image } from "@/types";
-import { PortableTextTypeComponent } from "@portabletext/react";
+import { PortableTextTypeComponent } from "next-sanity";
 
 import { SanityImage } from "@/components/image";
 

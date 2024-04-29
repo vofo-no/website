@@ -1,17 +1,11 @@
 import "@/app/globals.css";
 
-import dynamic from "next/dynamic";
 import {
   Inter as FontSans,
   Libre_Baskerville as FontSerif,
 } from "next/font/google";
-import { draftMode } from "next/headers";
 
 import { cn } from "@/lib/utils";
-
-const LiveVisualEditing = dynamic(
-  () => import("@/components/live-visual-editing"),
-);
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -44,7 +38,6 @@ export default function RootLayout({
         )}
       >
         {children}
-        {draftMode().isEnabled && <LiveVisualEditing />}
       </body>
     </html>
   );

@@ -1,22 +1,12 @@
 import { Metadata } from "next";
-import dynamic from "next/dynamic";
-import { draftMode } from "next/headers";
-import { homeQuery } from "@/sanity/lib/queries";
-import { loadQuery } from "@/sanity/loader/loadQuery";
-import { HomePayload } from "@/types";
+import { loadHome } from "@/sanity/loader/loadQuery";
 
 import { PostList } from "@/components/shared/post-list";
 
 import { HomePageLayout } from "../../components/pages/home-page";
 
-const HomePagePreview = dynamic(() => import("./preview"));
-
 export async function generateMetadata(): Promise<Metadata> {
-  const { data } = await loadQuery<HomePayload>(
-    homeQuery,
-    {},
-    { next: { tags: ["home"] } },
-  );
+  const data = await loadHome();
 
   return {
     description: data.description,
@@ -24,24 +14,12 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function HomePage() {
-  const initial = await loadQuery<HomePayload>(
-    homeQuery,
-    {},
-    { next: { tags: ["home"] } },
-  );
+  const data = await loadHome();
 
   const archiveParams = new URLSearchParams({});
 
-  if (draftMode().isEnabled) {
-    return (
-      <HomePagePreview initial={initial}>
-        <PostList archiveParams={archiveParams} />
-      </HomePagePreview>
-    );
-  }
-
   return (
-    <HomePageLayout data={initial.data}>
+    <HomePageLayout data={data}>
       <PostList archiveParams={archiveParams} />
     </HomePageLayout>
   );
