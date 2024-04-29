@@ -7,16 +7,12 @@ import {
   PageHeaderDescription,
   PageHeaderHeading,
 } from "@/components/page-header";
-import {
-  PortableTextBody,
-  PortableTextBodyTypeComponents,
-} from "@/components/shared/portable-text-body";
+import { PortableTextBody } from "@/components/shared/portable-text-body";
 
 export function CountyPageLayout(
   props: React.PropsWithChildren<{
     data: CountyPayload;
     contacts?: React.ReactNode;
-    ptComponents?: PortableTextBodyTypeComponents;
   }>,
 ) {
   const { title, description, body, image, locale } = props.data ?? {};
@@ -36,10 +32,7 @@ export function CountyPageLayout(
               image ? "md:row-start-3" : "md:row-start-1 md:row-span-2",
             )}
           >
-            <PortableTextBody
-              value={body}
-              typeComponents={props.ptComponents}
-            />
+            <PortableTextBody value={body} />
           </div>
           <aside className={cn("md:col-start-3 md:row-span-3")}>
             <div className="flex flex-col gap-4 md:sticky md:top-28">

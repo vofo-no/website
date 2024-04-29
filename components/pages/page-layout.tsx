@@ -9,17 +9,13 @@ import {
   PageHeaderDescription,
   PageHeaderHeading,
 } from "@/components/page-header";
-import {
-  PortableTextBody,
-  PortableTextBodyTypeComponents,
-} from "@/components/shared/portable-text-body";
+import { PortableTextBody } from "@/components/shared/portable-text-body";
 import { Toc } from "@/components/toc";
 
 export function PageLayout(
   props: React.PropsWithChildren<{
     data: PagePayload;
     contacts?: React.ReactNode;
-    ptComponents?: PortableTextBodyTypeComponents;
   }>,
 ) {
   const { title, description, body, toc, image, _updatedAt, locale } =
@@ -49,10 +45,7 @@ export function PageLayout(
             )}
           >
             <Toc title="Innhold" headers={toc} mobile />
-            <PortableTextBody
-              value={body}
-              typeComponents={props.ptComponents}
-            />
+            <PortableTextBody value={body} />
           </div>
           <aside
             className={cn(
