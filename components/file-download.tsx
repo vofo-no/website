@@ -15,7 +15,7 @@ export function FileDownload({ file }: { file: FileAsset }) {
   return (
     <Button variant="outline" asChild className="not-prose my-1">
       <Link
-        href={file.url}
+        href={`/filer/${file.assetId}/${file.originalFilename}`}
         className="h-auto w-full"
         title={`Last ned ${file.originalFilename}`}
       >
