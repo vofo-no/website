@@ -1,11 +1,9 @@
 import { Metadata } from "next";
-import dynamic from "next/dynamic";
+import _dynamic from "next/dynamic";
 import { draftMode } from "next/headers";
 import { notFound } from "next/navigation";
-import { client } from "@/sanity/lib/client";
 import { urlForImage } from "@/sanity/lib/image";
 import { loadCounty } from "@/sanity/loader/loadQuery";
-import { groq } from "next-sanity";
 
 import { resolveHref } from "@/lib/resolveHref";
 import { CountyPageLayout } from "@/components/pages/county-page";
@@ -13,7 +11,7 @@ import { Person } from "@/components/shared/person";
 import { portableTextBodyTypeComponentsRSC } from "@/components/shared/portable-text-body/type-components";
 import { PostList } from "@/components/shared/post-list";
 
-const CountyPagePreview = dynamic(() => import("./preview"));
+const CountyPagePreview = _dynamic(() => import("./preview"));
 
 interface CountyPageProps {
   params: {
@@ -42,8 +40,13 @@ export async function generateMetadata({
   };
 }
 
+// Waiting for https://github.com/vercel/next.js/issues/59883
+export const dynamic = "force-static";
+export const dynamicParams = true;
+
 export async function generateStaticParams() {
-  const data = await client.fetch<{ slug: string }[]>(
+  return [];
+  /*  const data = await client.fetch<{ slug: string }[]>(
     groq`*[_type == "county"][] { "slug": slug.current }`,
     {},
     { next: { tags: ["county"] } },
@@ -51,7 +54,7 @@ export async function generateStaticParams() {
 
   return data.map((item) => ({
     slug: item.slug,
-  }));
+  }));*/
 }
 
 export default async function CountyPage({
