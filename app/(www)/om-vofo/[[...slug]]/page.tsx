@@ -1,17 +1,16 @@
 import { Metadata, ResolvingMetadata } from "next";
-import dynamic from "next/dynamic";
+import _dynamic from "next/dynamic";
 import { draftMode } from "next/headers";
 import { notFound } from "next/navigation";
-import { client } from "@/sanity/lib/client";
 import { urlForImage } from "@/sanity/lib/image";
 import { loadPage } from "@/sanity/loader/loadQuery";
-import { groq } from "next-sanity";
 
+import { resolveHref } from "@/lib/resolveHref";
 import { PageLayout } from "@/components/pages/page-layout";
 import { Person } from "@/components/shared/person";
 import { portableTextBodyTypeComponentsRSC } from "@/components/shared/portable-text-body/type-components";
 
-const PagePreview = dynamic(() => import("./preview"));
+const PagePreview = _dynamic(() => import("./preview"));
 
 interface PageProps {
   params: {
@@ -39,12 +38,20 @@ export async function generateMetadata(
     description: data.description,
     openGraph: {
       images: image ? [image, ...previousImages] : previousImages,
+      title: data.title,
+      type: "website",
+      url: `https://www.vofo.no${resolveHref("page", prefixSlug(slug))}`,
     },
   };
 }
 
+// Waiting for https://github.com/vercel/next.js/issues/59883
+export const dynamic = "force-static";
+export const dynamicParams = true;
+
 export async function generateStaticParams() {
-  const data = await client.fetch<{ slug: string }[]>(
+  return [];
+  /*  const data = await client.fetch<{ slug: string }[]>(
     groq`*[_type == "page"][] { "slug": slug.current }`,
     {},
     { next: { tags: ["page"] } },
@@ -52,7 +59,7 @@ export async function generateStaticParams() {
 
   return data.map((item) => ({
     slug: item.slug.split("/").slice(1),
-  }));
+  }));*/
 }
 
 export default async function Page({ params }: PageProps) {

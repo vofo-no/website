@@ -1,17 +1,16 @@
 import { Metadata } from "next";
-import dynamic from "next/dynamic";
+import _dynamic from "next/dynamic";
 import { draftMode } from "next/headers";
 import { notFound } from "next/navigation";
-import { client } from "@/sanity/lib/client";
 import { urlForImage } from "@/sanity/lib/image";
 import { loadPost } from "@/sanity/loader/loadQuery";
-import { groq } from "next-sanity";
 
+import { resolveHref } from "@/lib/resolveHref";
 import { PostPageLayout } from "@/components/pages/post-page";
 import { portableTextBodyTypeComponentsRSC } from "@/components/shared/portable-text-body/type-components";
 import { TagLink } from "@/components/shared/tag-link";
 
-const PostPagePreview = dynamic(() => import("./preview"));
+const PostPagePreview = _dynamic(() => import("./preview"));
 
 interface PostPageProps {
   params: {
@@ -33,12 +32,22 @@ export async function generateMetadata({
     description: data.description,
     openGraph: {
       images: image,
+      title: data.title,
+      type: "article",
+      publishedTime: data.publishedAt,
+      modifiedTime: data._updatedAt,
+      url: `https://www.vofo.no${resolveHref("post", slug)}`,
     },
   };
 }
 
+// Waiting for https://github.com/vercel/next.js/issues/59883
+export const dynamic = "force-static";
+export const dynamicParams = true;
+
 export async function generateStaticParams() {
-  const data = await client.fetch<{ slug: string }[]>(
+  return [];
+  /*const data = await client.fetch<{ slug: string }[]>(
     groq`*[_type == "post"][] { "slug": slug.current }`,
     {},
     { next: { tags: ["post"] } },
@@ -46,7 +55,7 @@ export async function generateStaticParams() {
 
   return data.map((item) => ({
     slug: item.slug,
-  }));
+  }));*/
 }
 
 export default async function PostPage({ params: { slug } }: PostPageProps) {

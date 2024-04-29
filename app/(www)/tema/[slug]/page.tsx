@@ -1,18 +1,17 @@
 import { Metadata } from "next";
-import dynamic from "next/dynamic";
+import _dynamic from "next/dynamic";
 import { draftMode } from "next/headers";
 import { notFound } from "next/navigation";
-import { client } from "@/sanity/lib/client";
 import { urlForImage } from "@/sanity/lib/image";
 import { loadTopic } from "@/sanity/loader/loadQuery";
-import { groq } from "next-sanity";
 
+import { resolveHref } from "@/lib/resolveHref";
 import { PageLayout } from "@/components/pages/page-layout";
 import { Person } from "@/components/shared/person";
 import { portableTextBodyTypeComponentsRSC } from "@/components/shared/portable-text-body/type-components";
 import { PostList } from "@/components/shared/post-list";
 
-const TopicPagePreview = dynamic(() => import("./preview"));
+const TopicPagePreview = _dynamic(() => import("./preview"));
 
 interface TopicPageProps {
   params: {
@@ -34,12 +33,20 @@ export async function generateMetadata({
     description: data.description,
     openGraph: {
       images: image,
+      title: data.title,
+      type: "website",
+      url: `https://www.vofo.no${resolveHref("topic", slug)}`,
     },
   };
 }
 
+// Waiting for https://github.com/vercel/next.js/issues/59883
+export const dynamic = "force-static";
+export const dynamicParams = true;
+
 export async function generateStaticParams() {
-  const data = await client.fetch<{ slug: string }[]>(
+  return [];
+  /*  const data = await client.fetch<{ slug: string }[]>(
     groq`*[_type == "topic"][] { "slug": slug.current }`,
     {},
     { next: { tags: ["topic"] } },
@@ -47,7 +54,7 @@ export async function generateStaticParams() {
 
   return data.map((item) => ({
     slug: item.slug,
-  }));
+  }));*/
 }
 
 export default async function TopicPage({ params: { slug } }: TopicPageProps) {
