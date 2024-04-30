@@ -1,6 +1,7 @@
 import { Metadata } from "next";
+import { notFound } from "next/navigation";
+import dataIndex from "@/data/index.json";
 
-import { preload } from "@/lib/getDataFile";
 import { StatisticsPageLayout } from "@/components/pages/statistics-page";
 
 export const metadata: Metadata = {
@@ -9,7 +10,12 @@ export const metadata: Metadata = {
 };
 
 export default async function StatisticsPage() {
-  preload("nasjonal");
+  const index =
+    dataIndex
+      .filter((item) => item.slug === "nasjonal")
+      .sort((a, b) => b.year - a.year)[0] || notFound();
 
-  return <StatisticsPageLayout slug="nasjonal" />;
+  const data = await fetch(index.url).then((res) => res.json());
+
+  return <StatisticsPageLayout data={data} />;
 }

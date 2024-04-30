@@ -5,7 +5,6 @@ import { Card } from "@tremor/react";
 
 import { formatList } from "@/lib/formatList";
 import { formatNumber } from "@/lib/formatNumber";
-import { getDataFile } from "@/lib/getDataFile";
 import getOrganizationName from "@/lib/getOrganizationName";
 import { BarChart } from "@/components/ui/charts/bar-chart";
 import { DonutWithLegend } from "@/components/ui/charts/donut-with-legend";
@@ -109,11 +108,9 @@ function GeografiSection({
   );
 }
 
-export async function StatisticsPageLayout({ slug }: { slug: string }) {
-  const data = await getDataFile(slug);
-
-  if (!data) return "Laster....";
-
+export async function StatisticsPageLayout({
+  data,
+}: StatisticsPageLayoutProps) {
   const thisYear = data.history[0];
   const lastYear = data.history[1];
   const coursesWithLessThan4Participants =
