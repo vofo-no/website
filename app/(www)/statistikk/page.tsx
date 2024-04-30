@@ -1,10 +1,7 @@
 import { Metadata } from "next";
-import { notFound } from "next/navigation";
 
-import { getDataFile } from "@/lib/getDataFile";
+import { preload } from "@/lib/getDataFile";
 import { StatisticsPageLayout } from "@/components/pages/statistics-page";
-
-export const dynamic = "force-static";
 
 export const metadata: Metadata = {
   title: `Statistikk`,
@@ -12,9 +9,7 @@ export const metadata: Metadata = {
 };
 
 export default async function StatisticsPage() {
-  const data = await getDataFile("nasjonal");
+  preload("nasjonal");
 
-  if (!data) notFound();
-
-  return <StatisticsPageLayout data={data} />;
+  return <StatisticsPageLayout slug="nasjonal" />;
 }

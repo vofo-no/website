@@ -1,9 +1,8 @@
 import { Metadata } from "next";
-import { notFound } from "next/navigation";
 import { client } from "@/sanity/lib/client";
 import { allActiveCountiesQuery, allActiveSfQuery } from "@/sanity/lib/queries";
 
-import { getDataFile } from "@/lib/getDataFile";
+import { getDataFile, preload } from "@/lib/getDataFile";
 import { StatisticsPageLayout } from "@/components/pages/statistics-page";
 
 import { excludeSlugs } from "../excludeSlugs";
@@ -27,7 +26,6 @@ export async function generateMetadata({
   };
 }
 
-export const dynamic = "force-static";
 export const dynamicParams = false;
 
 export async function generateStaticParams() {
@@ -46,9 +44,7 @@ export async function generateStaticParams() {
 export default async function SlugStatisticsPage({
   params: { slug },
 }: SlugStatisticsPageProps) {
-  const data = await getDataFile(slug);
+  preload(slug);
 
-  if (!data) notFound();
-
-  return <StatisticsPageLayout data={data} />;
+  return <StatisticsPageLayout slug={slug} />;
 }
