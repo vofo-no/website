@@ -1,3 +1,4 @@
+import Link from "next/link";
 import {
   PortableText,
   PortableTextComponents,
@@ -29,6 +30,14 @@ export function PortableTextBody({ value }: Props) {
     },
     block: {
       h2: H2WithAnchor,
+    },
+    marks: {
+      assetLink: ({ children, value }) => {
+        // The file reference in the asset object has the form <_file>-<id>-<extension>
+        // We split the text string to get the individual pieces of information.
+        const [_file, id, extension] = value.file.asset._ref.split("-");
+        return <Link href={`/filer/${id}.${extension}`}>{children}</Link>;
+      },
     },
   };
 

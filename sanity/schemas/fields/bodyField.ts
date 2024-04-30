@@ -1,3 +1,4 @@
+import { DocumentIcon } from "@sanity/icons";
 import { defineArrayMember, defineField } from "sanity";
 
 import imageField from "./imageField";
@@ -29,6 +30,20 @@ export default defineField({
                     scheme: ["http", "https", "mailto", "tel"],
                     allowRelative: true,
                   }),
+              },
+            ],
+          },
+          {
+            name: "assetLink",
+            type: "object",
+            title: "Lenke til fil",
+            icon: DocumentIcon,
+            description: "Sett inn en lenke til en opplastet fil.",
+            fields: [
+              {
+                name: "file",
+                type: "file",
+                title: "Filvedlegg",
               },
             ],
           },
