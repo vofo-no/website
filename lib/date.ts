@@ -14,7 +14,6 @@ function getDateFormat(locale?: string, options?: Intl.DateTimeFormatOptions) {
 function getRelativeTimeFormat(locale?: string) {
   return new Intl.RelativeTimeFormat(locale || "nb-NO", {
     numeric: "auto",
-    style: "long",
   });
 }
 
@@ -33,20 +32,32 @@ export function formatDate({
 }
 
 export function formatRelativeDate(dateStr: string, locale?: string) {
-  const now = new Date();
   const date = new Date(dateStr);
 
-  const daysSinceDate =
-    (date.getTime() - now.getTime()) / (1000 * 60 * 60 * 24);
+  const deltaSeconds = Math.round((date.getTime() - Date.now()) / 1000);
 
-  if (daysSinceDate > -7) {
+  const cutoffs = [60, 3600, 86400, 86400 * 7, 86400 * 30, Infinity];
+  const units: Intl.RelativeTimeFormatUnit[] = [
+    "second",
+    "minute",
+    "hour",
+    "day",
+    "week",
+    "month",
+  ];
+  const unitIndex = cutoffs.findIndex(
+    (cutoff) => cutoff > Math.abs(deltaSeconds),
+  );
+  const divisor = unitIndex ? cutoffs[unitIndex - 1] : 1;
+
+  if (unitIndex < 5) {
     return getRelativeTimeFormat(locale).format(
-      Math.ceil(daysSinceDate),
-      "day",
+      Math.trunc(deltaSeconds / divisor),
+      units[unitIndex],
     );
-  } else {
-    return getDateFormat(locale, { month: "long" }).format(date);
   }
+
+  return getDateFormat(locale, { month: "long" }).format(date);
 }
 
 export function formatShortDate(dateStr: string, locale?: string) {

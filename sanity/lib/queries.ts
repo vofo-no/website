@@ -3,6 +3,7 @@ import { groq } from "next-sanity";
 export const postsByReferenceQuery = groq`
   *[
     (_type == "post") && 
+    defined(image) &&
     (!defined($ref) || references($ref))
   ] | order(publishedAt desc) [0...6] {
     _id,
