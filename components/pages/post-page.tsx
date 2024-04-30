@@ -1,6 +1,5 @@
 import { PostPayload } from "@/types";
 
-import { formatRelativeDate } from "@/lib/date";
 import { cn } from "@/lib/utils";
 import { BackToTopButton } from "@/components/back-to-top-button";
 import { SanityImage } from "@/components/image";
@@ -13,6 +12,7 @@ import { PortableTextBody } from "@/components/shared/portable-text-body";
 import { Toc } from "@/components/toc";
 
 import { FileDownload } from "../file-download";
+import { RelativeDate } from "../relative-date";
 
 function isSameDate(datestr1: string = "", datestr2: string = "") {
   return datestr1.split("T")[0] === datestr2.split("T")[0];
@@ -33,12 +33,7 @@ export function PostPageLayout(props: {
     _updatedAt,
     locale,
   } = props.data ?? {};
-  const meta = [
-    publishedAt && `Publisert ${formatRelativeDate(publishedAt, locale)}`,
-    _updatedAt &&
-      !isSameDate(publishedAt, _updatedAt) &&
-      `Oppdatert ${formatRelativeDate(_updatedAt, locale)}`,
-  ].filter(Boolean);
+  const meta = !!(publishedAt || _updatedAt);
   return (
     <article className="container">
       <PageHeader>
@@ -75,9 +70,20 @@ export function PostPageLayout(props: {
               <div className="border-gray-200 border-y md:border-y-0 my-4 -mx-4 px-4 md:mx-0 md:px-0 md:mt-0">
                 <div className="text-muted-foreground my-2">
                   <small className="flex flex-row flex-wrap md:flex-col gap-1">
-                    {meta.map((value) => (
-                      <span key={`meta.${value}`}>{value}.</span>
-                    ))}
+                    <RelativeDate
+                      value={publishedAt}
+                      locale={locale}
+                      prefix="Publisert"
+                    />
+                    <RelativeDate
+                      value={
+                        !isSameDate(publishedAt, _updatedAt)
+                          ? _updatedAt
+                          : undefined
+                      }
+                      locale={locale}
+                      prefix="Oppdatert"
+                    />
                   </small>
                 </div>
               </div>

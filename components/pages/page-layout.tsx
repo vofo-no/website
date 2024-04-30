@@ -1,6 +1,5 @@
 import { PagePayload } from "@/types";
 
-import { formatRelativeDate } from "@/lib/date";
 import { cn } from "@/lib/utils";
 import { BackToTopButton } from "@/components/back-to-top-button";
 import { SanityImage } from "@/components/image";
@@ -12,6 +11,8 @@ import {
 import { PortableTextBody } from "@/components/shared/portable-text-body";
 import { Toc } from "@/components/toc";
 
+import { RelativeDate } from "../relative-date";
+
 export function PageLayout(
   props: React.PropsWithChildren<{
     data: PagePayload;
@@ -21,9 +22,7 @@ export function PageLayout(
   const { title, description, body, toc, image, _updatedAt, locale } =
     props.data ?? {};
 
-  const meta = [
-    _updatedAt && `Oppdatert ${formatRelativeDate(_updatedAt, locale)}`,
-  ].filter(Boolean);
+  const meta = !!_updatedAt;
   return (
     <article className="container">
       <PageHeader>
@@ -57,9 +56,11 @@ export function PageLayout(
               <div className="border-gray-200 border-y md:border-y-0 my-4 -mx-4 px-4 md:mx-0 md:px-0 md:mt-0">
                 <div className="text-muted-foreground my-2">
                   <small className="flex flex-row flex-wrap md:flex-col gap-1">
-                    {meta.map((value) => (
-                      <span key={`meta.${value}`}>{value}.</span>
-                    ))}
+                    <RelativeDate
+                      value={_updatedAt}
+                      locale={locale}
+                      prefix="Oppdatert"
+                    />
                   </small>
                 </div>
               </div>
