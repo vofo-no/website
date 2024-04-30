@@ -1,14 +1,20 @@
 import Link from "next/link";
-import { loadAllCounties, loadAllSfs } from "@/sanity/loader/loadQuery";
+import dataIndex from "@/data/index.json";
 
-import { excludeSlugs } from "./excludeSlugs";
-
-export default async function StatisticsLayout({
+export default function StatisticsLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const [counties, sfs] = await Promise.all([loadAllCounties(), loadAllSfs()]);
+  const currentYear = dataIndex[0].year;
+  const counties = dataIndex
+    .filter((item) => item.type === "fylke" && item.year === currentYear)
+    .map(({ name, slug }) => ({ name: name!, slug }))
+    .sort((a, b) => a.name.localeCompare(b.name));
+  const sfs = dataIndex
+    .filter((item) => item.type === "sf" && item.year === currentYear)
+    .map(({ name, slug }) => ({ name: name!, slug }))
+    .sort((a, b) => a.name.localeCompare(b.name));
 
   return (
     <>
@@ -25,27 +31,23 @@ export default async function StatisticsLayout({
               <li>
                 <h4>Fylker</h4>
                 <ul>
-                  {counties
-                    .filter((item) => !excludeSlugs.includes(item.slug))
-                    .map((county) => (
-                      <li key={county._id}>
-                        <Link href={`/statistikk/${county.slug}`}>
-                          {county.title}
-                        </Link>
-                      </li>
-                    ))}
+                  {counties.map((county) => (
+                    <li key={county.slug}>
+                      <Link href={`/statistikk/${county.slug}`}>
+                        {county.name}
+                      </Link>
+                    </li>
+                  ))}
                 </ul>
               </li>
               <li>
                 <h4>Studieforbund</h4>
                 <ul>
-                  {sfs
-                    .filter((item) => !excludeSlugs.includes(item.slug))
-                    .map((sf) => (
-                      <li key={sf._id}>
-                        <Link href={`/statistikk/${sf.slug}`}>{sf.title}</Link>
-                      </li>
-                    ))}
+                  {sfs.map((sf) => (
+                    <li key={sf.slug}>
+                      <Link href={`/statistikk/${sf.slug}`}>{sf.name}</Link>
+                    </li>
+                  ))}
                 </ul>
               </li>
             </ul>

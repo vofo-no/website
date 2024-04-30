@@ -1,12 +1,8 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { client } from "@/sanity/lib/client";
-import { allActiveCountiesQuery, allActiveSfQuery } from "@/sanity/lib/queries";
+import dataIndex from "@/data/index.json";
 
-import { getDataFile } from "@/lib/getDataFile";
 import { StatisticsPageLayout } from "@/components/pages/statistics-page";
-
-import { excludeSlugs } from "../excludeSlugs";
 
 interface SlugStatisticsPageProps {
   params: {
@@ -14,41 +10,38 @@ interface SlugStatisticsPageProps {
   };
 }
 
-export async function generateMetadata({
+export function generateMetadata({
   params: { slug },
-}: SlugStatisticsPageProps): Promise<Metadata> {
-  const data = await getDataFile(slug);
+}: SlugStatisticsPageProps): Metadata {
+  const data = dataIndex
+    .filter((item) => item.slug === slug)
+    .sort((a, b) => b.year - a.year)[0];
 
-  const { title } = data ?? {};
+  const { name } = data ?? {};
 
   return {
-    title: `Statistikk for ${title}`,
-    description: `Oversikt over kursaktivitet, medlemsorganisasjoner og bruk av statstilskudd i ${title}`,
+    title: `Statistikk for ${name}`,
+    description: `Oversikt over kursaktivitet, medlemsorganisasjoner og bruk av statstilskudd i ${name}`,
   };
 }
 
-export const dynamic = "force-static";
 export const dynamicParams = false;
 
-export async function generateStaticParams() {
-  const [counties, sfs] = await Promise.all([
-    client.fetch<{ slug: string }[]>(allActiveCountiesQuery),
-    client.fetch<{ slug: string }[]>(allActiveSfQuery),
-  ]);
+export function generateStaticParams() {
+  const slugs = [...new Set(dataIndex.map((item) => ({ slug: item.slug })))];
 
-  return [...counties, ...sfs]
-    .filter((item) => !excludeSlugs.includes(item.slug))
-    .map((item) => ({
-      slug: item.slug,
-    }));
+  return slugs;
 }
 
 export default async function SlugStatisticsPage({
   params: { slug },
 }: SlugStatisticsPageProps) {
-  const data = await getDataFile(slug);
+  const index =
+    dataIndex
+      .filter((item) => item.slug === slug)
+      .sort((a, b) => b.year - a.year)[0] || notFound();
 
-  if (!data) notFound();
+  const data = await fetch(index.url).then((res) => res.json());
 
   return <StatisticsPageLayout data={data} />;
 }

@@ -1,10 +1,8 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
+import dataIndex from "@/data/index.json";
 
-import { getDataFile } from "@/lib/getDataFile";
 import { StatisticsPageLayout } from "@/components/pages/statistics-page";
-
-export const dynamic = "force-static";
 
 export const metadata: Metadata = {
   title: `Statistikk`,
@@ -12,9 +10,12 @@ export const metadata: Metadata = {
 };
 
 export default async function StatisticsPage() {
-  const data = await getDataFile("nasjonal");
+  const index =
+    dataIndex
+      .filter((item) => item.slug === "nasjonal")
+      .sort((a, b) => b.year - a.year)[0] || notFound();
 
-  if (!data) notFound();
+  const data = await fetch(index.url).then((res) => res.json());
 
   return <StatisticsPageLayout data={data} />;
 }

@@ -1,4 +1,3 @@
-import { useMemo } from "react";
 import Image from "next/image";
 import topics from "@/data/topics.json";
 import { StatisticsDataType } from "@/types";
@@ -109,25 +108,18 @@ function GeografiSection({
   );
 }
 
-export function StatisticsPageLayout({ data }: StatisticsPageLayoutProps) {
-  const thisYear = useMemo(
-    () => data.history.sort((a, b) => b.aar - a.aar)[0],
-    [data.history],
-  );
-  const lastYear = useMemo(
-    () => data.history.find((a) => a.aar !== thisYear.aar)!,
-    [data.history, thisYear.aar],
-  );
-  const coursesWithLessThan4Participants = useMemo(
-    () =>
-      (
-        (data.histogram.find((bar) => bar.label === "0-3") ?? {}) as Record<
-          string,
-          number
-        >
-      )[`${thisYear.aar}`] ?? 0,
-    [data.histogram, thisYear.aar],
-  );
+export async function StatisticsPageLayout({
+  data,
+}: StatisticsPageLayoutProps) {
+  const thisYear = data.history[0];
+  const lastYear = data.history[1];
+  const coursesWithLessThan4Participants =
+    (
+      (data.histogram.find((bar) => bar.label === "0-3") ?? {}) as Record<
+        string,
+        number
+      >
+    )[`${thisYear.aar}`] ?? 0;
 
   const totaltTilskudd =
     (data.summary.tilskudd.gt || 0) +
