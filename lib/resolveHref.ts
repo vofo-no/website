@@ -9,8 +9,6 @@ export function resolveHref(
       return `/aktuelt/${slug}`;
     case "county":
       return `/fylker/${slug}`;
-    case "project":
-      return `/prosjekter/${slug}`;
     case "topic":
       return `/tema/${slug}`;
     case "page":

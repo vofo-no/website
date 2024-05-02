@@ -7,7 +7,6 @@ import organization from "./schemas/documents/organization";
 import page from "./schemas/documents/page";
 import person from "./schemas/documents/person";
 import post from "./schemas/documents/post";
-import project from "./schemas/documents/project";
 import settings from "./schemas/documents/settings";
 import topic from "./schemas/documents/topic";
 import documentLink from "./schemas/objects/documentLink";
@@ -28,7 +27,6 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     event,
     topic,
     county,
-    project,
     person,
     organization,
     // Objects
