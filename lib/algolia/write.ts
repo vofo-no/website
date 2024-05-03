@@ -67,18 +67,17 @@ export interface IndexableDocument {
 }
 
 function prepareForIndex(record: IndexableDocument) {
-  const { image, body, ...rest } = record;
+  const { image, ...rest } = record;
 
   if (image && urlForImage(image)) {
     return {
       image: urlForImage(image).size(750, 500).url(),
       img_alt: image.alt,
-      body: body ? body.substring(0, 9000) : undefined,
       ...rest,
     };
   }
 
-  return { body: body ? body.substring(0, 9000) : undefined, ...rest };
+  return { ...rest };
 }
 
 export function replaceAllObjects(objects: IndexableDocument[]) {
