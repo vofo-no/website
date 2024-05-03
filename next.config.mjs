@@ -9,6 +9,20 @@ const nextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: "/om-vofo/nyheter/:path*",
+        destination: "/aktuelt/:path*",
+        permanent: true,
+      },
+      {
+        source: "/om-vofo/om-vofo",
+        destination: "/om-vofo",
+        permanent: true,
+      },
+    ];
+  },
   async rewrites() {
     return [
       {
