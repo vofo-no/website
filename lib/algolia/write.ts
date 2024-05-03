@@ -2,7 +2,8 @@ import { urlForImage } from "@/sanity/lib/image";
 import { Image } from "@/types";
 import algoliasearch from "algoliasearch";
 
-import { appId, indexName, writeToken } from "./api";
+import { appId, indexName } from "./api";
+import { writeToken } from "./writeToken";
 
 const client = algoliasearch(appId, writeToken);
 const index = client.initIndex(indexName);

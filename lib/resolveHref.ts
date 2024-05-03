@@ -13,6 +13,10 @@ export function resolveHref(
       return `/tema/${slug}`;
     case "page":
       return `/${slug}`;
+    case "statistic":
+      return slug && slug !== "nasjonal"
+        ? `/statistikk/${slug}`
+        : "/statistikk";
     default:
       console.warn("Invalid document type:", documentType);
       return undefined;

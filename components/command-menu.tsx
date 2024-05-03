@@ -3,54 +3,20 @@
 import * as React from "react";
 import { useRouter } from "next/navigation";
 import { type DialogProps } from "@radix-ui/react-dialog";
-import {
-  LineChartIcon,
-  MapIcon,
-  NewspaperIcon,
-  SearchIcon,
-  StarIcon,
-} from "lucide-react";
+import { InstantSearch } from "react-instantsearch";
 
+import { indexName } from "@/lib/algolia/api";
+import { client } from "@/lib/algolia/search";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import {
-  CommandDialog,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
+import { CommandDialog } from "@/components/ui/command";
+
+import { CommandSearchInput } from "./command-search-input";
+import { CommandSearchList } from "./command-search-list";
 
 export function CommandMenu({ ...props }: DialogProps) {
-  const router = useRouter();
   const [open, setOpen] = React.useState(false);
-  const [search, setSearch] = React.useState("");
-
-  const [counties, setCounties] =
-    React.useState<{ slug: string; title: string }[]>();
-  const [topics, setTopics] =
-    React.useState<{ slug: string; title: string; description?: string }[]>();
-
-  React.useEffect(() => {
-    if (!open) return;
-
-    if (!counties) {
-      fetch("/api/fylker")
-        .then((res) => res.json())
-        .then(({ data }) => {
-          setCounties(data);
-        });
-    }
-
-    if (!topics) {
-      fetch("/api/tema")
-        .then((res) => res.json())
-        .then(({ data }) => {
-          setTopics(data);
-        });
-    }
-  }, [counties, open, topics]);
+  const router = useRouter();
 
   React.useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -73,10 +39,13 @@ export function CommandMenu({ ...props }: DialogProps) {
     return () => document.removeEventListener("keydown", down);
   }, []);
 
-  const runCommand = React.useCallback((command: () => unknown) => {
-    setOpen(false);
-    command();
-  }, []);
+  const runCommand = React.useCallback(
+    (url: string) => {
+      setOpen(false);
+      router.push(url);
+    },
+    [router],
+  );
 
   return (
     <>
@@ -93,82 +62,11 @@ export function CommandMenu({ ...props }: DialogProps) {
           <span className="text-xs">⌘</span>K
         </kbd>
       </Button>
-      <CommandDialog open={open} onOpenChange={setOpen}>
-        <CommandInput
-          placeholder="Hva leter du etter?"
-          value={search}
-          onValueChange={setSearch}
-        />
-        <CommandList>
-          <CommandEmpty>No results found.</CommandEmpty>
-          <CommandGroup heading="Tema">
-            {topics?.map((item) => (
-              <CommandItem
-                key={item.slug}
-                onSelect={() =>
-                  runCommand(() => router.push(`/tema/${item.slug}`))
-                }
-              >
-                <StarIcon className="mr-2 h-4 w-4" />
-                {item.title}
-                <span className="sr-only"> {item.description}</span>
-              </CommandItem>
-            ))}
-          </CommandGroup>
-          {counties?.map((item) => (
-            <CommandGroup heading={item.title} key={item.slug}>
-              <CommandItem
-                onSelect={() =>
-                  runCommand(() => router.push(`/fylker/${item.slug}`))
-                }
-              >
-                <MapIcon className="mr-2 h-4 w-4" />
-                {item.title}
-                <span className="sr-only"> fylkesutvalg</span>
-              </CommandItem>
-              <CommandItem
-                onSelect={() =>
-                  runCommand(() => router.push(`/aktuelt?fylke=${item.slug}`))
-                }
-              >
-                <NewspaperIcon className="mr-2 h-4 w-4" />
-                Aktuelt fra {item.title}
-                <span className="sr-only"> fylkesutvalg</span>
-              </CommandItem>
-              <CommandItem
-                onSelect={() =>
-                  runCommand(() => router.push(`/statistikk/${item.slug}`))
-                }
-              >
-                <LineChartIcon className="mr-2 h-4 w-4" />
-                Statistikk for {item.title}
-                <span className="sr-only"> fylke</span>
-              </CommandItem>
-            </CommandGroup>
-          ))}
-          <CommandGroup heading="Dokumenter og nyheter">
-            <CommandItem
-              onSelect={() => runCommand(() => router.push(`/aktuelt`))}
-            >
-              {" "}
-              <NewspaperIcon className="mr-2 h-4 w-4" />
-              Dokument- og nyhetsarkiv
-            </CommandItem>
-            {search && (
-              <CommandItem
-                onSelect={() =>
-                  runCommand(() => router.push(`/aktuelt?q=${search}`))
-                }
-              >
-                <SearchIcon className="mr-2 h-4 w-4" />
-                Søk etter <q className="font-semibold italic mx-1">
-                  {search}
-                </q>{" "}
-                i arkivet
-              </CommandItem>
-            )}
-          </CommandGroup>
-        </CommandList>
+      <CommandDialog open={open} onOpenChange={setOpen} shouldFilter={false}>
+        <InstantSearch searchClient={client} indexName={indexName}>
+          <CommandSearchInput />
+          <CommandSearchList callback={runCommand} />
+        </InstantSearch>
       </CommandDialog>
     </>
   );

@@ -1,6 +1,8 @@
+import dataIndex from "@/data/index.json";
 import { client } from "@/sanity/lib/client";
 import { groq } from "next-sanity";
 
+import { resolveHref } from "../resolveHref";
 import { IndexableDocument, replaceAllObjects } from "./write";
 
 console.log("Henter dokumenter...");
@@ -20,7 +22,21 @@ client
   .then((documents) => {
     console.log(`Fant ${documents.length} dokumenter.`);
 
-    replaceAllObjects(documents)
+    const currentYear = dataIndex[0].year;
+    const statistics = dataIndex
+      .filter((item) => item.year === currentYear)
+      .map(({ slug, name }) => {
+        return {
+          _type: "statistic",
+          title: ["Statistikk", name].filter(Boolean).join(" for "),
+          slug,
+          objectID: resolveHref("statistic", slug)!,
+          description:
+            "Oversikt over studieforbundenes kursaktivitet, medlemsorganisasjoner og bruk av statstilskudd",
+        };
+      });
+
+    replaceAllObjects([...documents, ...statistics])
       .then(({ objectIDs }) => {
         console.log(`Oppdatert ${objectIDs.length} objekter.`);
       })
