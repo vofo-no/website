@@ -55,10 +55,10 @@ export function PostPageLayout(props: {
             )}
           >
             <Toc title="Innhold" headers={toc} mobile />
+            <PortableTextBody value={body} />
             {attachments?.map((file) => (
               <FileDownload file={file} key={file._id} />
             ))}
-            <PortableTextBody value={body} />
           </div>
           <aside
             className={cn(
