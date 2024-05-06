@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import { draftMode } from "next/headers";
+import { Analytics } from "@vercel/analytics/react";
 
 import { AutomaticVisualEditing } from "@/components/automatic-visual-editing";
 import { Breadcrumbs } from "@/components/breadcrumbs";
@@ -23,6 +24,7 @@ export default function WwwLayout({ children }: { children: React.ReactNode }) {
         <SiteFooter />
       </div>
       {draftMode().isEnabled && <AutomaticVisualEditing />}
+      <Analytics />
     </>
   );
 }
