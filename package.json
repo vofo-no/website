@@ -29,6 +29,7 @@
     "@sanity/ui": "^2.1.4",
     "@sanity/vision": "^3.23.4",
     "@tremor/react": "^3.15.0",
+    "@vercel/analytics": "^1.2.2",
     "@vercel/blob": "^0.23.2",
     "algoliasearch": "^4.23.3",
     "class-variance-authority": "^0.7.0",
