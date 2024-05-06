@@ -45,15 +45,14 @@ export function SanityImage({ image, mode = "block" }: Props) {
       <AspectRatio ratio={16 / 9}>
         <figure className="w-full h-full object-cover rounded border bg-secondary">
           <Image
-            src={url.url()}
+            src={url.size(720, 405).dpr(2).url()}
             alt={image.alt}
             title={image.credit}
+            width={720}
+            height={405}
+            sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
             placeholder="blur"
-            className="object-cover"
-            fill
-            sizes="30rem"
             blurDataURL={url.width(20).quality(20).url()}
-            priority
           />
         </figure>
       </AspectRatio>
