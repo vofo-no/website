@@ -9,13 +9,15 @@ import {
 } from "@/components/page-header";
 import { PortableTextBody } from "@/components/shared/portable-text-body";
 
+import { CountyStatisticBrief } from "../county-statistic-brief";
+
 export function CountyPageLayout(
   props: React.PropsWithChildren<{
     data: CountyPayload;
     contacts?: React.ReactNode;
   }>,
 ) {
-  const { title, description, body, image, locale } = props.data ?? {};
+  const { title, description, body, image, slug, locale } = props.data ?? {};
 
   return (
     <div className="container">
@@ -35,13 +37,14 @@ export function CountyPageLayout(
             <PortableTextBody value={body} />
           </div>
           <aside className={cn("md:col-start-3 md:row-span-3")}>
-            <div className="flex flex-col gap-4 md:sticky md:top-28">
+            <div className="flex flex-col gap-8 md:sticky md:top-28">
               {props.contacts && (
                 <section>
                   <h2 className="font-serif text-2xl">Lurer du på noe?</h2>
                   {props.contacts}
                 </section>
               )}
+              <CountyStatisticBrief slug={slug} />
             </div>
           </aside>
         </div>
