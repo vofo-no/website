@@ -1,6 +1,7 @@
 import { CogIcon } from "@sanity/icons";
 import { defineArrayMember, defineField, defineType } from "sanity";
 
+import contactsField from "../fields/contactsField";
 import emailField from "../fields/emailField";
 import phoneField from "../fields/phoneField";
 
@@ -55,6 +56,7 @@ export default defineType({
         }),
       ],
     }),
+    contactsField,
   ],
   preview: {
     prepare() {
