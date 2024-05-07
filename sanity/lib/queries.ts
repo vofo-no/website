@@ -185,4 +185,5 @@ export const settingsQuery = groq`*[_type == "settings"][0]{
   about[]{ title, href },
   shortcuts[]{ title, href },
   some[]{ title, href },
+  contacts,
 }`;

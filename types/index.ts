@@ -29,6 +29,7 @@ export interface SettingsPayload {
     title: string;
     href: string;
   }[];
+  contacts?: Reference[];
 }
 
 export interface HomePayload {
