@@ -26,7 +26,12 @@ export async function generateMetadata(
   if (!data) notFound();
 
   const previousImages = (await parent).openGraph?.images || [];
-  const image = data.image && urlForImage(data.image).size(1200, 630).url();
+  const image = data.image && {
+    url: urlForImage(data.image).size(1200, 630).url(),
+    width: 1200,
+    height: 630,
+    alt: data.image.alt,
+  };
 
   return {
     title: data.title,
