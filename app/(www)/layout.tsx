@@ -6,6 +6,7 @@ import { AutomaticVisualEditing } from "@/components/automatic-visual-editing";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { SiteFooter } from "@/components/shared/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { UserFeedback } from "@/components/user-feedback";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.vofo.no"),
@@ -22,6 +23,7 @@ export default function WwwLayout({ children }: { children: React.ReactNode }) {
         <SiteHeader />
         <Breadcrumbs />
         <main className="flex-1">{children}</main>
+        <UserFeedback />
         <SiteFooter />
       </div>
       {draftMode().isEnabled && <AutomaticVisualEditing />}
