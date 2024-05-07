@@ -1,7 +1,8 @@
-import { Metadata } from "next";
+import { Metadata, ResolvingMetadata } from "next";
 import { notFound } from "next/navigation";
 import { urlForImage } from "@/sanity/lib/image";
 import { loadPost } from "@/sanity/loader/loadQuery";
+import { head } from "@vercel/blob";
 
 import { resolveHref } from "@/lib/resolveHref";
 import { PostPageLayout } from "@/components/pages/post-page";
@@ -13,20 +14,27 @@ interface PostPageProps {
   };
 }
 
-export async function generateMetadata({
-  params: { slug },
-}: PostPageProps): Promise<Metadata> {
+export async function generateMetadata(
+  { params: { slug } }: PostPageProps,
+  parent: ResolvingMetadata,
+): Promise<Metadata> {
   const data = await loadPost(slug);
 
   if (!data) notFound();
 
-  const image = data.image && urlForImage(data.image).size(1200, 630).url();
+  const previousImages = (await parent).openGraph?.images || [];
+  const image = data.image && {
+    url: urlForImage(data.image).size(1200, 630).url(),
+    width: 1200,
+    height: 630,
+    alt: data.image.alt,
+  };
 
   return {
     title: data.title,
     description: data.description,
     openGraph: {
-      images: image,
+      images: image ? [image, ...previousImages] : previousImages,
       title: data.title,
       type: "article",
       publishedTime: data.publishedAt,

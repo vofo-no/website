@@ -8,6 +8,7 @@ import { SiteFooter } from "@/components/shared/site-footer";
 import { SiteHeader } from "@/components/site-header";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://www.vofo.no"),
   title: {
     template: "%s | Voksenopplæringsforbundet",
     default: "Voksenopplæringsforbundet",

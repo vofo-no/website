@@ -1,4 +1,4 @@
-import { Metadata } from "next";
+import { Metadata, ResolvingMetadata } from "next";
 import { notFound } from "next/navigation";
 import { urlForImage } from "@/sanity/lib/image";
 import { loadCounty } from "@/sanity/loader/loadQuery";
@@ -14,20 +14,27 @@ interface CountyPageProps {
   };
 }
 
-export async function generateMetadata({
-  params: { slug },
-}: CountyPageProps): Promise<Metadata> {
+export async function generateMetadata(
+  { params: { slug } }: CountyPageProps,
+  parent: ResolvingMetadata,
+): Promise<Metadata> {
   const data = await loadCounty(slug);
 
   if (!data) notFound();
 
-  const image = data.image && urlForImage(data.image).size(1200, 630).url();
+  const previousImages = (await parent).openGraph?.images || [];
+  const image = data.image && {
+    url: urlForImage(data.image).size(1200, 630).url(),
+    width: 1200,
+    height: 630,
+    alt: data.image.alt,
+  };
 
   return {
     title: data.title,
     description: data.description,
     openGraph: {
-      images: image,
+      images: image ? [image, ...previousImages] : previousImages,
       title: data.title,
       type: "website",
       url: `https://www.vofo.no${resolveHref("county", slug)}`,
