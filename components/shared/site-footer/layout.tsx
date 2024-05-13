@@ -1,9 +1,11 @@
 import Link from "next/link";
 import { SettingsPayload } from "@/types";
+import { vercelStegaClean, vercelStegaSplit } from "@vercel/stega";
 import { MailIcon, MapPinIcon } from "lucide-react";
 
 import { formatPhone } from "@/lib/formatPhone";
 import { FooterSponsor } from "@/components/footer-sponsor";
+import { FormatLink } from "@/components/FormatLink";
 import { SomeIcons } from "@/components/some-icons";
 
 export function SiteFooterLayout(props: { data: SettingsPayload }) {
@@ -23,12 +25,13 @@ export function SiteFooterLayout(props: { data: SettingsPayload }) {
         <section className="flex items-center gap-2">
           <h2 className="font-bold">Følg oss:</h2>
           {some?.map(({ title, href }) => {
-            const Icon = SomeIcons[title];
+            const { cleaned, encoded } = vercelStegaSplit(title);
+            const Icon = SomeIcons[cleaned];
             return (
               <Link
                 key={href}
                 href={href}
-                title={title}
+                title={cleaned}
                 className="hover:text-foreground"
               >
                 {Icon && <Icon />}
@@ -43,12 +46,12 @@ export function SiteFooterLayout(props: { data: SettingsPayload }) {
           {phone && (
             <li className="flex gap-2 items-center">
               Telefon:{" "}
-              <Link
-                href={`tel:${phone}`}
+              <FormatLink
+                formatHref={(str) => `tel:${str}`}
+                formatLabel={formatPhone}
+                value={phone}
                 className="underline hover:text-foreground"
-              >
-                {formatPhone(phone)}
-              </Link>
+              />
             </li>
           )}
           {email && (
