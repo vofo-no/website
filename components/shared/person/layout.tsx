@@ -6,6 +6,7 @@ import { MailIcon, PhoneIcon, SmileIcon } from "lucide-react";
 import { formatPhone } from "@/lib/formatPhone";
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { FormatLink } from "@/components/FormatLink";
 
 export interface PersonLayoutProps {
   data?: PersonPayload;
@@ -59,16 +60,20 @@ export function PersonLayout(props: PersonLayoutProps) {
               </Link>
             )}
             {phone && (
-              <Link
-                href={`tel:${phone}`}
+              <FormatLink
+                formatHref={(str) => `tel:${str}`}
+                formatLabel={(str) => (
+                  <>
+                    <PhoneIcon
+                      size={14}
+                      className="align-middle inline-block mr-1"
+                    />
+                    {formatPhone(str)}
+                  </>
+                )}
+                value={phone}
                 className="text-blue-700 hover:underline"
-              >
-                <PhoneIcon
-                  size={14}
-                  className="align-middle inline-block mr-1"
-                />
-                {formatPhone(phone)}
-              </Link>
+              />
             )}
           </div>
         )}
