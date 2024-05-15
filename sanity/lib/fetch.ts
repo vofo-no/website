@@ -31,6 +31,6 @@ export async function sanityFetch<QueryResponse>({
     stega,
     perspective: "published",
     useCdn: true,
-    next: { tags, revalidate: 300 },
+    next: { tags, revalidate: 120 },
   });
 }
