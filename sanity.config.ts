@@ -3,9 +3,10 @@
 /**
  * This configuration is used to for the Sanity Studio that’s mounted on the `\app\studio\[[...index]]\page.tsx` route
  */
+import { assist } from "@sanity/assist";
 import { nbNOLocale } from "@sanity/locale-nb-no";
 import { visionTool } from "@sanity/vision";
-import { defineConfig } from "sanity";
+import { createAuthStore, defineConfig } from "sanity";
 import { media } from "sanity-plugin-media";
 import { presentationTool } from "sanity/presentation";
 import { structureTool } from "sanity/structure";
@@ -37,5 +38,20 @@ export default defineConfig({
     }),
     media(),
     nbNOLocale(),
+    assist(),
   ],
+  auth: createAuthStore({
+    projectId,
+    dataset,
+    redirectOnSingle: true,
+    mode: "replace",
+    providers: [
+      {
+        name: "saml",
+        title: "Vofo SSO",
+        url: "https://api.sanity.io/v2021-10-01/auth/saml/login/5bde7648",
+      },
+    ],
+    loginMethod: "dual",
+  }),
 });

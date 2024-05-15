@@ -1,8 +1,9 @@
 import { Metadata, ResolvingMetadata } from "next";
 import { notFound } from "next/navigation";
+import { client } from "@/sanity/lib/client";
 import { urlForImage } from "@/sanity/lib/image";
 import { loadPost } from "@/sanity/loader/loadQuery";
-import { head } from "@vercel/blob";
+import { groq } from "next-sanity";
 
 import { resolveHref } from "@/lib/resolveHref";
 import { PostPageLayout } from "@/components/pages/post-page";
@@ -44,13 +45,8 @@ export async function generateMetadata(
   };
 }
 
-// Waiting for https://github.com/vercel/next.js/issues/59883
-export const dynamic = "force-static";
-export const dynamicParams = true;
-
 export async function generateStaticParams() {
-  return [];
-  /*const data = await client.fetch<{ slug: string }[]>(
+  const data = await client.fetch<{ slug: string }[]>(
     groq`*[_type == "post"][] { "slug": slug.current }`,
     {},
     { next: { tags: ["post"] } },
@@ -58,7 +54,7 @@ export async function generateStaticParams() {
 
   return data.map((item) => ({
     slug: item.slug,
-  }));*/
+  }));
 }
 
 export default async function PostPage({ params: { slug } }: PostPageProps) {

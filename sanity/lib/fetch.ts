@@ -30,7 +30,7 @@ export async function sanityFetch<QueryResponse>({
   return client.fetch<QueryResponse>(query, params, {
     stega,
     perspective: "published",
-    useCdn: false,
-    next: { tags, revalidate: 60 },
+    useCdn: true,
+    next: { tags, revalidate: 120 },
   });
 }

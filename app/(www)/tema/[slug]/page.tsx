@@ -1,7 +1,9 @@
 import { Metadata, ResolvingMetadata } from "next";
 import { notFound } from "next/navigation";
+import { client } from "@/sanity/lib/client";
 import { urlForImage } from "@/sanity/lib/image";
 import { loadTopic } from "@/sanity/loader/loadQuery";
+import { groq } from "next-sanity";
 
 import { resolveHref } from "@/lib/resolveHref";
 import { PageLayout } from "@/components/pages/page-layout";
@@ -42,13 +44,8 @@ export async function generateMetadata(
   };
 }
 
-// Waiting for https://github.com/vercel/next.js/issues/59883
-export const dynamic = "force-static";
-export const dynamicParams = true;
-
 export async function generateStaticParams() {
-  return [];
-  /*  const data = await client.fetch<{ slug: string }[]>(
+  const data = await client.fetch<{ slug: string }[]>(
     groq`*[_type == "topic"][] { "slug": slug.current }`,
     {},
     { next: { tags: ["topic"] } },
@@ -56,7 +53,7 @@ export async function generateStaticParams() {
 
   return data.map((item) => ({
     slug: item.slug,
-  }));*/
+  }));
 }
 
 export default async function TopicPage({ params: { slug } }: TopicPageProps) {
