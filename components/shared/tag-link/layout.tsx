@@ -9,7 +9,7 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        county: "text-teal-600",
+        county: "text-teal-800",
         topic: "text-primary",
       },
       size: {
