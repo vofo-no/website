@@ -67,5 +67,5 @@ Når du har gjort endringer som du vil bidra med, kan du åpne en [pull request]
 
 [![Powered by Vercel][vercel]][vercel-url]
 
-[vercel]: ./public/powered-by-vercel.svg
+[vercel]: ./components/powered-by-vercel.svg
 [vercel-url]: https://vercel.com/?utm_source=vofo-kursinfo&utm_campaign=oss
