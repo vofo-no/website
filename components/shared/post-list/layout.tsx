@@ -22,11 +22,12 @@ export function PostListLayout(props: {
       )}
       {props.data.length ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 gap-y-8">
-          {props.data.map((item) => (
+          {props.data.map((item, index) => (
             <PostListItem
               key={item._id}
               item={item}
               referencesId={props.referencesId}
+              priority={index < 3}
             />
           ))}
         </div>

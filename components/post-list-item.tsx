@@ -11,12 +11,15 @@ import { TagLinkLayout } from "./shared/tag-link/layout";
 export function PostListItem(props: {
   item: PostListItemPayload;
   referencesId?: string;
+  priority?: boolean;
 }) {
   const { title, publishedAt, description, relevance, image, slug } =
     props.item ?? {};
   return (
     <div>
-      {image && <SanityImage mode="listItem" image={image} />}
+      {image && (
+        <SanityImage mode="listItem" image={image} priority={props.priority} />
+      )}
       <div className="my-2 flex flex-wrap gap-x-2 gap-y-1">
         <span className="text-xs text-muted-foreground flex items-center gap-1">
           <CalendarIcon size={12} />
