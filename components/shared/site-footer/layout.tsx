@@ -12,7 +12,7 @@ export function SiteFooterLayout(props: { data: SettingsPayload }) {
   const { email, phone, postalAddress, officeAddress, some, about, shortcuts } =
     props.data ?? {};
   return (
-    <footer className="mt-6 py-6 border-t border-t-border bg-secondary text-base text-secondary-foreground/60 space-y-4 print:hidden">
+    <footer className="mt-6 py-6 border-t border-t-border bg-secondary text-base text-secondary-foreground/70 space-y-4 print:hidden">
       <div className="container flex flex-col md:flex-row justify-between md:items-center gap-4">
         <div className="flex flex-col gap-1">
           <p className="text-xl md:text-2xl leading-tight font-bold">
