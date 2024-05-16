@@ -8,9 +8,10 @@ import { AspectRatio } from "./ui/aspect-ratio";
 interface Props {
   image: ImagePayload;
   mode?: "header" | "block" | "listItem";
+  priority?: boolean;
 }
 
-export function SanityImage({ image, mode = "block" }: Props) {
+export function SanityImage({ image, mode = "block", priority }: Props) {
   if (!image.asset) return null;
 
   const url = urlForImage(image);
@@ -26,7 +27,7 @@ export function SanityImage({ image, mode = "block" }: Props) {
           sizes="(max-width: 768px) 100vw, 66vw"
           placeholder="blur"
           blurDataURL={url.width(20).quality(20).url()}
-          priority
+          priority={priority ?? true}
         />
         {(image.credit || image.caption) && (
           <figcaption className="my-2 px-4 md:px-0 grid gap-2 text-muted-foreground text-sm">
@@ -53,6 +54,7 @@ export function SanityImage({ image, mode = "block" }: Props) {
             sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
             placeholder="blur"
             blurDataURL={url.width(20).quality(20).url()}
+            priority={priority}
           />
         </figure>
       </AspectRatio>
@@ -70,6 +72,7 @@ export function SanityImage({ image, mode = "block" }: Props) {
         height={getImageDimensions(imageUrl).height}
         placeholder="blur"
         blurDataURL={url.width(20).quality(20).url()}
+        priority={priority}
       />
       {(image.credit || image.caption) && (
         <figcaption className="my-2 px-4 md:px-0 grid gap-2">
