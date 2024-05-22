@@ -1,10 +1,32 @@
 import { SVGProps } from "react";
 
+function linearGradientJune(id: string) {
+  return (
+    <linearGradient id={id} x1="0" x2="0" y1="0" y2="1">
+      <stop stopColor="#FE0000" offset={0.1666} />
+      <stop stopColor="#FD8C00" offset={0.1666} />
+      <stop stopColor="#FD8C00" offset={0.3332} />
+      <stop stopColor="#FFE500" offset={0.3332} />
+      <stop stopColor="#FFE500" offset={0.4998} />
+      <stop stopColor="#119F0B" offset={0.4998} />
+      <stop stopColor="#119F0B" offset={0.6664} />
+      <stop stopColor="#0644B3" offset={0.6664} />
+      <stop stopColor="#0644B3" offset={0.833} />
+      <stop stopColor="#C22EDC" offset={0.833} />
+    </linearGradient>
+  );
+}
+
+function isJune() {
+  return new Date().getMonth() === 5;
+}
+
 function MobileLogo(props: SVGProps<SVGSVGElement>) {
+  const itsJune = isJune();
+
   return (
     <svg
       version="1.1"
-      id="Layer_1"
       role="img"
       aria-label="Vofo logo"
       xmlns="http://www.w3.org/2000/svg"
@@ -13,9 +35,10 @@ function MobileLogo(props: SVGProps<SVGSVGElement>) {
       {...props}
     >
       <title>Vofo logo</title>
+      <defs>{itsJune && linearGradientJune("juni_mobile_logo")}</defs>
       <g>
         <path
-          fill="#A41F35"
+          fill={itsJune ? "url('#juni_mobile_logo')" : "#A41F35"}
           d="M25,9.6c0.8,0.5,1.2,1,1.1,1.5c-0.2,1.2-3.2,1.8-6.8,1.3c-2.4-0.3-4.4-1-5.4-1.8C5.8,13.5,0,21.1,0,29.9
                 c0,9.9,7.2,18.2,16.8,20.2c1.1-0.5,2.7-0.8,4.6-0.8c1.8,0,3.4,0.3,4.5,0.8c9.5-2.1,16.6-10.3,16.6-20.1C42.5,19.8,35,11.4,25,9.6"
         ></path>
@@ -29,20 +52,20 @@ function MobileLogo(props: SVGProps<SVGSVGElement>) {
 }
 
 function Logo(props: SVGProps<SVGSVGElement>) {
+  const itsJune = isJune();
+
   return (
     <svg
       version="1.1"
-      id="Layer_1"
       role="img"
       aria-label="Vofo logo"
       xmlns="http://www.w3.org/2000/svg"
-      x="0px"
-      y="0px"
       viewBox="0 0 218 84.1"
       enableBackground="new 0 0 218 84.1"
       {...props}
     >
       <title>Vofo logo</title>
+      <defs>{itsJune && linearGradientJune("juni_logo")}</defs>
       <g>
         <path
           fill="#FFFFFF"
@@ -51,7 +74,7 @@ function Logo(props: SVGProps<SVGSVGElement>) {
         ></path>
         <g>
           <path
-            fill="#A41F35"
+            fill={itsJune ? "url('#juni_logo')" : "#A41F35"}
             d="M25,9.6c0.8,0.5,1.2,1,1.1,1.5c-0.2,1.2-3.2,1.8-6.8,1.3c-2.4-0.3-4.4-1-5.4-1.8C5.8,13.5,0,21.1,0,29.9
                 c0,9.9,7.2,18.2,16.8,20.2c1.1-0.5,2.7-0.8,4.6-0.8c1.8,0,3.4,0.3,4.5,0.8c9.5-2.1,16.6-10.3,16.6-20.1C42.5,19.8,35,11.4,25,9.6"
           ></path>
