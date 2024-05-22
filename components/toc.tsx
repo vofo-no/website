@@ -3,7 +3,6 @@
 import { useMemo } from "react";
 import Link from "next/link";
 import { Disclosure } from "@headlessui/react";
-import classNames from "classnames";
 import { ChevronRightIcon } from "lucide-react";
 import { toPlainText } from "next-sanity";
 
@@ -38,9 +37,10 @@ export function Toc({ title, headers = [], mobile = false }: TocProps) {
               >
                 <small>{title}</small>
                 <ChevronRightIcon
-                  className={classNames("h-6 duration-150", {
-                    "rotate-90 transform": open,
-                  })}
+                  className={cn(
+                    "h-6 duration-150",
+                    open && "rotate-90 transform",
+                  )}
                 />
               </Disclosure.Button>
               <Disclosure.Panel
