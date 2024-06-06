@@ -13,6 +13,8 @@ export function resolveHref(
       return `/tema/${slug}`;
     case "page":
       return `/${slug}`;
+    case "course":
+      return `/opplaring/${slug}`;
     case "statistic":
       return slug && slug !== "nasjonal"
         ? `/statistikk/${slug}`

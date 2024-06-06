@@ -135,6 +135,34 @@ export const countyBySlugQuery = groq`
   }
 `;
 
+export const allActiveCoursesQuery = groq`
+  *[_type == "course" && active == true][]{
+    _id,
+    title,
+    "slug": slug.current,
+    description,
+    image,
+    "lessons": lessons[].slug.current,
+  } | order(sortOrder asc, title asc)
+`;
+
+export const courseBySlugQuery = groq`
+  *[_type == "course" && slug.current == $slug][0] {
+    _id,
+    title,
+    "slug": slug.current,
+    description,
+    image,
+    body,
+    lessons[] {
+      title,
+      "slug": slug.current,
+      description,
+      body,
+    },
+  }
+`;
+
 export const allActiveTopicsQuery = groq`
   *[_type == "topic" && active == true][]{
     _id,

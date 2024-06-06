@@ -1,9 +1,11 @@
 import { sanityFetch } from "@/sanity/lib/fetch";
 import {
   allActiveCountiesQuery,
+  allActiveCoursesQuery,
   allActiveSfQuery,
   allActiveTopicsQuery,
   countyBySlugQuery,
+  courseBySlugQuery,
   documentLinkByIdQuery,
   homeQuery,
   pageBySlugQuery,
@@ -18,6 +20,8 @@ import {
 import {
   CountyListItemPayload,
   CountyPayload,
+  CourseListItemPayload,
+  CoursePayload,
   DocumentLinkPayload,
   HomePayload,
   OrganizationListItemPayload,
@@ -88,6 +92,23 @@ export function loadCounty(slug: string) {
       slug,
     },
     tags: [`county:${slug}`],
+  });
+}
+
+export function loadAllCourses() {
+  return sanityFetch<CourseListItemPayload[]>({
+    query: allActiveCoursesQuery,
+    tags: [`course`],
+  });
+}
+
+export function loadCourse(slug: string) {
+  return sanityFetch<CoursePayload | null>({
+    query: courseBySlugQuery,
+    params: {
+      slug,
+    },
+    tags: [`course:${slug}`],
   });
 }
 
