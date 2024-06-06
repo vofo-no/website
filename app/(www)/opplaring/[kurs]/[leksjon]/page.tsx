@@ -1,6 +1,8 @@
 import { Metadata, ResolvingMetadata } from "next";
 import { notFound } from "next/navigation";
+import { client } from "@/sanity/lib/client";
 import { loadCourse } from "@/sanity/loader/loadQuery";
+import { groq } from "next-sanity";
 
 import { resolveHref } from "@/lib/resolveHref";
 import { Separator } from "@/components/ui/separator";
@@ -35,6 +37,27 @@ export async function generateMetadata(
       url: `https://www.vofo.no${resolveHref("course", params.kurs)}/${params.leksjon}`,
     },
   };
+}
+
+export async function generateStaticParams() {
+  const data = await client.fetch<{ slug: string; lessons: string[] }[]>(
+    groq`*[_type == "course"][] { "slug": slug.current, "lessons": lessons[].slug.current }`,
+    {},
+    { next: { tags: ["course"] } },
+  );
+
+  let params: { kurs: string; leksjon: string }[] = [];
+
+  data.forEach((item) => {
+    item.lessons.forEach((leksjon) =>
+      params.push({
+        kurs: item.slug,
+        leksjon,
+      }),
+    );
+  });
+
+  return params;
 }
 
 export default async function CourseLessonPage({
