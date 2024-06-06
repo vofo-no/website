@@ -6,7 +6,8 @@ import { loadCourse } from "@/sanity/loader/loadQuery";
 import { groq } from "next-sanity";
 
 import { resolveHref } from "@/lib/resolveHref";
-import { PageLayout } from "@/components/pages/page-layout";
+import { Separator } from "@/components/ui/separator";
+import { PortableTextBody } from "@/components/shared/portable-text-body";
 
 interface CoursePageProps {
   params: {
@@ -61,5 +62,14 @@ export default async function CoursePage({
 
   if (!data) notFound();
 
-  return <PageLayout data={data} />;
+  return (
+    <div className="container">
+      <div className="prose prose-gray mx-auto mt-8">
+        <h1>{data.title}</h1>
+        <p className="lead">{data.description}</p>
+        <Separator />
+        <PortableTextBody value={data.body} />
+      </div>
+    </div>
+  );
 }
