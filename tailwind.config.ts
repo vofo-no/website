@@ -178,6 +178,12 @@ const config: Config = {
                 color: "var(--tw-prose-links-hover)",
               },
             },
+            h1: {
+              fontWeight: "700",
+              marginBottom: theme("spacing.4"),
+              marginTop: theme("spacing.14"),
+              lineHeight: 1.25,
+            },
             h2: {
               fontWeight: "700",
               marginBottom: theme("spacing.3"),

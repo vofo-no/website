@@ -6,6 +6,7 @@ import {
 } from "next-sanity";
 
 import { InlineImage } from "./body-image";
+import { BodyQuiz } from "./body-quiz";
 import { InlineVideo } from "./body-video";
 import { DocumentLink } from "./document-link";
 import { H2WithAnchor } from "./header";
@@ -27,6 +28,7 @@ export function PortableTextBody({ value }: Props) {
       youtube: InlineVideo,
       documentLink: DocumentLink,
       people: PeopleList,
+      quiz: BodyQuiz,
     },
     block: {
       h2: H2WithAnchor,

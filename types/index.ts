@@ -88,6 +88,19 @@ export interface CountyPayload extends CountyListItemPayload {
   locale?: string;
 }
 
+export interface CourseListItemPayload extends DocumentListItemPayload {
+  lessons: string[];
+}
+
+interface CourseLessonPayload extends Omit<DocumentListItemPayload, "image"> {
+  body: PortableTextBlock[];
+}
+
+export interface CoursePayload extends Omit<CourseListItemPayload, "lessons"> {
+  body: PortableTextBlock[];
+  lessons: CourseLessonPayload[];
+}
+
 export interface TopicListItemPayload extends DocumentListItemPayload {
   county: Reference;
 }
@@ -105,7 +118,7 @@ export interface PagePayload {
   _updatedAt?: string;
   description?: string;
   body: PortableTextBlock[];
-  toc: PortableTextBlock[];
+  toc?: PortableTextBlock[];
   image?: Image;
   contacts?: Reference[];
   locale?: string;

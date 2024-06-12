@@ -72,5 +72,8 @@ export default defineField({
     defineArrayMember({
       type: "youtube",
     }),
+    defineArrayMember({
+      type: "quiz",
+    }),
   ],
 });
