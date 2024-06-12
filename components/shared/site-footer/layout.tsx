@@ -93,7 +93,11 @@ export function SiteFooterLayout(props: { data: SettingsPayload }) {
             </li>
             {shortcuts.map(({ title, href }) => (
               <li key={href}>
-                <Link href={href} className="underline hover:text-foreground">
+                <Link
+                  href={href}
+                  className="underline hover:text-foreground"
+                  target={/^https?:\/\//.test(href) ? "_blank" : "_self"}
+                >
                   {title}
                 </Link>
               </li>
