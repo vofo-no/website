@@ -39,26 +39,32 @@ export default async function Page() {
       </PageHeader>
 
       <div className="flex flex-col gap-8 mb-8 mx-auto max-w-prose">
-        {data.map((item) => (
-          <Card key={item._id}>
-            <CardHeader>
-              <CardTitle>{item.title}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex gap-4 items-center">
-                <CourseStatus slug={item.slug} lessons={item.lessons} />
-                <p>{item.description}</p>
-              </div>
-            </CardContent>
-            <CardFooter>
-              <Button asChild className="mx-auto">
-                <Link href={resolveHref("course", item.slug)!}>
-                  Gå til kurset <ArrowRight />
-                </Link>
-              </Button>
-            </CardFooter>
-          </Card>
-        ))}
+        {data.length ? (
+          data.map((item) => (
+            <Card key={item._id}>
+              <CardHeader>
+                <CardTitle>{item.title}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex gap-4 items-center">
+                  <CourseStatus slug={item.slug} lessons={item.lessons} />
+                  <p>{item.description}</p>
+                </div>
+              </CardContent>
+              <CardFooter>
+                <Button asChild className="mx-auto">
+                  <Link href={resolveHref("course", item.slug)!}>
+                    Gå til kurset <ArrowRight />
+                  </Link>
+                </Button>
+              </CardFooter>
+            </Card>
+          ))
+        ) : (
+          <div className="min-h-36 flex items-center justify-center text-muted-foreground text-lg max-w-screen-sm border-2 border-muted rounded-lg border-dashed">
+            <p>Fant ingen kurs.</p>
+          </div>
+        )}
       </div>
     </div>
   );
