@@ -13,10 +13,14 @@ import {
 } from "@/components/ui/breadcrumb";
 
 const vofoRegex = /\b(vofo)\b/g;
+const laringRegex = /\b(oppl)(aring)([a-z]*)\b/gi;
 
 function displayPathName(raw: string) {
   const str = raw.charAt(0).toUpperCase() + raw.slice(1);
-  return str.replace("-", " ").replace(vofoRegex, "Vofo");
+  return str
+    .replaceAll("-", " ")
+    .replace(vofoRegex, "Vofo")
+    .replace(laringRegex, "$1æring$3");
 }
 
 export function Breadcrumbs() {
