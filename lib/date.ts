@@ -21,10 +21,16 @@ export function formatDate({
   date,
   endDate,
   locale,
-}: { date?: string; endDate?: string; locale?: string } = {}) {
+  options,
+}: {
+  date?: string;
+  endDate?: string;
+  locale?: string;
+  options?: Intl.DateTimeFormatOptions;
+} = {}) {
   if (!date) return;
 
-  const intl = getDateFormat(locale);
+  const intl = getDateFormat(locale, options);
 
   if (!endDate) return intl.format(new Date(date));
 
