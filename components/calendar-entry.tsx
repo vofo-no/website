@@ -14,7 +14,11 @@ export function CalendarEntry({ data }: CalendarEntryProps) {
   const hideTime =
     (data.duration.end &&
       data.duration.end.split("T")[0] !== data.duration.start.split("T")[0]) ||
-    start.getHours() === 0;
+    start.toLocaleString("nb", {
+      hour: "2-digit",
+      minute: "2-digit",
+      timeZone: "Europe/Oslo",
+    }) === "00:00";
   return (
     <div className="flex gap-3 justify-start">
       <div
@@ -24,10 +28,16 @@ export function CalendarEntry({ data }: CalendarEntryProps) {
         )}
       >
         <span className="text-2xl leading-none font-bold">
-          {start.getDate()}
+          {start.toLocaleString("en-GB", {
+            timeZone: "Europe/Oslo",
+            day: "numeric",
+          })}
         </span>
         <span className="leading-none">
-          {start.toLocaleString("nb-NO", { month: "short" })}
+          {start.toLocaleString("nb", {
+            timeZone: "Europe/Oslo",
+            month: "short",
+          })}
         </span>
       </div>
       <div>
