@@ -5,7 +5,7 @@ import { desc, escape, loadCSV, loadJSON, op } from "arquero";
 import ColumnTable from "arquero/dist/types/table/column-table";
 import { groq } from "next-sanity";
 
-import dataIndex from "./index.json";
+import dataIndex from "./index-v2.json";
 
 const LOWEST_YEAR = 2015;
 
@@ -248,7 +248,7 @@ function makeReport(
 
       // Kommuner etter antall kurs
       kommuner: oneYear
-        .join(ssb, [col.kommune, "code"])
+        .join(ssb, [[col.kommune], ["code"]])
         .groupby(col.kommune)
         .rollup({
           kurs: op.count(),
@@ -262,17 +262,17 @@ function makeReport(
       kommunerAll: getFirstCount(ssb.filter((d) => d!["code"] > 99)),
       kommunerMissing: ssb
         .filter((d) => d!["code"] > 99)
-        .antijoin(oneYear, ["code", col.kommune])
+        .antijoin(oneYear, [["code"], [col.kommune]])
         .select({ name: "navn" })
         .orderby("navn")
         .objects(),
 
       // Fylker etter antall kurs
       fylker: oneYear
-        .join(ssb, [col.fylke, "code"])
+        .join(ssb, [[col.fylke], ["code"]])
         .join_left(
           tilskudd.groupby(col.fylke).rollup({ tilskudd: op.sum("tilskudd") }),
-          [col.fylke, col.fylke],
+          [[col.fylke], [col.fylke]],
         )
         .groupby(col.fylke)
         .rollup({
@@ -291,7 +291,7 @@ function makeReport(
           tilskudd
             .groupby(col.studieforbund)
             .rollup({ tilskudd: op.sum("tilskudd") }),
-          [col.studieforbund, col.studieforbund],
+          [[col.studieforbund], [col.studieforbund]],
         )
         .groupby(col.studieforbund)
         .rollup({
@@ -440,7 +440,8 @@ export async function makeUtil(yearArg: string) {
     name?: string;
     slug: string;
     url: string;
-    type: "fylke" | "sf" | "general";
+    sf: string;
+    fylke: string;
     year: number;
   }> = [];
 
@@ -478,162 +479,122 @@ export async function makeUtil(yearArg: string) {
 
   const fylker = await client.fetch<
     { slug: string; name: string; countyCode: string[] }[]
-  >(groq`
-    *[_type == "county" && active == true && defined(countyCode)][]{
-    "slug": slug.current,
-    name,
-    countyCode,
-  }
-`);
-
-  await Promise.all(
-    fylker.map((fylke) => {
-      const filters = fylke.countyCode.map(Number);
-
-      if (
-        getFirstCount(
-          shortData.filter(
-            escape(
-              (d: { [x: string]: number }) =>
-                filters.includes(d[col.kommune]) ||
-                filters.includes(d[col.fylke]),
-            ),
-          ),
-        ) < 10
-      ) {
-        return;
-      }
-
-      return put(
-        `data/${year}/${fylke.slug}.json`,
-        JSON.stringify(
-          makeReport(
-            data[0].filter(
-              escape(
-                (d: { [x: string]: number }) =>
-                  filters.includes(d[col.kommune]) ||
-                  filters.includes(d[col.fylke]),
-              ),
-            ),
-            shortData.filter(
-              escape(
-                (d: { [x: string]: number }) =>
-                  filters.includes(d[col.kommune]) ||
-                  filters.includes(d[col.fylke]),
-              ),
-            ),
-            ssb.filter(
-              escape(
-                (d: { [x: string]: string }) =>
-                  filters.includes(Number(d["code"])) ||
-                  filters.includes(Math.trunc(Number(d["code"]) / 100)),
-              ),
-            ),
-            tilskudd.filter(
-              escape((d: { [x: string]: number }) =>
-                filters.includes(d[col.fylke]),
-              ),
-            ),
-            fylke.name,
-          ),
-        ),
-        { access: "public", addRandomSuffix: false },
-      ).then((result) => {
-        nextIndex.push({
-          name: fylke.name,
-          slug: fylke.slug,
-          url: result.url,
-          type: "fylke",
-          year,
-        });
-      });
-    }),
+  >(
+    groq`*[_type == "county" && active == true && defined(countyCode)][]{ "slug": slug.current, name, countyCode }`,
   );
 
   const studieforbund = await client.fetch<
     { slug: string; name: string; ssbCode: string }[]
-  >(groq`
-    *[_type == "organization" && active == true && defined(ssbCode) && defined(slug)][]{
-    "slug": slug.current,
-    name,
-    ssbCode,
-  }
-`);
+  >(
+    groq`*[_type == "organization" && active == true && defined(ssbCode) && defined(slug)][]{ "slug": slug.current, name, ssbCode }`,
+  );
 
-  await Promise.all(
-    studieforbund.map((sf) => {
-      const filter = Number(sf.ssbCode);
-
-      if (
-        getFirstCount(
-          shortData.filter(
-            escape(
-              (d: { [x: string]: number }) => d[col.studieforbund] === filter,
-            ),
-          ),
-        ) < 10
-      ) {
-        return;
-      }
-
-      return put(
-        `data/${year}/${sf.slug}.json`,
-        JSON.stringify(
-          makeReport(
-            data[0].filter(
-              escape(
-                (d: { [x: string]: number }) => d[col.studieforbund] === filter,
-              ),
-            ),
-            shortData.filter(
-              escape(
-                (d: { [x: string]: number }) => d[col.studieforbund] === filter,
-              ),
-            ),
-            ssb,
-            tilskudd.filter(
-              escape(
-                (d: { [x: string]: number }) => d[col.studieforbund] === filter,
-              ),
-            ),
-            sf.name,
+  // Pass if the filter yields at least 5 courses.
+  function testFilter(sfNumber: number | null, fylkeNumbers: number[] | null) {
+    return (
+      getFirstCount(
+        data[0].filter(
+          escape(
+            (d: { [x: string]: number }) =>
+              (sfNumber === null || d[col.studieforbund] === sfNumber) &&
+              (fylkeNumbers === null ||
+                fylkeNumbers.includes(d[col.kommune]) ||
+                fylkeNumbers.includes(d[col.fylke])),
           ),
         ),
-        {
-          access: "public",
-          addRandomSuffix: false,
-        },
-      ).then((result) => {
-        nextIndex.push({
-          name: sf.name,
-          slug: sf.slug,
-          url: result.url,
-          type: "sf",
-          year,
+      ) >= 5
+    );
+  }
+
+  function getFilteredTables(
+    sfNumber: number | null,
+    fylkeNumbers: number[] | null,
+  ): [ColumnTable, ColumnTable, ColumnTable, ColumnTable] {
+    const filteredOneYear = data[0].filter(
+      escape(
+        (d: { [x: string]: number }) =>
+          (sfNumber === null || d[col.studieforbund] === sfNumber) &&
+          (fylkeNumbers === null ||
+            fylkeNumbers.includes(d[col.kommune]) ||
+            fylkeNumbers.includes(d[col.fylke])),
+      ),
+    );
+    const filteredTwoYears = shortData.filter(
+      escape(
+        (d: { [x: string]: number }) =>
+          (sfNumber === null || d[col.studieforbund] === sfNumber) &&
+          (fylkeNumbers === null ||
+            fylkeNumbers.includes(d[col.kommune]) ||
+            fylkeNumbers.includes(d[col.fylke])),
+      ),
+    );
+    const filteredSsb = ssb.filter(
+      escape(
+        (d: { [x: string]: string }) =>
+          fylkeNumbers === null ||
+          fylkeNumbers.includes(Number(d["code"])) ||
+          fylkeNumbers.includes(Math.trunc(Number(d["code"]) / 100)),
+      ),
+    );
+    const filteredTilskudd = tilskudd.filter(
+      escape(
+        (d: { [x: string]: number }) =>
+          (sfNumber === null || d[col.studieforbund] === sfNumber) &&
+          (fylkeNumbers === null || fylkeNumbers.includes(d[col.fylke])),
+      ),
+    );
+
+    return [filteredOneYear, filteredTwoYears, filteredSsb, filteredTilskudd];
+  }
+
+  await Promise.all(
+    [
+      { slug: "nasjonal", countyCode: null, name: undefined },
+      ...fylker,
+    ].flatMap((fylke) => {
+      const fylkeFilters = fylke.countyCode?.map(Number) || null;
+
+      return [
+        { slug: "alle", ssbCode: null, name: undefined },
+        ...studieforbund,
+      ].map((sf) => {
+        const sfFilter = Number(sf.ssbCode) || null;
+
+        if (!testFilter(sfFilter, fylkeFilters)) return;
+
+        const reportName =
+          [sf.name, fylke.name].filter(Boolean).join(" i ") || undefined;
+
+        return put(
+          `data_v2/${year}/${sf.slug}/${fylke.slug}.json`,
+          JSON.stringify(
+            makeReport(
+              ...getFilteredTables(sfFilter, fylkeFilters),
+              reportName,
+            ),
+          ),
+          { access: "public", addRandomSuffix: false },
+        ).then((result) => {
+          nextIndex.push({
+            name: reportName,
+            slug: `${sf.slug}/${fylke.slug}/${year}`,
+            url: result.url,
+            sf: sf.slug,
+            fylke: fylke.slug,
+            year,
+          });
         });
       });
     }),
   );
 
-  await put(
-    `data/${year}/nasjonal.json`,
-    JSON.stringify(makeReport(data[0], shortData, ssb, tilskudd)),
-    { access: "public", addRandomSuffix: false },
-  ).then((result) => {
-    nextIndex.push({
-      slug: "nasjonal",
-      url: result.url,
-      type: "general",
-      year,
-    });
-  });
-
-  const istream = fs.createWriteStream(`data/index.json`);
+  const istream = fs.createWriteStream(`data/index-v2.json`);
   istream.write(
-    JSON.stringify([
-      ...nextIndex,
-      ...dataIndex.filter((item) => item.year !== year),
-    ]),
+    JSON.stringify(
+      [...nextIndex, ...dataIndex.filter((item) => item.year !== year)].sort(
+        (a, b) => a.slug.localeCompare(b.slug),
+      ),
+    ),
   );
   istream.end();
 }
