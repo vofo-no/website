@@ -1,23 +1,26 @@
+import { Suspense } from "react";
 import Link from "next/link";
-import dataIndex from "@/data/index.json";
+
+import { PageHeader, PageHeaderHeading } from "@/components/page-header";
+
+import { Picker } from "./picker";
+import { statistikkOptions } from "./utils";
 
 export default function StatisticsLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const currentYear = dataIndex[0].year;
-  const counties = dataIndex
-    .filter((item) => item.type === "fylke" && item.year === currentYear)
-    .map(({ name, slug }) => ({ name: name!, slug }))
-    .sort((a, b) => a.name.localeCompare(b.name));
-  const sfs = dataIndex
-    .filter((item) => item.type === "sf" && item.year === currentYear)
-    .map(({ name, slug }) => ({ name: name!, slug }))
-    .sort((a, b) => a.name.localeCompare(b.name));
-
   return (
     <>
+      <header className="container">
+        <PageHeader>
+          <PageHeaderHeading>Statistikk</PageHeaderHeading>
+          <Suspense fallback={null}>
+            <Picker />
+          </Suspense>
+        </PageHeader>
+      </header>
       {children}
       <aside className="container mt-8">
         <div className="grid md:grid-cols-3 gap-6">
@@ -31,9 +34,9 @@ export default function StatisticsLayout({
               <li>
                 <h4>Fylker</h4>
                 <ul>
-                  {counties.map((county) => (
+                  {statistikkOptions.fylker.map((county) => (
                     <li key={county.slug}>
-                      <Link href={`/statistikk/${county.slug}`}>
+                      <Link href={`/statistikk/alle/${county.slug}`}>
                         {county.name}
                       </Link>
                     </li>
@@ -43,7 +46,7 @@ export default function StatisticsLayout({
               <li>
                 <h4>Studieforbund</h4>
                 <ul>
-                  {sfs.map((sf) => (
+                  {statistikkOptions.sfs.map((sf) => (
                     <li key={sf.slug}>
                       <Link href={`/statistikk/${sf.slug}`}>{sf.name}</Link>
                     </li>
@@ -91,13 +94,16 @@ export default function StatisticsLayout({
                   Studieforbundenes opplæringsvirksomhet fra Statistisk
                   sentralbyrå
                 </Link>
+                <br />
+                Offisiell statistikk for studieforbundene.
               </li>
               <li>
                 <Link href="https://www.kompetanseforbundet.no/etter-og-videreutdanningsstatistikk/">
                   Etter- og videreutdanningsstatistikk fra Kompetanseforbundet
-                  (viser studieforbundene som får tilskudd fra
-                  Kunnskapsdepartementet)
                 </Link>
+                <br />
+                Viser kursaktiviteten til studieforbund som er medlem i
+                Kompetanseforbundet.
               </li>
             </ul>
 
