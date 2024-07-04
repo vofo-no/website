@@ -1,5 +1,5 @@
 import Link from "next/link";
-import dataIndex from "@/data/index.json";
+import dataIndex from "@/data/index-v2.json";
 import { StatisticsDataType } from "@/types";
 import { Card } from "@tremor/react";
 import { ArrowRight } from "lucide-react";
@@ -15,7 +15,7 @@ interface CountyStatisticBriefProps {
 
 export async function CountyStatisticBrief(props: CountyStatisticBriefProps) {
   const index = dataIndex
-    .filter((item) => item.slug === props.slug)
+    .filter((item) => item.fylke === props.slug)
     .sort((a, b) => b.year - a.year)[0];
 
   if (!dataIndex) return null;
@@ -37,7 +37,7 @@ export async function CountyStatisticBrief(props: CountyStatisticBriefProps) {
     <section>
       <h2 className="font-serif text-2xl">
         <Link
-          href={resolveHref("statistic", props.slug)!}
+          href={resolveHref("statistic", `alle/${props.slug}`)!}
           className="text-blue-700 hover:underline"
         >
           Kursstatistikk for {year}

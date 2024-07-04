@@ -79,6 +79,16 @@ interface DocumentListItemPayload {
 
 export interface OrganizationListItemPayload extends DocumentListItemPayload {}
 
+export interface CalendarEntryPayload {
+  _id: string;
+  title: string;
+  description?: string;
+  duration: { start: string; end?: string };
+  location?: { name?: string; address?: string };
+  ownEvent?: boolean;
+  relatedPost?: DocumentLinkPayload;
+}
+
 export interface CountyListItemPayload extends DocumentListItemPayload {}
 
 export interface CountyPayload extends CountyListItemPayload {

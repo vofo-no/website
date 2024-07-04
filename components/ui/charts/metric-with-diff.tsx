@@ -1,5 +1,5 @@
 import { PropsWithChildren } from "react";
-import { BadgeDelta, Card } from "@tremor/react";
+import { BadgeDelta, Card, Metric } from "@tremor/react";
 
 import { formatNumber } from "@/lib/formatNumber";
 
@@ -48,9 +48,7 @@ export function MetricWithDiff({
           </BadgeDelta>
         </div>
       </div>
-      <p className="text-tremor-metric font-semibold text-tremor-content-strong dark:text-dark-tremor-content-strong">
-        {formatNumber(value, mergedOptions)}
-      </p>
+      <Metric>{formatNumber(value, mergedOptions)}</Metric>
       {children}
     </Card>
   );

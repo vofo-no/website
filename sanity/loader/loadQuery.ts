@@ -4,6 +4,7 @@ import {
   allActiveCoursesQuery,
   allActiveSfQuery,
   allActiveTopicsQuery,
+  calendarEntriesQuery,
   countyBySlugQuery,
   courseBySlugQuery,
   documentLinkByIdQuery,
@@ -18,6 +19,7 @@ import {
   topicBySlugQuery,
 } from "@/sanity/lib/queries";
 import {
+  CalendarEntryPayload,
   CountyListItemPayload,
   CountyPayload,
   CourseListItemPayload,
@@ -75,6 +77,14 @@ export function loadAllSfs() {
   return sanityFetch<OrganizationListItemPayload[]>({
     query: allActiveSfQuery,
     tags: [`organization`],
+  });
+}
+
+export function loadCalendarEntries(year: string | null = null) {
+  return sanityFetch<CalendarEntryPayload[]>({
+    query: calendarEntriesQuery,
+    params: { year },
+    tags: [`event`, `post`],
   });
 }
 

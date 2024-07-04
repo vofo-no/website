@@ -2,6 +2,7 @@ const dateFormatDefaults: Intl.DateTimeFormatOptions = {
   year: "numeric",
   month: "short",
   day: "numeric",
+  timeZone: "Europe/Oslo",
 };
 
 function getDateFormat(locale?: string, options?: Intl.DateTimeFormatOptions) {
@@ -21,10 +22,16 @@ export function formatDate({
   date,
   endDate,
   locale,
-}: { date?: string; endDate?: string; locale?: string } = {}) {
+  options,
+}: {
+  date?: string;
+  endDate?: string;
+  locale?: string;
+  options?: Intl.DateTimeFormatOptions;
+} = {}) {
   if (!date) return;
 
-  const intl = getDateFormat(locale);
+  const intl = getDateFormat(locale, options);
 
   if (!endDate) return intl.format(new Date(date));
 
@@ -68,5 +75,6 @@ export function formatShortDate(dateStr: string, locale?: string) {
     month: "short",
     day: "numeric",
     year: date.getFullYear() === currentYear ? undefined : "2-digit",
+    timeZone: "Europe/Oslo",
   }).format(date);
 }

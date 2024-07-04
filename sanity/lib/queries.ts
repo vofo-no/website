@@ -146,6 +146,27 @@ export const allActiveCoursesQuery = groq`
   } | order(sortOrder asc, title asc)
 `;
 
+export const calendarEntriesQuery = groq`
+  *[_type == "event" &&
+    (!defined($year) || string::split(duration.start, "-")[0] == $year) &&
+    (defined($year) || dateTime(now()) < dateTime(coalesce(duration.end, duration.start)))
+  ][]{
+    _id,
+    title,
+    description,
+    duration,
+    location,
+    ownEvent,
+    "relatedPost": *[_type=='post' && references(^._id)] | order(publishedAt desc) [0] {
+      _type,
+      title,
+      description,
+      "slug": slug.current,
+      image
+    } 
+  } | order(duration.start asc, duration.end asc)
+`;
+
 export const courseBySlugQuery = groq`
   *[_type == "course" && slug.current == $slug][0] {
     _id,
