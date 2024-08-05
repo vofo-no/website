@@ -24,8 +24,9 @@ export function FileDownload({ file }: { file: FileAsset }) {
             <FileDownIcon size={36} />
           </span>
           <span className="truncate">{file.originalFilename}</span>
-          <small className="font-normal">
-            {file.mimeType}, {byteValueNumberFormatter.format(file.size)}
+          <small className="truncate font-normal flex">
+            <span className="truncate">{file.mimeType}</span>
+            <span>, {byteValueNumberFormatter.format(file.size)}</span>
           </small>
         </div>
       </Link>
