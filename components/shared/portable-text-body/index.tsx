@@ -5,6 +5,7 @@ import {
   PortableTextTypeComponent,
 } from "next-sanity";
 
+import { InlineAudio } from "./body-audio-player";
 import { InlineImage } from "./body-image";
 import { BodyQuiz } from "./body-quiz";
 import { InlineVideo } from "./body-video";
@@ -25,6 +26,7 @@ interface Props {
 export function PortableTextBody({ value }: Props) {
   const portableTextComponents: PortableTextComponents = {
     types: {
+      audio: InlineAudio,
       image: InlineImage,
       youtube: InlineVideo,
       documentLink: DocumentLink,
