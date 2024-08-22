@@ -10,7 +10,7 @@ export function YouTubePreview(props: PreviewProps) {
       {typeof url === "string" ? (
         <ReactPlayer url={url} controls />
       ) : (
-        <Text>Legg inn en YouTube-URL</Text>
+        <Text>Legg inn en Video-URL</Text>
       )}
     </Flex>
   );
