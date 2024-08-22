@@ -10,6 +10,7 @@ import person from "./schemas/documents/person";
 import post from "./schemas/documents/post";
 import settings from "./schemas/documents/settings";
 import topic from "./schemas/documents/topic";
+import { audio } from "./schemas/objects/audio";
 import choice from "./schemas/objects/choice";
 import documentLink from "./schemas/objects/documentLink";
 import duration from "./schemas/objects/duration";
@@ -35,6 +36,7 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     person,
     organization,
     // Objects
+    audio,
     choice,
     documentLink,
     duration,

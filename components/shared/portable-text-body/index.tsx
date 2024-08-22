@@ -5,12 +5,14 @@ import {
   PortableTextTypeComponent,
 } from "next-sanity";
 
+import { InlineAudio } from "./body-audio-player";
 import { InlineImage } from "./body-image";
 import { BodyQuiz } from "./body-quiz";
 import { InlineVideo } from "./body-video";
 import { DocumentLink } from "./document-link";
 import { H2WithAnchor } from "./header";
 import { PeopleList } from "./people-list";
+import { refToFileUrl } from "./utils";
 
 export type PortableTextBodyTypeComponents = Record<
   string,
@@ -24,6 +26,7 @@ interface Props {
 export function PortableTextBody({ value }: Props) {
   const portableTextComponents: PortableTextComponents = {
     types: {
+      audio: InlineAudio,
       image: InlineImage,
       youtube: InlineVideo,
       documentLink: DocumentLink,
@@ -35,10 +38,8 @@ export function PortableTextBody({ value }: Props) {
     },
     marks: {
       assetLink: ({ children, value }) => {
-        // The file reference in the asset object has the form <_file>-<id>-<extension>
-        // We split the text string to get the individual pieces of information.
-        const [_file, id, extension] = value.file.asset._ref.split("-");
-        return <Link href={`/filer/${id}.${extension}`}>{children}</Link>;
+        const fileUrl = refToFileUrl(value.file.asset._ref);
+        return fileUrl ? <Link href={fileUrl}>{children}</Link> : children;
       },
     },
   };

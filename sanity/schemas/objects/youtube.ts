@@ -6,13 +6,13 @@ import { YouTubePreview } from "./youtube-preview";
 export const youtube = defineType({
   name: "youtube",
   type: "object",
-  title: "YouTube-video",
+  title: "Video",
   icon: PlayIcon,
   fields: [
     defineField({
       name: "url",
       type: "url",
-      title: "YouTube-video URL",
+      title: "Video-URL",
     }),
   ],
   preview: {

@@ -1,16 +1,17 @@
 import { Flex, Text } from "@sanity/ui";
-import ReactPlayer from "react-player/lazy";
 import type { PreviewProps } from "sanity";
 
-export function YouTubePreview(props: PreviewProps) {
+import { InlineAudio } from "@/components/shared/portable-text-body/body-audio-player";
+
+export function AudioPreview(props: PreviewProps) {
   const { title: url } = props;
 
   return (
     <Flex padding={3} align="center" justify="center">
       {typeof url === "string" ? (
-        <ReactPlayer url={url} controls />
+        <InlineAudio value={{ url }} />
       ) : (
-        <Text>Legg inn en Video-URL</Text>
+        <Text>Legg inn en fil eller URL</Text>
       )}
     </Flex>
   );
