@@ -11,6 +11,7 @@ import { InlineVideo } from "./body-video";
 import { DocumentLink } from "./document-link";
 import { H2WithAnchor } from "./header";
 import { PeopleList } from "./people-list";
+import { refToFileUrl } from "./utils";
 
 export type PortableTextBodyTypeComponents = Record<
   string,
@@ -35,10 +36,8 @@ export function PortableTextBody({ value }: Props) {
     },
     marks: {
       assetLink: ({ children, value }) => {
-        // The file reference in the asset object has the form <_file>-<id>-<extension>
-        // We split the text string to get the individual pieces of information.
-        const [_file, id, extension] = value.file.asset._ref.split("-");
-        return <Link href={`/filer/${id}.${extension}`}>{children}</Link>;
+        const fileUrl = refToFileUrl(value.file.asset._ref);
+        return fileUrl ? <Link href={fileUrl}>{children}</Link> : children;
       },
     },
   };
