@@ -28,7 +28,7 @@ function PageHeaderHeading({
     <Balance
       as="h1"
       className={cn(
-        "text-center text-4xl font-serif leading-tight md:text-6xl lg:leading-[1.1]",
+        "text-center text-4xl font-serif leading-tight tracking-tight md:text-6xl lg:leading-[1.1] break-words hyphens-auto max-w-full",
         className,
       )}
       {...props}
