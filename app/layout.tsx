@@ -1,21 +1,18 @@
 import "@/app/globals.css";
 
-import {
-  Inter as FontSans,
-  Libre_Baskerville as FontSerif,
-} from "next/font/google";
+import { Inter as FontSans, Gelasio as FontSerif } from "next/font/google";
 
 import { cn } from "@/lib/utils";
 
 const fontSans = FontSans({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  display: "swap",
   variable: "--font-sans",
 });
 
 const fontSerif = FontSerif({
   subsets: ["latin"],
-  weight: ["400"],
+  display: "swap",
   variable: "--font-serif",
 });
 
