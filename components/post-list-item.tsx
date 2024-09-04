@@ -35,8 +35,8 @@ export function PostListItem(props: {
           ))}
       </div>
       <Link href={`/aktuelt/${slug}`} className="group">
-        <h3 className="text-xl font-bold mb-2 group-hover:text-primary group-hover:underline">
-          <Balancer>{title}</Balancer>
+        <h3 className="text-xl font-bold mb-2 group-hover:text-primary group-hover:underline hyphens-auto">
+          {title}
         </h3>
         <p className="text-muted-foreground line-clamp-3">{description}</p>
       </Link>
