@@ -1,6 +1,7 @@
 import { draftMode } from "next/headers";
 import type { ClientPerspective, QueryParams } from "next-sanity";
 
+import { revalidateSecret } from "./api";
 import { client } from "./client";
 import { token } from "./token";
 
@@ -30,7 +31,7 @@ export async function sanityFetch<QueryResponse>({
   return client.fetch<QueryResponse>(query, params, {
     stega,
     perspective: "published",
-    useCdn: true,
-    next: { tags, revalidate: 120 },
+    useCdn: revalidateSecret ? false : true,
+    next: { revalidate: tags.length ? false : 120, tags },
   });
 }
