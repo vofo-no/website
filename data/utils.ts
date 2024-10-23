@@ -1,6 +1,7 @@
 import { Command } from "commander";
 
 import { makeUtil } from "./make-util";
+import { revalidateStatisticsCache } from "./revalidate-cache";
 import { SsbUtil } from "./ssb-util";
 
 const program = new Command();
@@ -24,5 +25,12 @@ program
   .description("Lager statistikk for årstallet")
   .argument("<year>", "årstall")
   .action(makeUtil);
+
+program
+  .command("revalidate")
+  .description("Markerer at mellomlagret data må hentes på nytt.")
+  .argument("<year>", "årstall")
+  .argument("[hostname]", "hostname", "www.vofo.no")
+  .action(revalidateStatisticsCache);
 
 program.parse();
