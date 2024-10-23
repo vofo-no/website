@@ -3,6 +3,7 @@
 import * as React from "react";
 import { useRouter } from "next/navigation";
 import { type DialogProps } from "@radix-ui/react-dialog";
+import { SearchIcon } from "lucide-react";
 import { InstantSearch } from "react-instantsearch";
 
 import { indexName } from "@/lib/algolia/api";
@@ -52,17 +53,22 @@ export function CommandMenu({ ...props }: DialogProps) {
       <Button
         variant="outline"
         className={cn(
-          "relative h-8 w-full justify-start rounded-[0.5rem] bg-background text-sm font-normal text-muted-foreground shadow-none sm:pr-12 md:w-40 lg:w-64",
+          "relative flex flex-1 gap-2 p-0 h-8 w-full ml-auto justify-start rounded-lg bg-background text-sm md:text-base font-normal text-muted-foreground max-w-60 md:max-w-80",
         )}
         onClick={() => setOpen(true)}
         {...props}
       >
-        <span className="inline-flex">Søk...</span>
-        <kbd className="pointer-events-none absolute right-[0.3rem] top-[0.3rem] hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex">
-          <span className="text-xs">⌘</span>K
-        </kbd>
+        <span className="ml-3 mr-auto truncate">Søk…</span>
+        <span className="bg-primary text-primary-foreground h-full w-10 flex items-center justify-center rounded-e-lg">
+          <SearchIcon className="h-5 w-5 shrink-0" />
+        </span>
       </Button>
-      <CommandDialog open={open} onOpenChange={setOpen} shouldFilter={false}>
+      <CommandDialog
+        open={open}
+        onOpenChange={setOpen}
+        shouldFilter={false}
+        description="Søk på vofo.no"
+      >
         <InstantSearch searchClient={client} indexName={indexName}>
           <CommandSearchInput />
           <CommandSearchList callback={runCommand} />

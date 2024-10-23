@@ -17,7 +17,7 @@ export function MainNav() {
   const pathname = usePathname();
 
   return (
-    <div className="mr-4 flex">
+    <div className="flex">
       <Link href="/" className="-ml-2 sm:ml-0 flex items-center">
         <Logo className="w-48 hidden md:block" />
         <MobileLogo className="md:hidden" />

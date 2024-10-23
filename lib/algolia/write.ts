@@ -1,12 +1,11 @@
 import { urlForImage } from "@/sanity/lib/image";
 import { Image } from "@/types";
-import algoliasearch from "algoliasearch";
+import { algoliasearch } from "algoliasearch";
 
 import { appId, indexName } from "./api";
 import { writeToken } from "./writeToken";
 
 const client = algoliasearch(appId, writeToken);
-const index = client.initIndex(indexName);
 
 export interface WebhookIndexableDocument {
   _id: string;
@@ -50,9 +49,9 @@ export function updateRecordFromWebhook(record: WebhookIndexableDocument) {
   const next = prepareWebhookForIndex(record);
 
   if (!next) {
-    index.deleteObject(record._id);
+    client.deleteObject({ indexName, objectID: record._id });
   } else {
-    index.saveObject(next);
+    client.saveObject({ indexName, body: next });
   }
 }
 
@@ -81,5 +80,8 @@ function prepareForIndex(record: IndexableDocument) {
 }
 
 export function replaceAllObjects(objects: IndexableDocument[]) {
-  return index.replaceAllObjects(objects.map(prepareForIndex), { safe: true });
+  return client.replaceAllObjects({
+    indexName,
+    objects: objects.map(prepareForIndex),
+  });
 }
