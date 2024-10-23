@@ -10,7 +10,7 @@ export function CommandSearchInput() {
       placeholder="Hva leter du etter?"
       value={query}
       onValueChange={refine}
-      className="focus:ring-0 border-0"
+      className="focus:ring-0 border-0 text-base"
     />
   );
 }
