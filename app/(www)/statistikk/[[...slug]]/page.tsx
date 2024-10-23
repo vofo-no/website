@@ -54,7 +54,10 @@ export default async function SlugStatisticsPage({
       (item) => item.slug === `${params.sf}/${params.fylke}/${params.aar}`,
     ) || notFound();
 
-  const data = await fetch(index.url).then((res) => res.json());
+  const data = await fetch(index.url, {
+    cache: "force-cache",
+    next: { revalidate: false, tags: [`statisticsDataFile:${params.aar}`] },
+  }).then((res) => res.json());
 
   return <StatisticsPageLayout data={data} />;
 }
