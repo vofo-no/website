@@ -31,6 +31,8 @@ export function generateMetadata({
   };
 }
 
+export const dynamicParams = true;
+
 export function generateStaticParams() {
   const currentYear = Number(defaultStatistikkParams.aar);
   const slugs = dataIndexV2

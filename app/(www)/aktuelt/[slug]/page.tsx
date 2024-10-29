@@ -45,6 +45,8 @@ export async function generateMetadata(
   };
 }
 
+export const dynamicParams = true;
+
 export async function generateStaticParams() {
   const data = await client.fetch<{ slug: string }[]>(
     groq`*[_type == "post"][] { "slug": slug.current }`,
