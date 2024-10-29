@@ -11,6 +11,7 @@ import { media } from "sanity-plugin-media";
 import { defineDocuments, presentationTool } from "sanity/presentation";
 import { structureTool } from "sanity/structure";
 
+import { createBetterPublishAction } from "./sanity/actions/better-publish";
 // Go to https://www.sanity.io/docs/api-versioning to learn how API versioning works
 import { apiVersion, dataset, projectId } from "./sanity/lib/api";
 import { locate } from "./sanity/plugins/locate";
@@ -64,6 +65,14 @@ export default defineConfig({
     nbNOLocale(),
     assist(),
   ],
+  document: {
+    actions: (prev) =>
+      prev.map((originalAction) =>
+        originalAction.action === "publish"
+          ? createBetterPublishAction(originalAction)
+          : originalAction,
+      ),
+  },
   auth: createAuthStore({
     projectId,
     dataset,

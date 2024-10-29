@@ -11,6 +11,7 @@ import {
 import { PortableTextBody } from "@/components/shared/portable-text-body";
 import { Toc } from "@/components/toc";
 
+import { ExpiredAlert } from "../expired-alert";
 import { FileDownload } from "../file-download";
 import { RelativeDate } from "../relative-date";
 
@@ -32,6 +33,7 @@ export function PostPageLayout(props: {
     publishedAt,
     _updatedAt,
     locale,
+    expiration,
   } = props.data ?? {};
   const meta = !!(publishedAt || _updatedAt);
   return (
@@ -54,6 +56,11 @@ export function PostPageLayout(props: {
               image ? "md:row-start-3" : "md:row-start-1 md:row-span-2",
             )}
           >
+            <ExpiredAlert
+              expiredAt={expiration?.expiredAt}
+              publishedAt={publishedAt}
+              explanation={expiration?.explanation}
+            />
             <Toc title="Innhold" headers={toc} mobile />
             <PortableTextBody value={body} />
             {attachments?.map((file) => (

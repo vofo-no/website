@@ -14,6 +14,7 @@ import { audio } from "./schemas/objects/audio";
 import choice from "./schemas/objects/choice";
 import documentLink from "./schemas/objects/documentLink";
 import duration from "./schemas/objects/duration";
+import expiration from "./schemas/objects/expiration";
 import lesson from "./schemas/objects/lesson";
 import link from "./schemas/objects/link";
 import people from "./schemas/objects/people";
@@ -40,6 +41,7 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     choice,
     documentLink,
     duration,
+    expiration,
     lesson,
     link,
     people,

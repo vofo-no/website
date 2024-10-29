@@ -4,7 +4,11 @@ export const postsByReferenceQuery = groq`
   *[
     (_type == "post") && 
     defined(image) &&
-    (!defined($ref) || references($ref))
+    (!defined($ref) || references($ref)) &&
+    (
+      (defined(expiration.expiredAt) && dateTime(now()) < dateTime(expiration.expiredAt)) || 
+      (!defined(expiration.expiredAt) && dateTime(now()) < dateTime(now()) + 31556926)
+    )
   ] | order(publishedAt desc) [0...6] {
     _id,
     _type,
@@ -63,6 +67,7 @@ export const postBySlugQuery = groq`
     body,
     "toc": body[style == "h2"],
     "attachments": attachments[].asset -> { _id, assetId, originalFilename, mimeType, size },
+    expiration,
     remoteUrl,
     locale,
     relevance,
