@@ -67,6 +67,10 @@ export interface PostPayload extends Omit<PostListItemPayload, "relevance"> {
   remoteUrl?: string;
   locale?: string;
   relevance?: Reference[];
+  expiration?: {
+    expiredAt?: string;
+    explanation?: string;
+  };
 }
 
 interface DocumentListItemPayload {

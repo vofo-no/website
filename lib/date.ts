@@ -38,6 +38,24 @@ export function formatDate({
   return intl.formatRange(new Date(date), new Date(endDate));
 }
 
+export function formatRelativeMonths(dateStr: string, locale?: string) {
+  const date = new Date(dateStr);
+
+  const deltaSeconds = Math.round((date.getTime() - Date.now()) / 1000);
+
+  const cutoffs = [86400 * 7, 86400 * 30, 86400 * 30 * 12, Infinity];
+  const units: Intl.RelativeTimeFormatUnit[] = ["day", "week", "month", "year"];
+  const unitIndex = cutoffs.findIndex(
+    (cutoff) => cutoff > Math.abs(deltaSeconds),
+  );
+  const divisor = unitIndex ? cutoffs[unitIndex - 1] : 1;
+
+  return getRelativeTimeFormat(locale).format(
+    Math.trunc(deltaSeconds / divisor),
+    units[unitIndex],
+  );
+}
+
 export function formatRelativeDate(dateStr: string, locale?: string) {
   const date = new Date(dateStr);
 

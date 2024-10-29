@@ -18,8 +18,9 @@ export default defineType({
   type: "document",
   title: "Innlegg",
   icon: DocumentTextIcon,
+  groups: [{ name: "innhold", title: "Innhold", default: true }],
   fields: [
-    titleField,
+    { ...titleField, group: "innhold" },
     defineField({
       name: "docType",
       type: "string",
@@ -27,6 +28,7 @@ export default defineType({
       options: {
         list: postTypes,
       },
+      group: "innhold",
       validation: (rule) => rule.required(),
     }),
     defineField({
@@ -36,12 +38,20 @@ export default defineType({
       options: {
         source: "title",
       },
-      validation: (rule) => rule.required(),
+      validation: (rule) =>
+        rule.custom((slug) => {
+          if (typeof slug?.current === "undefined") {
+            return true;
+          }
+
+          const regex = /^[a-z0-9\-]+$/;
+          return regex.test(slug.current) ? true : "Ikke en gyldig slug";
+        }),
     }),
-    descriptionField,
-    imageField,
+    { ...descriptionField, group: "innhold" },
+    { ...imageField, group: "innhold" },
     publishedAtField,
-    bodyField,
+    { ...bodyField, group: "innhold" },
     defineField({
       name: "attachments",
       type: "array",
@@ -55,9 +65,15 @@ export default defineType({
       title: "Ekstern lenke",
       description: "Ekstern lenke til dokumentet (valgfritt)",
     }),
-    eventReferenceField,
-    relevanceField,
-    localeField,
+    { ...eventReferenceField, group: "innhold" },
+    { ...relevanceField, group: "innhold" },
+    defineField({
+      name: "expiration",
+      title: "Utløp",
+      type: "expiration",
+      options: { collapsible: true, collapsed: true },
+    }),
+    { ...localeField, group: "innhold" },
   ],
   preview: {
     select: {
