@@ -53,13 +53,13 @@ export function CommandMenu({ ...props }: DialogProps) {
       <Button
         variant="outline"
         className={cn(
-          "relative flex flex-1 gap-2 p-0 h-8 w-full ml-auto justify-start rounded-lg bg-background text-sm md:text-base font-normal text-muted-foreground max-w-60 md:max-w-80",
+          "relative flex flex-1 p-0 h-8 gap-2 w-full ml-auto justify-start rounded-lg bg-background text-sm md:text-base font-normal text-muted-foreground max-w-60 md:max-w-80",
         )}
         onClick={() => setOpen(true)}
         {...props}
       >
-        <span className="ml-3 mr-auto truncate">Søk…</span>
-        <span className="bg-primary text-primary-foreground h-full w-10 flex items-center justify-center rounded-e-lg">
+        <span className="ml-3 mr-auto max-[380px]:hidden">Søk…</span>
+        <span className="bg-primary text-primary-foreground h-full w-10 px-2 flex items-center justify-center rounded-e-lg max-[380px]:w-full max-[380px]:rounded-lg">
           <SearchIcon className="h-5 w-5 shrink-0" />
         </span>
       </Button>

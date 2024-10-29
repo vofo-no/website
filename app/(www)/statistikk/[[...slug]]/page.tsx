@@ -31,6 +31,8 @@ export function generateMetadata({
   };
 }
 
+export const dynamicParams = true;
+
 export function generateStaticParams() {
   const currentYear = Number(defaultStatistikkParams.aar);
   const slugs = dataIndexV2
@@ -56,7 +58,7 @@ export default async function SlugStatisticsPage({
 
   const data = await fetch(index.url, {
     cache: "force-cache",
-    next: { revalidate: false, tags: [`statisticsDataFile:${params.aar}`] },
+    next: { tags: [`statisticsDataFile:${params.aar}`] },
   }).then((res) => res.json());
 
   return <StatisticsPageLayout data={data} />;

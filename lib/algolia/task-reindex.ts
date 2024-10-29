@@ -37,8 +37,12 @@ client
       });
 
     replaceAllObjects([...documents, ...statistics])
-      .then(({ objectIDs }) => {
-        console.log(`Oppdatert ${objectIDs.length} objekter.`);
+      .then(({ batchResponses }) => {
+        const count = batchResponses.reduce(
+          (prev, current) => prev + current.objectIDs.length,
+          0,
+        );
+        console.log(`Oppdatert ${count} objekter.`);
       })
       .catch((err) => console.error(err));
   });
