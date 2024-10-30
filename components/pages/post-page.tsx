@@ -1,5 +1,6 @@
 import { PostPayload } from "@/types";
 
+import { localeName, parseLocale } from "@/lib/locale";
 import { cn } from "@/lib/utils";
 import { BackToTopButton } from "@/components/back-to-top-button";
 import { SanityImage } from "@/components/image";
@@ -19,6 +20,17 @@ function isSameDate(datestr1: string = "", datestr2: string = "") {
   return datestr1.split("T")[0] === datestr2.split("T")[0];
 }
 
+function localizedContentLabel(locale: localeName) {
+  switch (locale) {
+    case "en-US":
+      return "Contents";
+    case "nn-NO":
+      return "Innhald";
+    default:
+      return "Innhold";
+  }
+}
+
 export function PostPageLayout(props: {
   data: PostPayload;
   relevance?: React.ReactNode;
@@ -32,9 +44,9 @@ export function PostPageLayout(props: {
     image,
     publishedAt,
     _updatedAt,
-    locale,
     expiration,
   } = props.data ?? {};
+  const locale = parseLocale(props.data?.locale);
   const meta = !!(publishedAt || _updatedAt);
   return (
     <article className="container">
@@ -59,9 +71,10 @@ export function PostPageLayout(props: {
             <ExpiredAlert
               expiredAt={expiration?.expiredAt}
               publishedAt={publishedAt}
+              locale={locale}
               explanation={expiration?.explanation}
             />
-            <Toc title="Innhold" headers={toc} mobile />
+            <Toc title={localizedContentLabel(locale)} headers={toc} mobile />
             <PortableTextBody value={body} />
             {attachments?.map((file) => (
               <FileDownload file={file} key={file._id} />
@@ -96,9 +109,9 @@ export function PostPageLayout(props: {
               </div>
             )}
             <div className="flex flex-col gap-4 md:sticky md:top-28">
-              <Toc headers={toc} title={"Innhold"} />
+              <Toc headers={toc} title={localizedContentLabel(locale)} />
               {props.relevance}
-              <BackToTopButton label={"Tilbake til toppen"} />
+              <BackToTopButton locale={locale} />
             </div>
           </aside>
         </div>

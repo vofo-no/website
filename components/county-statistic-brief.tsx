@@ -11,6 +11,21 @@ import { ProgressBarList } from "@/components/ui/charts/progress-bar-list";
 
 interface CountyStatisticBriefProps {
   slug: string;
+  locale?: string;
+}
+
+function localizedTerms(locale?: string): Record<string, string> {
+  if (locale === "nn-NO")
+    return {
+      Deltakere: "Deltakarar",
+      "Antall kurs": "Tal på kurs",
+      Statstilskudd: "Statstilskot",
+      Kurstilskudd: "Kurstilskot",
+      Tilrettelegging: "Tilrettelegging",
+      "Drift og administrasjon": "Drift og administrasjon",
+    };
+
+  return {};
 }
 
 export async function CountyStatisticBrief(props: CountyStatisticBriefProps) {
@@ -27,6 +42,9 @@ export async function CountyStatisticBrief(props: CountyStatisticBriefProps) {
   );
 
   if (!data) return null;
+
+  const lTerms = localizedTerms(props.locale);
+  const t = (term: string) => lTerms[term] || term;
 
   const totaltTilskudd =
     (data.summary.tilskudd.gt || 0) +
@@ -48,18 +66,18 @@ export async function CountyStatisticBrief(props: CountyStatisticBriefProps) {
         <MetricWithDiff
           value={data.history[0].kurs}
           old={data.history[1].kurs}
-          label="Antall kurs"
+          label={t("Antall kurs")}
         />
         <MetricWithDiff
           value={data.history[0].deltakere}
           old={data.history[1].deltakere}
-          label="Deltakere"
+          label={t("Deltakere")}
         />
         {totaltTilskudd > 0 && (
           <Card className="not-prose col-span-full">
             <div className="flex justify-between gap-2 relative">
               <h3 className="text-tremor-default text-tremor-content dark:text-dark-tremor-content">
-                Statstilskudd
+                {t("Statstilskudd")}
               </h3>
             </div>
             <p className="text-tremor-metric font-semibold text-tremor-content-strong dark:text-dark-tremor-content-strong">
@@ -73,15 +91,15 @@ export async function CountyStatisticBrief(props: CountyStatisticBriefProps) {
                 sum={totaltTilskudd}
                 bars={[
                   {
-                    name: "Kurstilskudd",
+                    name: t("Kurstilskudd"),
                     value: data.summary.tilskudd.ot,
                   },
                   {
-                    name: "Tilrettelegging",
+                    name: t("Tilrettelegging"),
                     value: data.summary.tilskudd.trt,
                   },
                   {
-                    name: "Drift og administrasjon",
+                    name: t("Drift og administrasjon"),
                     value: data.summary.tilskudd.gt,
                   },
                 ].filter((item) => item.value)}

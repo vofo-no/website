@@ -7,9 +7,10 @@ import useScrollPosition from "@/lib/useScrollPosition";
 
 interface Props {
   label?: string;
+  locale?: string;
 }
 
-export function BackToTopButton({ label }: Props) {
+export function BackToTopButton({ label, locale }: Props) {
   const scrollPosition = useScrollPosition();
 
   return (
@@ -28,7 +29,7 @@ export function BackToTopButton({ label }: Props) {
           className="inline-flex gap-1 items-center text-muted-foreground/80 hover:text-foreground hover:underline"
         >
           <ArrowUpCircleIcon className="h-6" />
-          {label || "Tilbake til toppen"}
+          {label || (locale === "en-US" ? "Back to top" : "Tilbake til toppen")}
         </button>
       </div>
     </Transition>
