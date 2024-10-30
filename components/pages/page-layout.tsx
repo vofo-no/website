@@ -69,11 +69,15 @@ export function PageLayout(
               <Toc headers={toc} title={"Innhold"} />
               {props.contacts && (
                 <section>
-                  <h2 className="font-serif text-2xl">Lurer du på noe?</h2>
+                  <h2 className="font-serif text-2xl">
+                    {locale === "nn-NO"
+                      ? "Lurer du på noko?"
+                      : "Lurer du på noe?"}
+                  </h2>
                   {props.contacts}
                 </section>
               )}
-              <BackToTopButton label={"Tilbake til toppen"} />
+              <BackToTopButton locale={locale} />
             </div>
           </aside>
         </div>

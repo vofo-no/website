@@ -75,7 +75,7 @@ export default async function CountyPage({
     <CountyPageLayout data={data} contacts={contacts}>
       <PostList
         referencesId={data._id}
-        title={`Aktuelt fra ${data.title}`}
+        title={`Aktuelt ${data.locale === "nn-NO" ? "frå" : "fra"} ${data.title}`}
         archiveParams={archiveParams}
       />
     </CountyPageLayout>

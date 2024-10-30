@@ -40,11 +40,15 @@ export function CountyPageLayout(
             <div className="flex flex-col gap-8 md:sticky md:top-28">
               {props.contacts && (
                 <section>
-                  <h2 className="font-serif text-2xl">Lurer du på noe?</h2>
+                  <h2 className="font-serif text-2xl">
+                    {locale === "nn-NO"
+                      ? "Lurer du på noko?"
+                      : "Lurer du på noe?"}
+                  </h2>
                   {props.contacts}
                 </section>
               )}
-              <CountyStatisticBrief slug={slug} />
+              <CountyStatisticBrief slug={slug} locale={locale} />
             </div>
           </aside>
         </div>
