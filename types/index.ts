@@ -44,7 +44,7 @@ export interface HomePayload {
 
 export interface PostListItemPayload {
   _id: string;
-  _docType: string;
+  docType: string;
   title: string;
   description: string;
   image?: Image;
@@ -62,7 +62,6 @@ export interface PostListItemPayload {
 export interface PostPayload extends Omit<PostListItemPayload, "relevance"> {
   body: PortableTextBlock[];
   toc: PortableTextBlock[];
-  docType: string;
   attachments?: FileAsset[];
   remoteUrl?: string;
   locale?: string;
