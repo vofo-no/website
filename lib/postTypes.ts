@@ -1,6 +1,17 @@
+export const postTypeValues = [
+  "nyhet",
+  "pm",
+  "historie",
+  "protokoll",
+  "rapport",
+  "høringssvar",
+  "veileder",
+] as const;
+export type postTypeValue = (typeof postTypeValues)[number];
+
 export const postTypes: {
   title: string;
-  value: string;
+  value: postTypeValue;
 }[] = [
   { title: "Nyhet", value: "nyhet" },
   { title: "Pressemelding", value: "pm" },

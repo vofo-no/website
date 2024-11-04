@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { SettingsPayload } from "@/types";
-import { vercelStegaClean, vercelStegaSplit } from "@vercel/stega";
+import { vercelStegaSplit } from "@vercel/stega";
 import { MailIcon, MapPinIcon } from "lucide-react";
 
 import { formatPhone } from "@/lib/formatPhone";
@@ -25,14 +25,14 @@ export function SiteFooterLayout(props: { data: SettingsPayload }) {
         <section className="flex items-center gap-2">
           <h2 className="font-bold">Følg oss:</h2>
           {some?.map(({ title, href }) => {
-            const { cleaned, encoded } = vercelStegaSplit(title);
+            const { cleaned } = vercelStegaSplit(title);
             const Icon = SomeIcons[cleaned];
             return (
               <Link
                 key={href}
                 href={href}
                 title={cleaned}
-                className="hover:text-foreground"
+                className="hover:text-foreground p-2"
               >
                 {Icon && <Icon />}
                 <span className={!!Icon && "sr-only"}>{title}</span>
