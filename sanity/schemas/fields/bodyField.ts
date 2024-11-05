@@ -78,5 +78,8 @@ export default defineField({
     defineArrayMember({
       type: "quiz",
     }),
+    defineArrayMember({
+      type: "cta",
+    }),
   ],
 });
