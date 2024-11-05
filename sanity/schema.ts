@@ -12,6 +12,7 @@ import settings from "./schemas/documents/settings";
 import topic from "./schemas/documents/topic";
 import { audio } from "./schemas/objects/audio";
 import choice from "./schemas/objects/choice";
+import { cta } from "./schemas/objects/cta";
 import documentLink from "./schemas/objects/documentLink";
 import duration from "./schemas/objects/duration";
 import expiration from "./schemas/objects/expiration";
@@ -39,6 +40,7 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     // Objects
     audio,
     choice,
+    cta,
     documentLink,
     duration,
     expiration,
