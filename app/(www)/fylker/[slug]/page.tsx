@@ -69,7 +69,7 @@ export default async function CountyPage({
     <Person key={`contactperson.${reference._ref}`} id={reference._ref} />
   ));
 
-  const archiveParams = new URLSearchParams({ fylke: slug });
+  const archiveParams = new URLSearchParams({ filter: slug });
 
   return (
     <CountyPageLayout data={data} contacts={contacts}>

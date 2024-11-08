@@ -1,8 +1,7 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { SelectSeparator } from "@radix-ui/react-select";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,6 +11,7 @@ import {
   SelectGroup,
   SelectItem,
   SelectLabel,
+  SelectSeparator,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -23,9 +23,11 @@ interface PostSearchProps {
   years: string[];
 }
 
+type SelectOption = { value: string; title: string } | string;
+
 interface SearchSelectProps {
   value: string | null;
-  options: Array<{ value: string; title: string } | string>;
+  options: SelectOption[] | Record<string, SelectOption[]>;
   label: string;
   callback: (value: string) => void;
 }
@@ -42,22 +44,46 @@ export function SearchSelect({
         <SelectValue placeholder={`Velg ${label.toLocaleLowerCase()}`} />
       </SelectTrigger>
       <SelectContent>
-        <SelectGroup>
-          <SelectLabel>{label}</SelectLabel>
-          <SelectItem value="-">(vis alle)</SelectItem>
-          <SelectSeparator />
-          {options.map((option) =>
-            typeof option === "string" ? (
-              <SelectItem key={option} value={option}>
-                {option}
-              </SelectItem>
-            ) : (
-              <SelectItem key={option.value} value={option.value}>
-                {option.title}
-              </SelectItem>
-            ),
-          )}
-        </SelectGroup>
+        <SelectItem value="-">(vis alle)</SelectItem>
+        <SelectSeparator />
+        {Array.isArray(options) ? (
+          <SelectGroup>
+            <SelectLabel>{label}</SelectLabel>
+            {options.map((option) =>
+              typeof option === "string" ? (
+                <SelectItem key={option} value={option}>
+                  {option}
+                </SelectItem>
+              ) : (
+                <SelectItem key={option.value} value={option.value}>
+                  {option.title}
+                </SelectItem>
+              ),
+            )}
+          </SelectGroup>
+        ) : (
+          Object.keys(options).map((groupName, index) => (
+            <React.Fragment
+              key={`post-search-${label}-select-group-${groupName}`}
+            >
+              {index > 0 && <SelectSeparator />}
+              <SelectGroup>
+                <SelectLabel>{groupName}</SelectLabel>
+                {options[groupName].map((option) =>
+                  typeof option === "string" ? (
+                    <SelectItem key={option} value={option}>
+                      {option}
+                    </SelectItem>
+                  ) : (
+                    <SelectItem key={option.value} value={option.value}>
+                      {option.title}
+                    </SelectItem>
+                  ),
+                )}
+              </SelectGroup>
+            </React.Fragment>
+          ))
+        )}
       </SelectContent>
     </Select>
   );
@@ -90,9 +116,9 @@ export function PostSearch(props: PostSearchProps) {
   );
 
   return (
-    <div className="grid grid-cols-2 md:grid-colds-4 gap-2">
+    <div className="flex flex-col gap-2">
       <form
-        className="flex w-full col-span-2 md:col-span-4 items-center gap-2"
+        className="flex w-full items-center gap-2"
         onSubmit={(e) => {
           e.preventDefault();
           updateSearch("q")(q);
@@ -107,30 +133,26 @@ export function PostSearch(props: PostSearchProps) {
         />
         <Button type="submit">Søk</Button>
       </form>
-      <SearchSelect
-        label="Innholdstype"
-        value={searchParams.get("type")}
-        callback={updateSearch("type")}
-        options={props.types}
-      />
-      <SearchSelect
-        label="Fylke"
-        value={searchParams.get("fylke")}
-        callback={updateSearch("fylke")}
-        options={props.counties}
-      />
-      <SearchSelect
-        label="Tema"
-        value={searchParams.get("tema")}
-        callback={updateSearch("tema")}
-        options={props.topics}
-      />
-      <SearchSelect
-        label="Tidsperiode"
-        value={searchParams.get("tid")}
-        callback={updateSearch("tid")}
-        options={props.years}
-      />
+      <div className="flex flex-wrap gap-2">
+        <SearchSelect
+          label="Innholdstype"
+          value={searchParams.get("type")}
+          callback={updateSearch("type")}
+          options={props.types}
+        />
+        <SearchSelect
+          label="Tema eller fylke"
+          value={searchParams.get("filter")}
+          callback={updateSearch("filter")}
+          options={{ Tema: props.topics, Fylke: props.counties }}
+        />
+        <SearchSelect
+          label="Tidsperiode"
+          value={searchParams.get("tid")}
+          callback={updateSearch("tid")}
+          options={props.years}
+        />
+      </div>
     </div>
   );
 }
