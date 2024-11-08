@@ -34,7 +34,8 @@ export const searchPostsQuery = groq`
     (!defined($docTypes) || docType in $docTypes) &&
     (!defined($years) || string::split(publishedAt, "-")[0] in $years) &&
     (!defined($refs) || references($refs)) &&
-    (!defined($q) || ([title, description, pt::text(body)] match $q))
+    (!defined($q) || ([title, description, pt::text(body)] match $q)) &&
+    (!defined($lastPublishedAt) || (publishedAt < $lastPublishedAt || (publishedAt == $lastPublishedAt && _id < $lastId)))
   ] | order(publishedAt desc) [0...30] {
     _id,
     _type,

@@ -65,10 +65,16 @@ export function loadPostList(
     refs: string[] | null;
     years: string[] | null;
   },
+  lastItem?: PostListItemPayload,
 ) {
+  const paginatedSearchParams = searchParams && {
+    lastPublishedAt: lastItem?.publishedAt || null,
+    lastId: lastItem?._id || null,
+    ...searchParams,
+  };
   return sanityFetch<PostListItemPayload[]>({
     query: searchParams ? searchPostsQuery : postsByReferenceQuery,
-    params: searchParams || { ref: referencesId ?? null },
+    params: paginatedSearchParams || { ref: referencesId ?? null },
     tags: ["post", "county", "topic"],
   });
 }
