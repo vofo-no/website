@@ -2,6 +2,7 @@ import Image from "next/image";
 import { urlForImage } from "@/sanity/lib/image";
 import { Image as ImagePayload } from "@/types";
 import { getImageDimensions } from "@sanity/asset-utils";
+import { vercelStegaClean } from "@vercel/stega";
 
 import { AspectRatio } from "./ui/aspect-ratio";
 
@@ -57,6 +58,33 @@ export function SanityImage({ image, mode = "block", priority }: Props) {
           priority={priority}
         />
       </AspectRatio>
+    );
+  }
+
+  if (vercelStegaClean(image.position) === "floatRight") {
+    const imageUrl = url.width(640).url();
+
+    return (
+      <figure className="-mx-4 md:w-[40%] md:ml-4 md:mr-0 md:float-right clear-right">
+        <Image
+          src={imageUrl}
+          alt={image.alt}
+          width={640}
+          height={getImageDimensions(imageUrl).height}
+          placeholder="blur"
+          blurDataURL={url.width(20).quality(20).url()}
+          priority={priority}
+          className="mx-auto w-auto portrait:max-h-[40vh] landscape:max-h-[75vh]"
+        />
+        {(image.credit || image.caption) && (
+          <figcaption className="my-2 px-4 md:px-0 grid gap-2">
+            {image.caption && <span>{image.caption}</span>}
+            {image.credit && (
+              <span className="text-xs uppercase">{image.credit}</span>
+            )}
+          </figcaption>
+        )}
+      </figure>
     );
   }
 

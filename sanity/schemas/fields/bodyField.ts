@@ -1,7 +1,7 @@
 import { DocumentIcon } from "@sanity/icons";
 import { defineArrayMember, defineField } from "sanity";
 
-import imageField from "./imageField";
+import inlineImageField from "./inlineImageField";
 
 export default defineField({
   type: "array",
@@ -60,7 +60,7 @@ export default defineField({
         { title: "Nummerert", value: "number" },
       ],
     }),
-    imageField,
+    inlineImageField,
     defineArrayMember({
       name: "documentLink",
       type: "documentLink",

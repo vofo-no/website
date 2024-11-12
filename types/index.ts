@@ -10,6 +10,7 @@ export interface Image extends SanityImage {
   alt: string;
   credit?: string;
   caption?: string;
+  position?: "" | "floatRight";
 }
 
 export interface SettingsPayload {
