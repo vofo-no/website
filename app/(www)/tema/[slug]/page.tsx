@@ -67,7 +67,7 @@ export default async function TopicPage({ params: { slug } }: TopicPageProps) {
     <Person key={`contactperson.${reference._ref}`} id={reference._ref} />
   ));
 
-  const archiveParams = new URLSearchParams({ tema: slug });
+  const archiveParams = new URLSearchParams({ filter: slug });
 
   return (
     <PageLayout data={data} contacts={contacts}>

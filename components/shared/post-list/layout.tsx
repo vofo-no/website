@@ -3,36 +3,29 @@ import { PostListItemPayload } from "@/types";
 import { ArrowRightIcon } from "lucide-react";
 
 import { buttonVariants } from "@/components/ui/button";
-import { PostListItem } from "@/components/post-list-item";
 
-import { PostListEmpty } from "./empty";
+import { PostListDynamic } from "./list-dynamic";
+import { PostListStatic } from "./list-static";
+import { PostListProps } from "./types";
 
-export function PostListLayout(props: {
-  title?: string;
+interface PostListLayoutProps extends PostListProps {
   data: PostListItemPayload[];
-  referencesId?: string;
-  archiveParams?: URLSearchParams;
-}) {
+}
+
+export function PostListLayout(props: PostListLayoutProps) {
   return (
     <section className="mb-4">
-      {props.title ? (
-        <h2 className="text-2xl font-serif mt-8 mb-4">{props.title}</h2>
+      <h2 className={props.title ? "text-2xl font-serif mt-8 mb-4" : "sr-only"}>
+        {props.title || "Aktuelt"}
+      </h2>
+      {props.dynamic ? (
+        <PostListDynamic
+          initialData={props.data}
+          searchParams={props.searchParams}
+          referencesId={props.referencesId}
+        />
       ) : (
-        <h2 className="sr-only">Aktuelt</h2>
-      )}
-      {props.data.length ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 gap-y-8">
-          {props.data.map((item, index) => (
-            <PostListItem
-              key={item._id}
-              item={item}
-              referencesId={props.referencesId}
-              priority={index < 3}
-            />
-          ))}
-        </div>
-      ) : (
-        <PostListEmpty />
+        <PostListStatic {...props} />
       )}
       {props.archiveParams && (
         <div className="mt-8 flex justify-center">

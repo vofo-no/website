@@ -30,8 +30,7 @@ export default async function PostsIndexPage(props: {
         })
         .filter(Boolean) as string[][],
     ),
-    counties,
-    topics,
+    [...counties, ...topics],
   );
 
   return (
@@ -42,7 +41,7 @@ export default async function PostsIndexPage(props: {
       }))}
       topics={topics.map(({ title, slug }) => ({ title, value: slug }))}
     >
-      <PostList searchParams={searchParams} />
+      <PostList searchParams={searchParams} dynamic />
     </PostsIndexPageLayout>
   );
 }

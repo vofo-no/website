@@ -1,21 +1,16 @@
 export function parseSearch(
   searchParams: URLSearchParams,
-  counties: { slug: string; _id: string }[],
-  topics: { slug: string; _id: string }[],
+  filters: { slug: string; _id: string }[],
 ): {
   docTypes: string[] | null;
   q: string | null;
   refs: string[] | null;
   years: string[] | null;
 } {
-  const refs = [
-    ...searchParams
-      .getAll("tema")
-      .map((slug) => topics.find((item) => item.slug === slug)?._id),
-    ...searchParams
-      .getAll("fylke")
-      .map((slug) => counties.find((item) => item.slug === slug)?._id),
-  ].filter(Boolean) as string[];
+  const refs = searchParams
+    .getAll("filter")
+    .map((slug) => filters.find((item) => item.slug === slug)?._id)
+    .filter(Boolean) as string[];
 
   return {
     docTypes: searchParams.has("type") ? searchParams.getAll("type") : null,
