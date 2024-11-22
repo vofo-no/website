@@ -81,5 +81,8 @@ export default defineField({
     defineArrayMember({
       type: "cta",
     }),
+    defineArrayMember({
+      type: "sdg-ref",
+    }),
   ],
 });

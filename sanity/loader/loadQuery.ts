@@ -13,6 +13,7 @@ import {
   personByIdQuery,
   postBySlugQuery,
   postsByReferenceQuery,
+  sdgByIdQuery,
   searchPostsQuery,
   settingsQuery,
   tagByIdQuery,
@@ -31,6 +32,7 @@ import {
   PersonPayload,
   PostListItemPayload,
   PostPayload,
+  SdgPayload,
   SettingsPayload,
   TopicListItemPayload,
   TopicPayload,
@@ -168,6 +170,14 @@ export function loadPerson(id: string) {
     query: personByIdQuery,
     params: { id },
     tags: [`person:${id}`],
+  });
+}
+
+export function loadSdg(id: string) {
+  return sanityFetch<SdgPayload | null>({
+    query: sdgByIdQuery,
+    params: { id },
+    tags: [`sdg:${id}`],
   });
 }
 
