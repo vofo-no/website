@@ -9,6 +9,7 @@ import { InlineAudio } from "./body-audio-player";
 import { InlineCta } from "./body-cta";
 import { InlineImage } from "./body-image";
 import { BodyQuiz } from "./body-quiz";
+import { BodySdgRef } from "./body-sdg-ref";
 import { InlineVideo } from "./body-video";
 import { DocumentLink } from "./document-link";
 import { H2WithAnchor } from "./header";
@@ -33,6 +34,7 @@ export function PortableTextBody({ value }: Props) {
       youtube: InlineVideo,
       documentLink: DocumentLink,
       people: PeopleList,
+      "sdg-ref": BodySdgRef,
       quiz: BodyQuiz,
     },
     block: {

@@ -147,6 +147,15 @@ export interface PersonPayload {
   phone?: string;
 }
 
+export interface SdgPayload {
+  _id: string;
+  name: string;
+  number: number;
+  symbol: Image;
+  description?: string;
+  url?: string;
+}
+
 export interface DocumentLinkPayload {
   _type: string;
   slug: string;

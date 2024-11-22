@@ -226,6 +226,17 @@ export const personByIdQuery = groq`
   }
 `;
 
+export const sdgByIdQuery = groq`
+  *[_type == "sdg" && _id == $id][0] {
+    _id,
+    number,
+    name,
+    symbol,
+    description,
+    url,
+  }
+`;
+
 export const homeQuery = groq`*[_type == "home"][0]{
   title,
   description,

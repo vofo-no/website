@@ -8,6 +8,7 @@ import organization from "./schemas/documents/organization";
 import page from "./schemas/documents/page";
 import person from "./schemas/documents/person";
 import post from "./schemas/documents/post";
+import sdg from "./schemas/documents/sdg";
 import settings from "./schemas/documents/settings";
 import topic from "./schemas/documents/topic";
 import { audio } from "./schemas/objects/audio";
@@ -20,6 +21,7 @@ import lesson from "./schemas/objects/lesson";
 import link from "./schemas/objects/link";
 import people from "./schemas/objects/people";
 import quiz from "./schemas/objects/quiz";
+import sdgRef from "./schemas/objects/sdg-ref";
 import someLink from "./schemas/objects/someLink";
 import { youtube } from "./schemas/objects/youtube";
 
@@ -37,6 +39,7 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     course,
     person,
     organization,
+    sdg,
     // Objects
     audio,
     choice,
@@ -48,6 +51,7 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     link,
     people,
     quiz,
+    sdgRef,
     someLink,
     youtube,
   ],
