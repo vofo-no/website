@@ -1,3 +1,12 @@
+import {
+  SiBlueskyHex,
+  SiFacebookHex,
+  SiInstagramHex,
+  SiLinkedinHex,
+  SiTiktokHex,
+  SiTwitchHex,
+  SiYoutubeHex,
+} from "@icons-pack/react-simple-icons";
 import type { Config } from "tailwindcss";
 import colors from "tailwindcss/colors";
 
@@ -55,6 +64,15 @@ const config: Config = {
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
+        },
+        si: {
+          bluesky: SiBlueskyHex,
+          facebook: SiFacebookHex,
+          instagram: SiInstagramHex,
+          linkedin: SiLinkedinHex,
+          tiktok: SiTiktokHex,
+          twitch: SiTwitchHex,
+          youtube: SiYoutubeHex,
         },
         tremor: {
           brand: {

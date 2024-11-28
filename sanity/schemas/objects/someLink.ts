@@ -14,12 +14,12 @@ export default defineType({
       title: "Tjeneste",
       options: {
         list: [
+          "Bluesky",
           "Facebook",
           "Instagram",
           "LinkedIn",
-          "Slack",
+          "Tiktok",
           "Twitch",
-          "Twitter",
           "YouTube",
         ],
       },
