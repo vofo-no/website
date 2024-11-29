@@ -1,5 +1,5 @@
 import { ColorWheelIcon } from "@sanity/icons";
-import { defineField, defineType, PreviewProps } from "sanity";
+import { defineField, defineType } from "sanity";
 
 export default defineType({
   name: "sdg-ref",

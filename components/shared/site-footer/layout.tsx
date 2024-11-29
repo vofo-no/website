@@ -4,9 +4,10 @@ import { vercelStegaSplit } from "@vercel/stega";
 import { MailIcon, MapPinIcon } from "lucide-react";
 
 import { formatPhone } from "@/lib/formatPhone";
+import { cn } from "@/lib/utils";
 import { FooterSponsor } from "@/components/footer-sponsor";
 import { FormatLink } from "@/components/FormatLink";
-import { SomeIcons } from "@/components/some-icons";
+import { SomeIcons, someIconsHoverClassName } from "@/components/some-icons";
 
 export function SiteFooterLayout(props: { data: SettingsPayload }) {
   const { email, phone, postalAddress, officeAddress, some, about, shortcuts } =
@@ -27,12 +28,16 @@ export function SiteFooterLayout(props: { data: SettingsPayload }) {
           {some?.map(({ title, href }) => {
             const { cleaned } = vercelStegaSplit(title);
             const Icon = SomeIcons[cleaned];
+            const someHoverClassName = someIconsHoverClassName[cleaned];
             return (
               <Link
                 key={href}
                 href={href}
                 title={cleaned}
-                className="hover:text-foreground p-2"
+                className={cn(
+                  "p-2",
+                  someHoverClassName || "hover:text-foreground",
+                )}
               >
                 {Icon && <Icon />}
                 <span className={!!Icon && "sr-only"}>{title}</span>
