@@ -13,7 +13,7 @@ export function Announcement(props: AnnouncementProps) {
   return (
     <Link
       href={props.href}
-      className="inline-flex items-center rounded-lg bg-muted px-3 py-1 text-sm font-medium"
+      className="inline-flex items-center rounded-lg bg-muted px-3 py-2 text-sm font-medium transition-all hover:bg-primary-foreground group"
     >
       {props.emoji && (
         <>
@@ -21,8 +21,10 @@ export function Announcement(props: AnnouncementProps) {
           <Separator className="mx-2 h-4" orientation="vertical" />
         </>
       )}
-      {props.title}
-      <ArrowRightIcon className="ml-1 h-4 w-4" />
+      <span className="group-hover:text-primary group-hover:underline text-balance">
+        {props.title}
+      </span>
+      <ArrowRightIcon className="ml-1 h-4 w-4 group-hover:text-primary" />
     </Link>
   );
 }
