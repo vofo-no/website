@@ -74,7 +74,7 @@ export function SanityImage({ image, mode = "block", priority }: Props) {
           placeholder="blur"
           blurDataURL={url.width(20).quality(20).url()}
           priority={priority}
-          className="mx-auto w-auto portrait:max-h-[40vh] landscape:max-h-[75vh]"
+          className="mx-auto w-auto portrait:max-h-[50vh] landscape:max-h-[75vh]"
         />
         {(image.credit || image.caption) && (
           <figcaption className="my-2 px-4 md:px-0 grid gap-2">
@@ -100,6 +100,7 @@ export function SanityImage({ image, mode = "block", priority }: Props) {
         placeholder="blur"
         blurDataURL={url.width(20).quality(20).url()}
         priority={priority}
+        className="mx-auto w-auto portrait:max-h-[50vh] landscape:max-h-[75vh] md:landscape:max-h-[60vh]"
       />
       {(image.credit || image.caption) && (
         <figcaption className="my-2 px-4 md:px-0 grid gap-2">
