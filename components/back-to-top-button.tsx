@@ -1,9 +1,9 @@
 "use client";
 
-import { Transition } from "@headlessui/react";
 import { ArrowUpCircleIcon } from "lucide-react";
 
 import useScrollPosition from "@/lib/useScrollPosition";
+import { cn } from "@/lib/utils";
 
 interface Props {
   label?: string;
@@ -14,24 +14,18 @@ export function BackToTopButton({ label, locale }: Props) {
   const scrollPosition = useScrollPosition();
 
   return (
-    <Transition
-      show={scrollPosition > 300}
-      enter="transition-opacity duration-75"
-      enterFrom="opacity-0"
-      enterTo="opacity-100"
-      leave="transition-opacity duration-150"
-      leaveFrom="opacity-100"
-      leaveTo="opacity-0"
-    >
-      <div>
-        <button
-          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          className="inline-flex gap-1 items-center text-muted-foreground/80 hover:text-foreground hover:underline"
-        >
-          <ArrowUpCircleIcon className="h-6" />
-          {label || (locale === "en-US" ? "Back to top" : "Tilbake til toppen")}
-        </button>
-      </div>
-    </Transition>
+    <div>
+      <a
+        href="#topp"
+        className={cn(
+          "motion-safe:transition-opacity motion-safe:duration-700 focus-visible:not-sr-only focus-visible:opacity-100",
+          "inline-flex gap-1 items-center text-muted-foreground/80 hover:text-foreground hover:underline",
+          scrollPosition > 300 ? "opacity-100" : "opacity-0 sr-only",
+        )}
+      >
+        <ArrowUpCircleIcon className="h-6" />
+        {label || (locale === "en-US" ? "Back to top" : "Tilbake til toppen")}
+      </a>
+    </div>
   );
 }

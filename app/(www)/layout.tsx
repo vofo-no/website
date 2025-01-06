@@ -20,9 +20,20 @@ export default function WwwLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <div className="relative flex min-h-screen flex-col bg-background">
+        <div role="navigation" aria-labelledby="topp">
+          <a
+            className="sr-only focus-visible:not-sr-only focus:!absolute z-[99] focus:!w-full focus:p-2 bg-primary text-primary-foreground text-center"
+            href="#hovedinnhold"
+            id="topp"
+          >
+            Hopp til hovedinnholdet
+          </a>
+        </div>
         <SiteHeader />
         <Breadcrumbs />
-        <main className="flex-1">{children}</main>
+        <main className="flex-1" id="hovedinnhold" tabIndex={-1}>
+          {children}
+        </main>
         <UserFeedback />
         <SiteFooter />
       </div>
