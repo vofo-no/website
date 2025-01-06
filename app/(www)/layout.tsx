@@ -31,7 +31,11 @@ export default function WwwLayout({ children }: { children: React.ReactNode }) {
         </div>
         <SiteHeader />
         <Breadcrumbs />
-        <main className="flex-1" id="hovedinnhold" tabIndex={-1}>
+        <main
+          className="flex-1 scroll-mt-32 md:scroll-mt-28"
+          id="hovedinnhold"
+          tabIndex={-1}
+        >
           {children}
         </main>
         <UserFeedback />
