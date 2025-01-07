@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { ArrowUpCircleIcon } from "lucide-react";
 
 import useScrollPosition from "@/lib/useScrollPosition";
@@ -15,7 +16,7 @@ export function BackToTopButton({ label, locale }: Props) {
 
   return (
     <div>
-      <a
+      <Link
         href="#topp"
         className={cn(
           "motion-safe:transition-opacity motion-safe:duration-700 focus-visible:not-sr-only focus-visible:opacity-100",
@@ -25,7 +26,7 @@ export function BackToTopButton({ label, locale }: Props) {
       >
         <ArrowUpCircleIcon className="h-6" />
         {label || (locale === "en-US" ? "Back to top" : "Tilbake til toppen")}
-      </a>
+      </Link>
     </div>
   );
 }
