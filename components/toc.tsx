@@ -2,7 +2,11 @@
 
 import { useMemo } from "react";
 import Link from "next/link";
-import { Disclosure } from "@headlessui/react";
+import {
+  Disclosure,
+  DisclosureButton,
+  DisclosurePanel,
+} from "@headlessui/react";
 import { ChevronRightIcon } from "lucide-react";
 import { toPlainText } from "next-sanity";
 
@@ -31,7 +35,7 @@ export function Toc({ title, headers = [], mobile = false }: TocProps) {
         <Disclosure>
           {({ open }) => (
             <>
-              <Disclosure.Button
+              <DisclosureButton
                 as="h2"
                 className="px-4 py-3 text-lg font-semibold flex justify-between cursor-pointer"
               >
@@ -42,8 +46,8 @@ export function Toc({ title, headers = [], mobile = false }: TocProps) {
                     open && "rotate-90 transform",
                   )}
                 />
-              </Disclosure.Button>
-              <Disclosure.Panel
+              </DisclosureButton>
+              <DisclosurePanel
                 as="ul"
                 className="px-4 pb-4 flex flex-col gap-2"
               >
@@ -52,7 +56,7 @@ export function Toc({ title, headers = [], mobile = false }: TocProps) {
                   const anchor = slugify(plain);
                   return (
                     <li key={item._key} className="flex justify-start">
-                      <Disclosure.Button
+                      <DisclosureButton
                         as={Link}
                         href={`#${anchor}`}
                         className={cn(
@@ -62,11 +66,11 @@ export function Toc({ title, headers = [], mobile = false }: TocProps) {
                       >
                         <ChevronRightIcon className="w-5 top-0.5 -left-1 absolute" />
                         <span>{plain}</span>
-                      </Disclosure.Button>
+                      </DisclosureButton>
                     </li>
                   );
                 })}
-              </Disclosure.Panel>
+              </DisclosurePanel>
             </>
           )}
         </Disclosure>
