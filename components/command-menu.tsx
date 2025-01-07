@@ -10,8 +10,8 @@ import { indexName } from "@/lib/algolia/api";
 import { client } from "@/lib/algolia/search";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { CommandDialog } from "@/components/ui/command";
 
+import { CommandSearchDialog } from "./command-search-dialog";
 import { CommandSearchInput } from "./command-search-input";
 import { CommandSearchList } from "./command-search-list";
 
@@ -63,17 +63,12 @@ export function CommandMenu({ ...props }: DialogProps) {
           <SearchIcon className="h-5 w-5 shrink-0" />
         </span>
       </Button>
-      <CommandDialog
-        open={open}
-        onOpenChange={setOpen}
-        shouldFilter={false}
-        description="Søk på vofo.no"
-      >
+      <CommandSearchDialog open={open} onOpenChange={setOpen}>
         <InstantSearch searchClient={client} indexName={indexName}>
           <CommandSearchInput />
           <CommandSearchList callback={runCommand} />
         </InstantSearch>
-      </CommandDialog>
+      </CommandSearchDialog>
     </>
   );
 }
