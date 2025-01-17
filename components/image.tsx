@@ -8,7 +8,7 @@ import { AspectRatio } from "./ui/aspect-ratio";
 
 interface Props {
   image: ImagePayload;
-  mode?: "header" | "block" | "listItem";
+  mode?: "header" | "block" | "listItem" | "docLink";
   priority?: boolean;
 }
 
@@ -58,6 +58,23 @@ export function SanityImage({ image, mode = "block", priority }: Props) {
           priority={priority}
         />
       </AspectRatio>
+    );
+  }
+
+  if (mode === "docLink") {
+    return (
+      <Image
+        className="w-full h-full object-cover bg-secondary"
+        src={url.size(400, 300).dpr(2).url()}
+        alt={image.alt}
+        title={image.credit}
+        width={400}
+        height={300}
+        sizes="(max-width: 768px) 128px, 150px"
+        placeholder="blur"
+        blurDataURL={url.size(20, 15).quality(20).url()}
+        priority={priority}
+      />
     );
   }
 
