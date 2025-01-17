@@ -1,9 +1,9 @@
-import Image from "next/image";
 import Link from "next/link";
-import { urlForImage } from "@/sanity/lib/image";
 import { DocumentLinkPayload } from "@/types";
 
 import { resolveHref } from "@/lib/resolveHref";
+import { cn } from "@/lib/utils";
+import { SanityImage } from "@/components/image";
 
 interface Props {
   data?: DocumentLinkPayload | null;
@@ -13,36 +13,30 @@ export function DocumentLinkLayout({ data }: Props) {
   if (!data) return null;
 
   const { _type, title, slug, description, image } = data;
-  const imageUrl = image && urlForImage(image)?.size(320, 240).url();
-  const imageBlurUrl =
-    image && urlForImage(image)?.size(32, 24).quality(30).blur(50).url();
 
   return (
-    <Link
-      href={resolveHref(_type, slug)!}
-      className="flex gap-4 -mx-4 bg-muted border-l-4 border-l-blue-700 my-6 no-underline group items-center justify-between rounded-xl overflow-hidden hover:shadow duration-150 ease-in-out"
-    >
-      <div className="flex flex-col gap-1 shrink overflow-hidden px-4 py-4">
-        <div className="leading-snug text-lg text-blue-700 flex gap-1 items-center">
-          <strong className="group-hover:underline">{title}</strong>
+    <article className="-mx-4 my-6 not-prose">
+      <Link
+        href={resolveHref(_type, slug)!}
+        className={cn(
+          "grid bg-secondary border-l-4 -ml-1 group overflow-hidden hover:shadow-lg duration-150 ease-in-out sm:[clip-path:polygon(calc(100%_-_2rem)_0%,100%_50%,calc(100%_-_2rem)_100%,0%_100%,0%_0%)]",
+          image && "grid-cols-[auto_128px] sm:grid-cols-[auto_150px] gap-4",
+        )}
+      >
+        <div className="overflow-hidden p-4 self-center space-y-1">
+          <h3 className="text-xl font-semibold text-blue-700 group-hover:text-primary group-hover:underline text-balance hyphens-auto">
+            {title}
+          </h3>
+          <div className="text-sm text-muted-foreground line-clamp-2">
+            {description}
+          </div>
         </div>
-        <div className="text-sm font-normal text-muted-foreground leading-normal">
-          {description}
-        </div>
-      </div>
-      {imageUrl && (
-        <figure className="not-prose shrink-0 w-32 sm:w-40">
-          <Image
-            src={imageUrl}
-            alt={image.alt}
-            width={160}
-            height={120}
-            title={image.credit}
-            placeholder="blur"
-            blurDataURL={imageBlurUrl}
-          />
-        </figure>
-      )}
-    </Link>
+        {image && (
+          <figure className="[clip-path:polygon(100%_0%,100%_100%,0%_100%,2rem_50%,0%_0%)]">
+            <SanityImage mode="docLink" image={image} />
+          </figure>
+        )}
+      </Link>
+    </article>
   );
 }
