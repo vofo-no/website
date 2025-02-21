@@ -16,6 +16,7 @@ import choice from "./schemas/objects/choice";
 import { cta } from "./schemas/objects/cta";
 import documentLink from "./schemas/objects/documentLink";
 import duration from "./schemas/objects/duration";
+import eventReference from "./schemas/objects/event-reference";
 import expiration from "./schemas/objects/expiration";
 import lesson from "./schemas/objects/lesson";
 import link from "./schemas/objects/link";
@@ -46,6 +47,7 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     cta,
     documentLink,
     duration,
+    eventReference,
     expiration,
     lesson,
     link,

@@ -2,10 +2,9 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { loadCalendarEntries, loadHome } from "@/sanity/loader/loadQuery";
 
-import { CalendarEntry } from "@/components/calendar-entry";
+import { HomePageLayout } from "@/components/pages/home-page";
+import { CalendarEventLayout } from "@/components/shared/calendar-event/layout";
 import { PostList } from "@/components/shared/post-list";
-
-import { HomePageLayout } from "../../components/pages/home-page";
 
 export async function generateMetadata(): Promise<Metadata> {
   const data = await loadHome();
@@ -36,9 +35,9 @@ export default async function HomePage() {
               Kalender
             </Link>
           </h1>
-          <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8 gap-y-12">
+          <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-x-8 gap-y-12">
             {calendarEntries.map((item) => (
-              <CalendarEntry key={item._id} data={item} />
+              <CalendarEventLayout key={item._id} data={item} />
             ))}
           </div>
         </section>

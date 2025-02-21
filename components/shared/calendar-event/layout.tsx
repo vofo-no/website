@@ -1,15 +1,21 @@
 import Link from "next/link";
 import { CalendarEntryPayload } from "@/types";
+import { ArrowRightIcon } from "lucide-react";
 
 import { formatDate } from "@/lib/date";
 import { resolveHref } from "@/lib/resolveHref";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
-interface CalendarEntryProps {
+interface CalendarEventLayoutProps {
   data: CalendarEntryPayload;
 }
 
-export function CalendarEntry({ data }: CalendarEntryProps) {
+function isFutureDate(date: Date) {
+  return new Date(date.toDateString()) > new Date(new Date().toDateString());
+}
+
+export function CalendarEventLayout({ data }: CalendarEventLayoutProps) {
   const start = new Date(data.duration.start);
   const hideTime =
     (data.duration.end &&
@@ -19,8 +25,14 @@ export function CalendarEntry({ data }: CalendarEntryProps) {
       minute: "2-digit",
       timeZone: "Europe/Oslo",
     }) === "00:00";
+
+  const registrationDueDate = data.registrationDueDate
+    ? new Date(data.registrationDueDate)
+    : null;
+  const isPastRegistrationDate = !isFutureDate(registrationDueDate || start);
+
   return (
-    <div className="flex gap-3 justify-start">
+    <div className="flex gap-3 justify-start not-prose">
       <div
         className={cn(
           "w-12 h-14 shrink-0 text-white flex flex-col items-center justify-center",
@@ -72,6 +84,19 @@ export function CalendarEntry({ data }: CalendarEntryProps) {
           )}
         </div>
         <p className="text-muted-foreground">{data.description}</p>
+        {(registrationDueDate || data.registrationUrl) && (
+          <p className="text-muted-foreground text-sm mt-3 flex flex-wrap gap-x-4 gap-y-2 items-center">
+            {!isPastRegistrationDate && data.registrationUrl && (
+              <Button size="sm" asChild>
+                <a href={data.registrationUrl}>
+                  <ArrowRightIcon className="-ml-1 mr-1" /> Meld deg på
+                </a>
+              </Button>
+            )}
+            {registrationDueDate &&
+              `Påmeldingsfrist: ${formatDate({ date: data.registrationDueDate })}`}
+          </p>
+        )}
       </div>
     </div>
   );

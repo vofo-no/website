@@ -7,6 +7,7 @@ import {
 
 import { InlineAudio } from "./body-audio-player";
 import { InlineCta } from "./body-cta";
+import { BodyEventReference } from "./body-event-reference";
 import { InlineImage } from "./body-image";
 import { BodyQuiz } from "./body-quiz";
 import { BodySdgRef } from "./body-sdg-ref";
@@ -33,6 +34,7 @@ export function PortableTextBody({ value }: Props) {
       image: InlineImage,
       youtube: InlineVideo,
       documentLink: DocumentLink,
+      eventReference: BodyEventReference,
       people: PeopleList,
       "sdg-ref": BodySdgRef,
       quiz: BodyQuiz,

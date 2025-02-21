@@ -90,6 +90,8 @@ export interface CalendarEntryPayload {
   duration: { start: string; end?: string };
   location?: { name?: string; address?: string };
   ownEvent?: boolean;
+  registrationUrl?: string;
+  registrationDueDate?: string;
   relatedPost?: DocumentLinkPayload;
 }
 
