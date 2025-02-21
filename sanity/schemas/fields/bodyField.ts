@@ -66,6 +66,10 @@ export default defineField({
       type: "documentLink",
     }),
     defineArrayMember({
+      name: "eventReference",
+      type: "eventReference",
+    }),
+    defineArrayMember({
       name: "people",
       type: "people",
     }),

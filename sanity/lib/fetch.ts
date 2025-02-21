@@ -8,9 +8,8 @@ import { token } from "./token";
 export async function sanityFetch<QueryResponse>({
   query,
   params = {},
-  perspective = draftMode().isEnabled ? "previewDrafts" : "published",
-  stega = perspective === "previewDrafts" ||
-    process.env.VERCEL_ENV === "preview",
+  perspective = draftMode().isEnabled ? "drafts" : "published",
+  stega = perspective === "drafts" || process.env.VERCEL_ENV === "preview",
   tags = [],
 }: {
   query: string;
@@ -19,10 +18,10 @@ export async function sanityFetch<QueryResponse>({
   stega?: boolean;
   tags?: string[];
 }) {
-  if (perspective === "previewDrafts") {
+  if (perspective === "drafts") {
     return client.fetch<QueryResponse>(query, params, {
       stega,
-      perspective: "previewDrafts",
+      perspective: "drafts",
       token,
       useCdn: false,
       next: { revalidate: 0 },

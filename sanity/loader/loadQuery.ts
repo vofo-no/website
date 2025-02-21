@@ -37,6 +37,7 @@ import {
   TopicListItemPayload,
   TopicPayload,
 } from "@/types";
+import { calendarEntryByIdQuery } from "../lib/queries";
 
 export function loadHome() {
   return sanityFetch<HomePayload>({ query: homeQuery, tags: ["home"] });
@@ -85,6 +86,14 @@ export function loadAllSfs() {
   return sanityFetch<OrganizationListItemPayload[]>({
     query: allActiveSfQuery,
     tags: [`organization`],
+  });
+}
+
+export function loadCalendarEntryById(id: string) {
+  return sanityFetch<CalendarEntryPayload | null>({
+    query: calendarEntryByIdQuery,
+    params: { id },
+    tags: [`event:${id}`],
   });
 }
 

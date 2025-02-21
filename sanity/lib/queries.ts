@@ -152,6 +152,19 @@ export const allActiveCoursesQuery = groq`
   } | order(sortOrder asc, title asc)
 `;
 
+export const calendarEntryByIdQuery = groq`
+  *[_type == "event" && _id == $id][0] {
+    _id,
+    title,
+    description,
+    duration,
+    location,
+    ownEvent,
+    registrationUrl,
+    registrationDueDate,
+  }
+`;
+
 export const calendarEntriesQuery = groq`
   *[_type == "event" &&
     (!defined($year) || string::split(duration.start, "-")[0] == $year) &&
@@ -163,6 +176,8 @@ export const calendarEntriesQuery = groq`
     duration,
     location,
     ownEvent,
+    registrationUrl,
+    registrationDueDate,
     "relatedPost": *[_type=='post' && references(^._id)] | order(publishedAt desc) [0] {
       _type,
       title,

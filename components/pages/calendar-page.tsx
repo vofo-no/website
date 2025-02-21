@@ -6,12 +6,12 @@ import {
   PaginationItem,
   PaginationLink,
 } from "@/components/ui/pagination";
-import { CalendarEntry } from "@/components/calendar-entry";
 import {
   PageHeader,
   PageHeaderDescription,
   PageHeaderHeading,
 } from "@/components/page-header";
+import { CalendarEventLayout } from "@/components/shared/calendar-event/layout";
 
 const FIRST_YEAR = 2024;
 
@@ -34,7 +34,7 @@ export function CalendarPageLayout(props: {
       {props.data.length ? (
         <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8 gap-y-12 mb-8">
           {props.data?.map((item) => (
-            <CalendarEntry key={item._id} data={item} />
+            <CalendarEventLayout key={item._id} data={item} />
           ))}
         </div>
       ) : (

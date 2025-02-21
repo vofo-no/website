@@ -48,6 +48,23 @@ export default defineType({
       type: "boolean",
       initialValue: true,
     }),
+    defineField({
+      name: "registrationUrl",
+      title: "Lenke til påmelding",
+      type: "url",
+      validation: (rule) =>
+        rule.uri({
+          scheme: ["https", "mailto"],
+          allowRelative: false,
+        }),
+    }),
+    defineField({
+      name: "registrationDueDate",
+      title: "Påmeldingsfrist",
+      description:
+        "Det er mulig å melde seg på til og med denne datoen (valgfritt)",
+      type: "date",
+    }),
   ],
   preview: {
     select: {
