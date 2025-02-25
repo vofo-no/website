@@ -1,7 +1,6 @@
 import Image from "next/image";
 
-import Miljofyrtarn from "./miljofyrtarn.png";
-import PoweredByVercel from "./powered-by-vercel.svg";
+import Miljofyrtarn from "./miljofyrtarn-sertifisert-virksomhet-horisontal-RGB.svg";
 
 export function FooterSponsor() {
   return (
@@ -14,17 +13,7 @@ export function FooterSponsor() {
           src={Miljofyrtarn}
           alt="Miljøfyrtårn-sertifisert virksomhet"
           className="max-w-full"
-          height={75}
-        />
-      </a>
-      <a
-        href="https://vercel.com/?utm_source=vofo-kursinfo&utm_campaign=oss"
-        target="_blank"
-      >
-        <Image
-          src={PoweredByVercel}
-          alt="Powered by Vercel"
-          className="max-w-full"
+          height={65}
         />
       </a>
       <span>
