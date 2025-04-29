@@ -5,7 +5,7 @@ import {
   allActiveSfQuery,
   allActiveTopicsQuery,
   calendarEntriesQuery,
-  countyBySlugQuery,
+  calendarEntryByIdQuery,  countyBySlugQuery,
   courseBySlugQuery,
   documentLinkByIdQuery,
   homeQuery,
@@ -37,13 +37,12 @@ import {
   TopicListItemPayload,
   TopicPayload,
 } from "@/types";
-import { calendarEntryByIdQuery } from "../lib/queries";
 
-export function loadHome() {
+export async function loadHome() {
   return sanityFetch<HomePayload>({ query: homeQuery, tags: ["home"] });
 }
 
-export function loadSettings() {
+export async function loadSettings() {
   return sanityFetch<SettingsPayload>({
     query: settingsQuery,
     tags: ["settings"],

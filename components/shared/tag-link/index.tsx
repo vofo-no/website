@@ -1,4 +1,3 @@
-import dynamic from "next/dynamic";
 import { loadTag } from "@/sanity/loader/loadQuery";
 
 import { TagLinkLayout } from "./layout";

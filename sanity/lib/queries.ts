@@ -1,6 +1,6 @@
-import { groq } from "next-sanity";
+import { defineQuery } from "next-sanity";
 
-export const postsByReferenceQuery = groq`
+export const postsByReferenceQuery = defineQuery(`
   *[
     (_type == "post") && 
     defined(image) &&
@@ -26,9 +26,9 @@ export const postsByReferenceQuery = groq`
       "slug": slug.current,
     },
   }
-`;
+`);
 
-export const searchPostsQuery = groq`
+export const searchPostsQuery = defineQuery(`
   *[
     (_type == "post") &&
     (!defined($docTypes) || docType in $docTypes) &&
@@ -53,9 +53,9 @@ export const searchPostsQuery = groq`
       "slug": slug.current,
     },
   }
-`;
+`);
 
-export const postBySlugQuery = groq`
+export const postBySlugQuery = defineQuery(`
   *[_type == "post" && slug.current == $slug][0] {
     _id,
     docType,
@@ -73,9 +73,9 @@ export const postBySlugQuery = groq`
     locale,
     relevance,
   }
-`;
+`);
 
-export const pageBySlugQuery = groq`
+export const pageBySlugQuery = defineQuery(`
   *[_type == "page" && slug.current == $slug][0] {
     _id,
     title,
@@ -87,9 +87,9 @@ export const pageBySlugQuery = groq`
     contacts,
     locale,
   }
-`;
+`);
 
-export const documentLinkByIdQuery = groq`
+export const documentLinkByIdQuery = defineQuery(`
   *[_type in ["page", "post"] && _id == $id][0] {
     _type,
     title,
@@ -97,17 +97,17 @@ export const documentLinkByIdQuery = groq`
     "slug": slug.current,
     image,
   }
-`;
+`);
 
-export const tagByIdQuery = groq`
+export const tagByIdQuery = defineQuery(`
   *[_type in ["county", "topic"] && _id == $id][0] {
     _type,
     "title": coalesce(name, title),
     "slug": slug.current,
   }
-`;
+`);
 
-export const allActiveSfQuery = groq`
+export const allActiveSfQuery = defineQuery(`
   *[_type == "organization" && active == true && defined(ssbCode) && defined(slug)][]{
     _id,
     "title": name,
@@ -115,9 +115,9 @@ export const allActiveSfQuery = groq`
     description,
     image,
   } | order(title asc)
-`;
+`);
 
-export const allActiveCountiesQuery = groq`
+export const allActiveCountiesQuery = defineQuery(`
   *[_type == "county" && active == true][]{
     _id,
     "title": name,
@@ -125,9 +125,9 @@ export const allActiveCountiesQuery = groq`
     description,
     image,
   } | order(title asc)
-`;
+`);
 
-export const countyBySlugQuery = groq`
+export const countyBySlugQuery = defineQuery(`
   *[_type == "county" && slug.current == $slug][0] {
     _id,
     "title": name,
@@ -139,9 +139,9 @@ export const countyBySlugQuery = groq`
     countyCode,
     locale,
   }
-`;
+`);
 
-export const allActiveCoursesQuery = groq`
+export const allActiveCoursesQuery = defineQuery(`
   *[_type == "course" && active == true][]{
     _id,
     title,
@@ -150,9 +150,9 @@ export const allActiveCoursesQuery = groq`
     image,
     "lessons": lessons[].slug.current,
   } | order(sortOrder asc, title asc)
-`;
+`);
 
-export const calendarEntryByIdQuery = groq`
+export const calendarEntryByIdQuery = defineQuery(`
   *[_type == "event" && _id == $id][0] {
     _id,
     title,
@@ -163,9 +163,9 @@ export const calendarEntryByIdQuery = groq`
     registrationUrl,
     registrationDueDate,
   }
-`;
+`);
 
-export const calendarEntriesQuery = groq`
+export const calendarEntriesQuery = defineQuery(`
   *[_type == "event" &&
     (!defined($year) || string::split(duration.start, "-")[0] == $year) &&
     (defined($year) || dateTime(now()) < dateTime(coalesce(duration.end, duration.start)))
@@ -186,9 +186,9 @@ export const calendarEntriesQuery = groq`
       image
     } 
   } | order(duration.start asc, duration.end asc)
-`;
+`);
 
-export const courseBySlugQuery = groq`
+export const courseBySlugQuery = defineQuery(`
   *[_type == "course" && slug.current == $slug][0] {
     _id,
     title,
@@ -203,9 +203,9 @@ export const courseBySlugQuery = groq`
       body,
     },
   }
-`;
+`);
 
-export const allActiveTopicsQuery = groq`
+export const allActiveTopicsQuery = defineQuery(`
   *[_type == "topic" && active == true][]{
     _id,
     title,
@@ -213,9 +213,9 @@ export const allActiveTopicsQuery = groq`
     description,
     image,
   } | order(title asc)
-`;
+`);
 
-export const topicBySlugQuery = groq`
+export const topicBySlugQuery = defineQuery(`
   *[_type == "topic" && slug.current == $slug][0] {
     _id,
     title,
@@ -228,9 +228,9 @@ export const topicBySlugQuery = groq`
     contacts,
     locale,
   }
-`;
+`);
 
-export const personByIdQuery = groq`
+export const personByIdQuery = defineQuery(`
   *[_type == "person" && _id == $id][0] {
     _id,
     name,
@@ -239,9 +239,9 @@ export const personByIdQuery = groq`
     email,
     phone,
   }
-`;
+`);
 
-export const sdgByIdQuery = groq`
+export const sdgByIdQuery = defineQuery(`
   *[_type == "sdg" && _id == $id][0] {
     _id,
     number,
@@ -250,15 +250,15 @@ export const sdgByIdQuery = groq`
     description,
     url,
   }
-`;
+`);
 
-export const homeQuery = groq`*[_type == "home"][0]{
+export const homeQuery = defineQuery(`*[_type == "home"][0]{
   title,
   description,
   announcement{ emoji, title, href },
-}`;
+}`);
 
-export const settingsQuery = groq`*[_type == "settings"][0]{
+export const settingsQuery = defineQuery(`*[_type == "settings"][0]{
   postalAddress,
   officeAddress,
   email,
@@ -267,4 +267,4 @@ export const settingsQuery = groq`*[_type == "settings"][0]{
   shortcuts[]{ title, href },
   some[]{ title, href },
   contacts,
-}`;
+}`);

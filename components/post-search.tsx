@@ -27,7 +27,7 @@ type SelectOption = { value: string; title: string } | string;
 
 interface SearchSelectProps {
   value: string | null;
-  options: SelectOption[] | Record<string, SelectOption[]>;
+  options: SelectOption[] | { [key: string]: SelectOption[] };
   label: string;
   callback: (value: string) => void;
 }
@@ -108,7 +108,11 @@ export function PostSearch(props: PostSearchProps) {
         params.delete(name);
       }
 
-      q ? params.set("q", q) : params.delete(q);
+      if (q) {
+        params.set("q", q);
+      } else {
+        params.delete(q);
+      }
 
       router.push(pathname + "?" + params.toString());
     },

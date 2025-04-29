@@ -12,9 +12,5 @@ export const client = createClient({
   dataset,
   apiVersion,
   useCdn: revalidateSecret ? false : true,
-  perspective: "published",
-  stega: {
-    enabled: false,
-    studioUrl,
-  },
+  stega: { studioUrl },
 });

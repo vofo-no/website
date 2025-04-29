@@ -9,16 +9,17 @@ import { Separator } from "@/components/ui/separator";
 import { PortableTextBody } from "@/components/shared/portable-text-body";
 
 interface CourseLessonPageProps {
-  params: {
+  params: Promise<{
     kurs: string;
     leksjon: string;
-  };
+  }>;
 }
 
 export async function generateMetadata(
-  { params }: CourseLessonPageProps,
+  props: CourseLessonPageProps,
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
+  const params = await props.params;
   const data = await loadCourse(params.kurs);
 
   const lesson = data?.lessons.find((item) => item.slug === params.leksjon);
@@ -48,7 +49,7 @@ export async function generateStaticParams() {
     { next: { tags: ["course"] } },
   );
 
-  let params: { kurs: string; leksjon: string }[] = [];
+  const params: { kurs: string; leksjon: string }[] = [];
 
   data.forEach((item) => {
     item.lessons.forEach((leksjon) =>
@@ -62,9 +63,8 @@ export async function generateStaticParams() {
   return params;
 }
 
-export default async function CourseLessonPage({
-  params,
-}: CourseLessonPageProps) {
+export default async function CourseLessonPage(props: CourseLessonPageProps) {
+  const params = await props.params;
   const data = await loadCourse(params.kurs);
 
   const lesson = data?.lessons.find((item) => item.slug === params.leksjon);

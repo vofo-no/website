@@ -8,14 +8,14 @@ import {
   DisclosurePanel,
 } from "@headlessui/react";
 import { ChevronRightIcon } from "lucide-react";
-import { toPlainText } from "next-sanity";
+import { PortableTextBlock, toPlainText } from "next-sanity";
 
 import slugify from "@/lib/slugify";
 import { useHeadersObserver } from "@/lib/useHeadersObserver";
 import { cn } from "@/lib/utils";
 
 interface TocProps {
-  headers?: any[];
+  headers?: PortableTextBlock[];
   mobile?: boolean;
   title: string;
 }

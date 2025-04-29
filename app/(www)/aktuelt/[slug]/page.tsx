@@ -10,15 +10,19 @@ import { PostPageLayout } from "@/components/pages/post-page";
 import { TagLink } from "@/components/shared/tag-link";
 
 interface PostPageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 export async function generateMetadata(
-  { params: { slug } }: PostPageProps,
+  props: PostPageProps,
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
+  const params = await props.params;
+
+  const { slug } = params;
+
   const data = await loadPost(slug);
 
   if (!data) notFound();
@@ -59,7 +63,11 @@ export async function generateStaticParams() {
   }));
 }
 
-export default async function PostPage({ params: { slug } }: PostPageProps) {
+export default async function PostPage(props: PostPageProps) {
+  const params = await props.params;
+
+  const { slug } = params;
+
   const data = await loadPost(slug);
 
   if (!data) notFound();

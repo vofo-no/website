@@ -11,15 +11,19 @@ import { Person } from "@/components/shared/person";
 import { PostList } from "@/components/shared/post-list";
 
 interface TopicPageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 export async function generateMetadata(
-  { params: { slug } }: TopicPageProps,
+  props: TopicPageProps,
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
+  const params = await props.params;
+
+  const { slug } = params;
+
   const data = await loadTopic(slug);
 
   if (!data) notFound();
@@ -58,7 +62,11 @@ export async function generateStaticParams() {
   }));
 }
 
-export default async function TopicPage({ params: { slug } }: TopicPageProps) {
+export default async function TopicPage(props: TopicPageProps) {
+  const params = await props.params;
+
+  const { slug } = params;
+
   const data = await loadTopic(slug);
 
   if (!data) notFound();

@@ -10,9 +10,9 @@ import { PageLayout } from "@/components/pages/page-layout";
 import { Person } from "@/components/shared/person";
 
 interface PageProps {
-  params: {
+  params: Promise<{
     slug?: string[];
-  };
+  }>;
 }
 
 function prefixSlug(slug: string[] = []) {
@@ -20,9 +20,13 @@ function prefixSlug(slug: string[] = []) {
 }
 
 export async function generateMetadata(
-  { params: { slug } }: PageProps,
+  props: PageProps,
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
+  const params = await props.params;
+
+  const { slug } = params;
+
   const data = await loadPage(prefixSlug(slug));
 
   if (!data) notFound();
@@ -61,7 +65,8 @@ export async function generateStaticParams() {
   }));
 }
 
-export default async function Page({ params }: PageProps) {
+export default async function Page(props: PageProps) {
+  const params = await props.params;
   const slug = prefixSlug(params.slug);
   const data = await loadPage(slug);
 

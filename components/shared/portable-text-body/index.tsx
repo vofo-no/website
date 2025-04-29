@@ -1,8 +1,8 @@
 import Link from "next/link";
 import {
   PortableText,
-  PortableTextComponents,
-  PortableTextTypeComponent,
+  PortableTextProps,
+  type PortableTextComponents,
 } from "next-sanity";
 
 import { InlineAudio } from "./body-audio-player";
@@ -17,16 +17,7 @@ import { H2WithAnchor } from "./header";
 import { PeopleList } from "./people-list";
 import { refToFileUrl } from "./utils";
 
-export type PortableTextBodyTypeComponents = Record<
-  string,
-  PortableTextTypeComponent<any>
->;
-
-interface Props {
-  value: any;
-}
-
-export function PortableTextBody({ value }: Props) {
+export function PortableTextBody({ value }: PortableTextProps) {
   const portableTextComponents: PortableTextComponents = {
     types: {
       audio: InlineAudio,

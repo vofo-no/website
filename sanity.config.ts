@@ -3,7 +3,6 @@
 /**
  * This configuration is used to for the Sanity Studio that’s mounted on the `\app\studio\[[...index]]\page.tsx` route
  */
-import { assist } from "@sanity/assist";
 import { nbNOLocale } from "@sanity/locale-nb-no";
 import { visionTool } from "@sanity/vision";
 import { createAuthStore, defineConfig } from "sanity";
@@ -14,7 +13,6 @@ import { structureTool } from "sanity/structure";
 import { createBetterPublishAction } from "./sanity/actions/better-publish";
 // Go to https://www.sanity.io/docs/api-versioning to learn how API versioning works
 import { apiVersion, dataset, projectId } from "./sanity/lib/api";
-import { locate } from "./sanity/plugins/locate";
 import { pageStructure } from "./sanity/plugins/settings";
 import { schema } from "./sanity/schema";
 import home from "./sanity/schemas/documents/home";
@@ -22,6 +20,7 @@ import settings from "./sanity/schemas/documents/settings";
 
 export default defineConfig({
   basePath: "/studio",
+  title: "Vofo",
   projectId,
   dataset,
   // Add and edit the content schema in the './sanity/schema' folder
@@ -53,17 +52,15 @@ export default defineConfig({
             filter: `_type == "page" && slug.current == $slug`,
           },
         ]),
-        locations: locate,
       },
       previewUrl: {
-        draftMode: {
-          enable: "/api/draft",
+        previewMode: {
+          enable: "/api/draft-mode/enable",
         },
       },
     }),
     media(),
     nbNOLocale(),
-    assist(),
   ],
   document: {
     actions: (prev) =>
@@ -76,7 +73,7 @@ export default defineConfig({
   auth: createAuthStore({
     projectId,
     dataset,
-    redirectOnSingle: true,
+    redirectOnSingle: false,
     mode: "replace",
     providers: [
       {

@@ -5,7 +5,7 @@ import { BarChart as TBarChart } from "@tremor/react";
 import { formatNumber } from "@/lib/formatNumber";
 
 interface BarChartProps {
-  data: any[];
+  data: unknown[];
   index: string;
   categories: string[];
 }

@@ -10,15 +10,19 @@ import { Separator } from "@/components/ui/separator";
 import { PortableTextBody } from "@/components/shared/portable-text-body";
 
 interface CoursePageProps {
-  params: {
+  params: Promise<{
     kurs: string;
-  };
+  }>;
 }
 
 export async function generateMetadata(
-  { params: { kurs } }: CoursePageProps,
+  props: CoursePageProps,
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
+  const params = await props.params;
+
+  const { kurs } = params;
+
   const data = await loadCourse(kurs);
 
   if (!data) notFound();
@@ -57,9 +61,11 @@ export async function generateStaticParams() {
   }));
 }
 
-export default async function CoursePage({
-  params: { kurs },
-}: CoursePageProps) {
+export default async function CoursePage(props: CoursePageProps) {
+  const params = await props.params;
+
+  const { kurs } = params;
+
   const data = await loadCourse(kurs);
 
   if (!data) notFound();
