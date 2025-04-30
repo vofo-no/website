@@ -101,10 +101,7 @@ function createFolderIfNotExists(folderName: string) {
   if (!fs.existsSync(folderName)) fs.mkdirSync(folderName);
 }
 
-export async function SsbUtil(
-  yearArg: string,
-  options: { force?: boolean } = {},
-) {
+export async function SsbUtil(yearArg: string) {
   const year = Number(yearArg);
 
   if (year < LOWEST_YEAR || year > new Date().getFullYear()) {
@@ -114,26 +111,7 @@ export async function SsbUtil(
 
   const dataFolder = `data/${year}`;
 
-  if (!options.force) {
-    if (
-      fs.existsSync(`${dataFolder}/ssb.json`) ||
-      fs.existsSync(`${dataFolder}/studieforbund`) ||
-      fs.existsSync(`${dataFolder}/emne`) ||
-      fs.existsSync(`${dataFolder}/fylke`) ||
-      fs.existsSync(`${dataFolder}/kommune`)
-    ) {
-      console.error(
-        `Det finnes allerede data i ${dataFolder}. Bruk -- --force for å overskrive.`,
-      );
-      return;
-    }
-  }
-
   createFolderIfNotExists(dataFolder);
-  createFolderIfNotExists(`${dataFolder}/studieforbund`);
-  createFolderIfNotExists(`${dataFolder}/emne`);
-  createFolderIfNotExists(`${dataFolder}/fylke`);
-  createFolderIfNotExists(`${dataFolder}/kommune`);
 
   const [klassdata, changes] = await Promise.all([
     klassApiFetch(tableId.fylker, year),
