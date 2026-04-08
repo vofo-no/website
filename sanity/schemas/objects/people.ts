@@ -59,6 +59,12 @@ export default defineType({
         "Angir om ev. tilgjengelig kontaktinformasjon skal knyttes til listen",
       initialValue: true,
     }),
+    defineField({
+      type: "boolean",
+      name: "showDescription",
+      title: "Vis beskrivelse",
+      initialValue: false,
+    }),
   ],
   preview: {
     select: {

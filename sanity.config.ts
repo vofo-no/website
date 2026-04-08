@@ -74,7 +74,7 @@ export default defineConfig({
     projectId,
     dataset,
     redirectOnSingle: false,
-    mode: "replace",
+    mode: "append",
     providers: [
       {
         name: "saml",

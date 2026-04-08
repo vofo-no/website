@@ -238,6 +238,7 @@ export const personByIdQuery = defineQuery(`
     image,
     email,
     phone,
+    description,
   }
 `);
 

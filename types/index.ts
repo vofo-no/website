@@ -143,6 +143,7 @@ export interface PersonPayload {
   image?: Image;
   email?: string;
   phone?: string;
+  description?: string;
 }
 
 export interface SdgPayload {
