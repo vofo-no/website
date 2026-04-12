@@ -1,12 +1,10 @@
-import Balance from "react-wrap-balancer";
-
 import { cn } from "@/lib/utils";
 
 function PageHeader({
   className,
   children,
   ...props
-}: React.HTMLAttributes<HTMLDivElement>) {
+}: React.HTMLAttributes<HTMLElement>) {
   return (
     <section
       className={cn(
@@ -25,10 +23,9 @@ function PageHeaderHeading({
   ...props
 }: React.HTMLAttributes<HTMLHeadingElement>) {
   return (
-    <Balance
-      as="h1"
+    <h1
       className={cn(
-        "text-center text-4xl font-serif tracking-tight sm:tracking-normal leading-tight md:text-6xl lg:leading-[1.1] hyphens-auto max-w-full",
+        "text-center text-4xl font-serif text-balance tracking-tight sm:tracking-normal leading-tight md:text-6xl lg:leading-[1.1] hyphens-auto max-w-full",
         className,
       )}
       {...props}
@@ -41,9 +38,9 @@ function PageHeaderDescription({
   ...props
 }: React.HTMLAttributes<HTMLParagraphElement>) {
   return (
-    <Balance
+    <p
       className={cn(
-        "max-w-[750px] text-center text-lg text-muted-foreground sm:text-xl",
+        "max-w-[750px] text-center text-balance text-lg text-muted-foreground sm:text-xl",
         className,
       )}
       {...props}

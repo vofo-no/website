@@ -1,4 +1,7 @@
-import { PostListItemPayload } from "@/types";
+import {
+  PostsByReferenceQueryResult,
+  SearchPostsQueryResult,
+} from "@/sanity.types";
 
 import { PostListItem } from "@/components/post-list-item";
 
@@ -6,7 +9,7 @@ import { PostListEmpty } from "./empty";
 
 interface PostListStaticProps {
   referencesId?: string;
-  data: PostListItemPayload[];
+  data: SearchPostsQueryResult | PostsByReferenceQueryResult;
 }
 
 export function PostListStatic(props: PostListStaticProps) {

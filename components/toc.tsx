@@ -15,19 +15,29 @@ import { useHeadersObserver } from "@/lib/useHeadersObserver";
 import { cn } from "@/lib/utils";
 
 interface TocProps {
-  headers?: PortableTextBlock[];
+  headers?: unknown[] | null;
   mobile?: boolean;
   title: string;
 }
 
 export function Toc({ title, headers = [], mobile = false }: TocProps) {
-  const slugs = useMemo(
-    () => headers?.map(toPlainText).map(slugify),
+  const headersWithSlugs = useMemo(
+    () =>
+      headers
+        ? (headers as PortableTextBlock[]).map((item) => {
+            const plain = toPlainText(item);
+            const id = slugify(plain);
+            return { id, plain, key: item._key };
+          })
+        : [],
     [headers],
   );
-  const activeHeaderId = useHeadersObserver(slugs);
 
-  if (!(headers?.length > 2)) return null;
+  const activeHeaderId = useHeadersObserver(
+    headersWithSlugs.map((item) => item.id),
+  );
+
+  if (headersWithSlugs.length <= 2) return null;
 
   if (mobile) {
     return (
@@ -51,17 +61,15 @@ export function Toc({ title, headers = [], mobile = false }: TocProps) {
                 as="ul"
                 className="px-4 pb-4 flex flex-col gap-2"
               >
-                {headers.map((item) => {
-                  const plain = toPlainText(item);
-                  const anchor = slugify(plain);
+                {headersWithSlugs.map(({ id, plain, key }) => {
                   return (
-                    <li key={item._key} className="flex justify-start">
+                    <li key={key} className="flex justify-start">
                       <DisclosureButton
                         as={Link}
-                        href={`#${anchor}`}
+                        href={`#${id}`}
                         className={cn(
                           "relative pl-4 leading-tight hover:underline",
-                          anchor === activeHeaderId && "font-semibold",
+                          id === activeHeaderId && "font-semibold",
                         )}
                       >
                         <ChevronRightIcon className="w-5 top-0.5 -left-1 absolute" />
@@ -82,16 +90,14 @@ export function Toc({ title, headers = [], mobile = false }: TocProps) {
     <div className="border p-4 mb-4 hidden md:block not-prose">
       <h2 className="text-lg font-semibold">{title}</h2>
       <ul className="pt-2 flex flex-col gap-2">
-        {headers.map((item) => {
-          const plain = toPlainText(item);
-          const anchor = slugify(plain);
+        {headersWithSlugs.map(({ id, plain, key }) => {
           return (
-            <li key={item._key} className="flex justify-start">
+            <li key={key} className="flex justify-start">
               <Link
-                href={`#${anchor}`}
+                href={`#${id}`}
                 className={cn(
                   "relative pl-4 leading-tight hover:underline",
-                  anchor === activeHeaderId && "font-semibold",
+                  id === activeHeaderId && "font-semibold",
                 )}
               >
                 <ChevronRightIcon className="w-5 top-0.5 -left-1 absolute" />

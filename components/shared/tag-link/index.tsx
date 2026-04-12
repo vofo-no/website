@@ -8,7 +8,7 @@ export interface TagLinkProps
 }
 
 export async function TagLink({ id, ...rest }: TagLinkProps) {
-  const data = await loadTag(id);
+  const { data } = await loadTag(id);
 
   return data ? <TagLinkLayout data={data} {...rest} /> : null;
 }

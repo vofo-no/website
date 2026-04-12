@@ -9,8 +9,8 @@ export async function GET(request: NextRequest) {
     });
   }
 
-  revalidateTag(`event`);
-  revalidateTag(`post`);
+  revalidateTag(`event`, "max");
+  revalidateTag(`post`, "max");
 
   return new Response("Success", { status: 200 });
 }

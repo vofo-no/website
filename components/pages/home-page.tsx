@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { HomePayload } from "@/types";
+import { HomeQueryResult } from "@/sanity.types";
 
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
@@ -12,7 +12,7 @@ import {
 } from "@/components/page-header";
 
 export function HomePageLayout(props: {
-  data: HomePayload;
+  data: HomeQueryResult;
   children?: React.ReactNode;
 }) {
   const { title, description, announcement } = props.data ?? {};

@@ -20,9 +20,9 @@ export async function generateMetadata(
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
   const params = await props.params;
-  const data = await loadCourse(params.kurs);
+  const { data } = await loadCourse(params.kurs);
 
-  const lesson = data?.lessons.find((item) => item.slug === params.leksjon);
+  const lesson = data?.lessons?.find((item) => item.slug === params.leksjon);
 
   if (!lesson) notFound();
 
@@ -33,7 +33,7 @@ export async function generateMetadata(
     description: lesson.description,
     openGraph: {
       images: previousImages,
-      title: lesson.title,
+      title: lesson.title || undefined,
       type: "website",
       url: `https://www.vofo.no${resolveHref("course", params.kurs)}/${params.leksjon}`,
     },
@@ -65,9 +65,9 @@ export async function generateStaticParams() {
 
 export default async function CourseLessonPage(props: CourseLessonPageProps) {
   const params = await props.params;
-  const data = await loadCourse(params.kurs);
+  const { data } = await loadCourse(params.kurs);
 
-  const lesson = data?.lessons.find((item) => item.slug === params.leksjon);
+  const lesson = data?.lessons?.find((item) => item.slug === params.leksjon);
 
   if (!lesson) notFound();
 
@@ -77,7 +77,7 @@ export default async function CourseLessonPage(props: CourseLessonPageProps) {
         <h1>{lesson.title}</h1>
         <p className="lead">{lesson.description}</p>
         <Separator />
-        <PortableTextBody value={lesson.body} />
+        <PortableTextBody value={lesson.body || undefined} />
       </div>
     </div>
   );

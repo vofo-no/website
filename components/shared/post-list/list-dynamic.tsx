@@ -1,7 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { PostListItemPayload } from "@/types";
+import { useState } from "react";
+import {
+  PostsByReferenceQueryResult,
+  SearchPostsQueryResult,
+} from "@/sanity.types";
 
 import { Button } from "@/components/ui/button";
 
@@ -11,7 +14,7 @@ import { PostListProps } from "./types";
 
 interface PostListDynamicProps
   extends Pick<PostListProps, "referencesId" | "searchParams"> {
-  initialData: PostListItemPayload[];
+  initialData: SearchPostsQueryResult | PostsByReferenceQueryResult;
 }
 
 const BATCH_SIZE = 30;
@@ -25,15 +28,9 @@ export function PostListDynamic({
   const [hasMore, setHasMore] = useState(initialData.length === BATCH_SIZE);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    setData(initialData);
-    setHasMore(initialData.length === BATCH_SIZE);
-    setLoading(false);
-  }, [initialData]);
-
   const loadMorePosts = async () => {
     setLoading(true);
-    const nextPosts = await loadPostListAction(
+    const { data: nextPosts } = await loadPostListAction(
       referencesId,
       searchParams,
       data[data.length - 1],

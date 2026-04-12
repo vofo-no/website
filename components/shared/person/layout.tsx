@@ -1,6 +1,6 @@
 import Link from "next/link";
+import { PersonByIdQueryResult } from "@/sanity.types";
 import { urlForImage } from "@/sanity/lib/image";
-import { PersonPayload } from "@/types";
 import { MailIcon, PhoneIcon, SmileIcon } from "lucide-react";
 
 import { formatPhone } from "@/lib/formatPhone";
@@ -9,7 +9,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { FormatLink } from "@/components/FormatLink";
 
 export interface PersonLayoutProps {
-  data?: PersonPayload;
+  data?: PersonByIdQueryResult;
   hideContactInfo?: boolean;
   showDescription?: boolean;
   loading?: boolean;
@@ -29,7 +29,7 @@ export function PersonLayout(props: PersonLayoutProps) {
     >
       <div>
         <Avatar className="h-24 w-24">
-          {imageUrl && <AvatarImage src={imageUrl} alt={name} />}
+          {imageUrl && <AvatarImage src={imageUrl} alt={name || ""} />}
           <AvatarFallback>
             <SmileIcon size={40} className="opacity-50" />
           </AvatarFallback>

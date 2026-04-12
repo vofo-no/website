@@ -21,10 +21,10 @@ export async function POST(req: NextRequest) {
       return new Response("Bad Request", { status: 400 });
     }
 
-    revalidateTag(body._type);
-    revalidateTag(`${body._type}:${body._id}`);
+    revalidateTag(body._type, "max");
+    revalidateTag(`${body._type}:${body._id}`, "max");
     if (body.slug) {
-      revalidateTag(`${body._type}:${body.slug}`);
+      revalidateTag(`${body._type}:${body.slug}`, "max");
     }
 
     // Push record to search index

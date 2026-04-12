@@ -1,10 +1,12 @@
 import { Metadata } from "next";
 import { draftMode } from "next/headers";
 import Link from "next/link";
+import { SanityLive } from "@/sanity/lib/live";
 import { Analytics } from "@vercel/analytics/react";
-import { VisualEditing } from "next-sanity";
+import { VisualEditing } from "next-sanity/visual-editing";
 
 import { Breadcrumbs } from "@/components/breadcrumbs";
+import { DisableDraftMode } from "@/components/disable-draft-mode";
 import { SiteFooter } from "@/components/shared/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { UserFeedback } from "@/components/user-feedback";
@@ -46,7 +48,13 @@ export default async function WwwLayout({
         <UserFeedback />
         <SiteFooter />
       </div>
-      {(await draftMode()).isEnabled && <VisualEditing />}
+      {(await draftMode()).isEnabled && (
+        <>
+          <VisualEditing />
+          <SanityLive />
+          <DisableDraftMode />
+        </>
+      )}
       <Analytics />
     </>
   );

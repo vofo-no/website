@@ -14,7 +14,7 @@ export default async function PostsIndexPage(props: {
     [key: string]: string | string[] | undefined;
   }>;
 }) {
-  const [counties, topics] = await Promise.all([
+  const [{ data: counties }, { data: topics }] = await Promise.all([
     loadAllCounties(),
     loadAllTopics(),
   ]);
@@ -38,10 +38,13 @@ export default async function PostsIndexPage(props: {
   return (
     <PostsIndexPageLayout
       counties={counties.map(({ title, slug }) => ({
-        title,
-        value: slug,
+        title: title || "",
+        value: slug || "",
       }))}
-      topics={topics.map(({ title, slug }) => ({ title, value: slug }))}
+      topics={topics.map(({ title, slug }) => ({
+        title: title || "",
+        value: slug || "",
+      }))}
     >
       <PostList searchParams={searchParams} dynamic />
     </PostsIndexPageLayout>

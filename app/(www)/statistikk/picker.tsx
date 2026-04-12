@@ -2,7 +2,6 @@
 
 import { useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
-import Balance from "react-wrap-balancer";
 
 import { PageHeaderDescriptionInlineSelect } from "@/components/page-header-description-inline-select";
 
@@ -28,7 +27,7 @@ export function Picker() {
   );
 
   return (
-    <Balance className="text-lg sm:text-xl text-center text-muted-foreground">
+    <div className="text-lg sm:text-xl text-center text-balance text-muted-foreground">
       <PageHeaderDescriptionInlineSelect
         defaultValue={defaultStatistikkParams.sf}
         selectAllLabel="Alle studieforbund"
@@ -54,6 +53,6 @@ export function Picker() {
         onValueChange={(aar) => goToStatistic({ ...slug, aar })}
         options={statistikkOptions.years}
       />
-    </Balance>
+    </div>
   );
 }

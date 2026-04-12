@@ -1,7 +1,6 @@
 import Link from "next/link";
+import { AllActiveCountiesQueryResult } from "@/sanity.types";
 import { urlForImage } from "@/sanity/lib/image";
-import { CountyListItemPayload } from "@/types";
-import Balancer from "react-wrap-balancer";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -10,7 +9,7 @@ import {
   PageHeaderHeading,
 } from "@/components/page-header";
 
-function CountyListItem(props: { data: CountyListItemPayload }) {
+function CountyListItem(props: { data: AllActiveCountiesQueryResult[0] }) {
   const { image, title, slug, description } = props.data ?? {};
 
   return (
@@ -25,7 +24,7 @@ function CountyListItem(props: { data: CountyListItemPayload }) {
           />
         )}
         <AvatarFallback className="text-3xl">
-          {title.substring(0, 1)}
+          {title?.substring(0, 1)}
         </AvatarFallback>
       </Avatar>
       <div>
@@ -33,9 +32,7 @@ function CountyListItem(props: { data: CountyListItemPayload }) {
           {title}
         </h2>
         {description && (
-          <Balancer as="p" className="text-muted-foreground">
-            {description}
-          </Balancer>
+          <p className="text-muted-foreground text-balance">{description}</p>
         )}
       </div>
     </Link>
@@ -43,7 +40,7 @@ function CountyListItem(props: { data: CountyListItemPayload }) {
 }
 
 export function CountiesIndexPageLayout(props: {
-  data: CountyListItemPayload[];
+  data: AllActiveCountiesQueryResult;
 }) {
   return (
     <div className="container">

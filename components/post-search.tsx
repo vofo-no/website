@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useRef } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
@@ -93,11 +93,7 @@ export function PostSearch(props: PostSearchProps) {
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [q, setQ] = useState("");
-
-  useEffect(() => {
-    setQ(searchParams.get("q") || "");
-  }, [searchParams]);
+  const qRef = useRef<HTMLInputElement>(null);
 
   const updateSearch = useCallback(
     (name: string) => (value: string) => {
@@ -108,15 +104,9 @@ export function PostSearch(props: PostSearchProps) {
         params.delete(name);
       }
 
-      if (q) {
-        params.set("q", q);
-      } else {
-        params.delete(q);
-      }
-
       router.push(pathname + "?" + params.toString());
     },
-    [pathname, q, router, searchParams],
+    [pathname, router, searchParams],
   );
 
   return (
@@ -125,15 +115,16 @@ export function PostSearch(props: PostSearchProps) {
         className="flex w-full items-center gap-2"
         onSubmit={(e) => {
           e.preventDefault();
-          updateSearch("q")(q);
+          updateSearch("q")(qRef.current?.value || "");
         }}
       >
         <Input
           aria-label="Søkeord"
           placeholder="Søk etter..."
           className="text-base"
-          value={q}
-          onChange={(e) => setQ(e.target.value)}
+          ref={qRef}
+          defaultValue={searchParams.get("q") || ""}
+          key={searchParams.get("q")}
         />
         <Button type="submit">Søk</Button>
       </form>

@@ -7,7 +7,7 @@ export interface SdgProps {
 }
 
 export async function Sdg({ id }: SdgProps) {
-  const data = await loadSdg(id);
+  const { data } = await loadSdg(id);
 
   return data ? <SdgLayout data={data} /> : null;
 }

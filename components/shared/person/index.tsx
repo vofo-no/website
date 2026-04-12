@@ -8,7 +8,7 @@ export interface PersonProps {
 }
 
 export async function Person({ id, ...props }: PersonProps) {
-  const data = await loadPerson(id);
+  const { data } = await loadPerson(id);
 
   return data ? <PersonLayout data={data} {...props} /> : null;
 }

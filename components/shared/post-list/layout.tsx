@@ -1,5 +1,8 @@
 import Link from "next/link";
-import { PostListItemPayload } from "@/types";
+import {
+  PostsByReferenceQueryResult,
+  SearchPostsQueryResult,
+} from "@/sanity.types";
 import { ArrowRightIcon } from "lucide-react";
 
 import { buttonVariants } from "@/components/ui/button";
@@ -9,7 +12,7 @@ import { PostListStatic } from "./list-static";
 import { PostListProps } from "./types";
 
 interface PostListLayoutProps extends PostListProps {
-  data: PostListItemPayload[];
+  data: SearchPostsQueryResult | PostsByReferenceQueryResult;
 }
 
 export function PostListLayout(props: PostListLayoutProps) {

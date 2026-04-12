@@ -11,7 +11,7 @@ export default async function CourseLayout(props: {
 
   const { children } = props;
 
-  const data = await loadCourse(params.kurs);
+  const { data } = await loadCourse(params.kurs);
 
   return (
     <>

@@ -1,5 +1,8 @@
 import Link from "next/link";
-import { PostListItemPayload } from "@/types";
+import {
+  PostsByReferenceQueryResult,
+  SearchPostsQueryResult,
+} from "@/sanity.types";
 import { CalendarIcon } from "lucide-react";
 
 import { formatShortDate } from "@/lib/date";
@@ -9,7 +12,7 @@ import PostTypeBadge from "./post-type-bagde";
 import { TagLinkLayout } from "./shared/tag-link/layout";
 
 export function PostListItem(props: {
-  item: PostListItemPayload;
+  item: SearchPostsQueryResult[0] | PostsByReferenceQueryResult[0];
   referencesId?: string;
   priority?: boolean;
 }) {
@@ -19,7 +22,7 @@ export function PostListItem(props: {
     <div>
       <div className="relative">
         <PostTypeBadge
-          docType={docType}
+          docType={docType || undefined}
           className=" absolute bottom-0 right-0 m-1.5 z-10"
         />
         {image && (
@@ -33,7 +36,7 @@ export function PostListItem(props: {
       <div className="my-2 flex flex-wrap gap-x-2 gap-y-1">
         <span className="text-xs text-muted-foreground flex items-center gap-1">
           <CalendarIcon size={12} />
-          {formatShortDate(publishedAt)}
+          {publishedAt && formatShortDate(publishedAt)}
         </span>
         {relevance
           ?.filter(({ _id }) => _id !== props.referencesId)

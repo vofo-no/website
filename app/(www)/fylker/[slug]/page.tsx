@@ -22,7 +22,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const { slug } = await props.params;
 
-  const data = await loadCounty(slug);
+  const { data } = await loadCounty(slug);
 
   if (!data) notFound();
 
@@ -39,7 +39,7 @@ export async function generateMetadata(
     description: data.description,
     openGraph: {
       images: image ? [image, ...previousImages] : previousImages,
-      title: data.title,
+      title: data.title || undefined,
       type: "website",
       url: `https://www.vofo.no${resolveHref("county", slug)}`,
     },
@@ -63,7 +63,7 @@ export async function generateStaticParams() {
 export default async function CountyPage(props: CountyPageProps) {
   const { slug } = await props.params;
 
-  const data = await loadCounty(slug);
+  const { data } = await loadCounty(slug);
 
   if (!data) notFound();
 

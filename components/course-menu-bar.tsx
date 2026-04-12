@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useSelectedLayoutSegment } from "next/navigation";
-import { CoursePayload } from "@/types";
+import { CourseBySlugQueryResult } from "@/sanity.types";
 import { ProgressCircle } from "@tremor/react";
 import { useAtom } from "jotai";
 import {
@@ -26,9 +26,11 @@ import {
 
 import { completedCoursesAtom } from "./completed-courses-atom";
 
-export function CourseMenuBar({ data }: { data: CoursePayload }) {
+export function CourseMenuBar({ data }: { data: CourseBySlugQueryResult }) {
   const segment = useSelectedLayoutSegment();
   const [completed] = useAtom(completedCoursesAtom);
+
+  if (!data || !data.slug || !data.lessons) return null;
 
   const allLessons = data.lessons.map((item) => item.slug);
   const lessonsCompleted = (completed[data.slug] || []).filter((item) =>
@@ -65,14 +67,17 @@ export function CourseMenuBar({ data }: { data: CoursePayload }) {
             {data.lessons.map((item, index) => (
               <MenubarItem key={item.slug} asChild>
                 <Link
-                  href={[resolveHref("course", data.slug), item.slug].join("/")}
+                  href={[
+                    resolveHref("course", data.slug || undefined),
+                    item.slug,
+                  ].join("/")}
                   className="flex gap-2"
                 >
                   <Badge
                     variant={segment === item.slug ? "default" : "outline"}
                     className="text-base h-10 w-10 justify-center"
                   >
-                    {lessonsCompleted.includes(item.slug) ? (
+                    {item.slug && lessonsCompleted.includes(item.slug) ? (
                       <CheckIcon size={18} />
                     ) : (
                       index + 1

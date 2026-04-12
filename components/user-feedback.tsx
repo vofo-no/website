@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { usePathname } from "next/navigation";
 import { track } from "@vercel/analytics/react";
 
@@ -18,20 +18,11 @@ import { Label } from "./ui/label";
 import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
 import { Textarea } from "./ui/textarea";
 
-export function UserFeedback() {
-  const path = usePathname();
+function UserFeedbackHandler() {
   const [tracked, setTracked] = useState(false);
   const [open, setOpen] = useState(false);
   const [found, setFound] = useState<string>("");
   const [feedback, setFeedback] = useState<string>("");
-
-  useEffect(() => {
-    setTracked(false);
-    setFound("");
-    setFeedback("");
-  }, [path]);
-
-  if (path === "/") return null;
 
   if (tracked)
     return (
@@ -117,4 +108,11 @@ export function UserFeedback() {
       </Dialog>
     </aside>
   );
+}
+
+export function UserFeedback() {
+  const path = usePathname();
+  if (path === "/") return null;
+
+  return <UserFeedbackHandler key={path} />;
 }

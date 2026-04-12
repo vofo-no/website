@@ -7,7 +7,7 @@ export interface CalendarEventProps {
 }
 
 export async function CalendarEvent({ id }: CalendarEventProps) {
-  const data = await loadCalendarEntryById(id);
+  const { data } = await loadCalendarEntryById(id);
 
   return data ? (
     <div className="mt-6 mb-12">

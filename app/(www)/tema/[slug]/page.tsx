@@ -20,11 +20,8 @@ export async function generateMetadata(
   props: TopicPageProps,
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
-  const params = await props.params;
-
-  const { slug } = params;
-
-  const data = await loadTopic(slug);
+  const { slug } = await props.params;
+  const { data } = await loadTopic(slug);
 
   if (!data) notFound();
 
@@ -41,7 +38,7 @@ export async function generateMetadata(
     description: data.description,
     openGraph: {
       images: image ? [image, ...previousImages] : previousImages,
-      title: data.title,
+      title: data.title || undefined,
       type: "website",
       url: `https://www.vofo.no${resolveHref("topic", slug)}`,
     },
@@ -67,7 +64,7 @@ export default async function TopicPage(props: TopicPageProps) {
 
   const { slug } = params;
 
-  const data = await loadTopic(slug);
+  const { data } = await loadTopic(slug);
 
   if (!data) notFound();
 
@@ -81,7 +78,7 @@ export default async function TopicPage(props: TopicPageProps) {
     <PageLayout data={data} contacts={contacts}>
       <PostList
         referencesId={data._id}
-        title={`Aktuelt om ${data.title.toLocaleLowerCase()}`}
+        title={`Aktuelt om ${data.title?.toLocaleLowerCase()}`}
         archiveParams={archiveParams}
       />
     </PageLayout>

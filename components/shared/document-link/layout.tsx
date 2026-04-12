@@ -1,12 +1,12 @@
 import Link from "next/link";
-import { DocumentLinkPayload } from "@/types";
+import { DocumentLinkByIdQueryResult } from "@/sanity.types";
 
 import { resolveHref } from "@/lib/resolveHref";
 import { cn } from "@/lib/utils";
 import { SanityImage } from "@/components/image";
 
 interface Props {
-  data?: DocumentLinkPayload | null;
+  data?: DocumentLinkByIdQueryResult;
 }
 
 export function DocumentLinkLayout({ data }: Props) {
@@ -17,7 +17,7 @@ export function DocumentLinkLayout({ data }: Props) {
   return (
     <article className="-mx-4 my-6 not-prose">
       <Link
-        href={resolveHref(_type, slug)!}
+        href={resolveHref(_type, slug || undefined)!}
         className={cn(
           "grid bg-secondary border-l-4 -ml-1 group overflow-hidden hover:shadow-lg duration-150 ease-in-out sm:[clip-path:polygon(calc(100%_-_2rem)_0%,100%_50%,calc(100%_-_2rem)_100%,0%_100%,0%_0%)]",
           image && "grid-cols-[auto_128px] sm:grid-cols-[auto_150px] gap-4",

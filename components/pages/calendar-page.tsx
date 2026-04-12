@@ -1,4 +1,4 @@
-import { CalendarEntryPayload } from "@/types";
+import { CalendarEntriesQueryResult } from "@/sanity.types";
 
 import {
   Pagination,
@@ -16,7 +16,7 @@ import { CalendarEventLayout } from "@/components/shared/calendar-event/layout";
 const FIRST_YEAR = 2024;
 
 export function CalendarPageLayout(props: {
-  data: CalendarEntryPayload[];
+  data: CalendarEntriesQueryResult;
   archiveName?: string;
 }) {
   const currentYear = new Date().getFullYear();

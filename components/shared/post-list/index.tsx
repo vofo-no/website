@@ -4,7 +4,7 @@ import { PostListLayout } from "./layout";
 import { PostListProps } from "./types";
 
 export async function PostList(props: PostListProps) {
-  const data = await loadPostList(props.referencesId, props.searchParams);
+  const { data } = await loadPostList(props.referencesId, props.searchParams);
 
   return (
     <>

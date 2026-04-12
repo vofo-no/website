@@ -10,7 +10,7 @@ export default async function CalendarArchivePage(
   props: CalendarArchivePageProps,
 ) {
   const params = await props.params;
-  const data = await loadCalendarEntries(params.aarstall);
+  const { data } = await loadCalendarEntries(params.aarstall);
 
   return <CalendarPageLayout data={data} archiveName={params.aarstall} />;
 }

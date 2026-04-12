@@ -23,7 +23,7 @@ export async function generateMetadata(
 
   const { kurs } = params;
 
-  const data = await loadCourse(kurs);
+  const { data } = await loadCourse(kurs);
 
   if (!data) notFound();
 
@@ -40,7 +40,7 @@ export async function generateMetadata(
     description: data.description,
     openGraph: {
       images: image ? [image, ...previousImages] : previousImages,
-      title: data.title,
+      title: data.title || undefined,
       type: "website",
       url: `https://www.vofo.no${resolveHref("course", kurs)}`,
     },
@@ -66,7 +66,7 @@ export default async function CoursePage(props: CoursePageProps) {
 
   const { kurs } = params;
 
-  const data = await loadCourse(kurs);
+  const { data } = await loadCourse(kurs);
 
   if (!data) notFound();
 
@@ -76,7 +76,7 @@ export default async function CoursePage(props: CoursePageProps) {
         <h1>{data.title}</h1>
         <p className="lead">{data.description}</p>
         <Separator />
-        <PortableTextBody value={data.body} />
+        <PortableTextBody value={data.body || undefined} />
       </div>
     </div>
   );
