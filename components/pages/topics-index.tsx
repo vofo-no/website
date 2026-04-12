@@ -1,7 +1,6 @@
 import Link from "next/link";
+import { AllActiveTopicsQueryResult } from "@/sanity.types";
 import { urlForImage } from "@/sanity/lib/image";
-import { TopicListItemPayload } from "@/types";
-import Balancer from "react-wrap-balancer";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -10,7 +9,7 @@ import {
   PageHeaderHeading,
 } from "@/components/page-header";
 
-function TopicListItem(props: { data: TopicListItemPayload }) {
+function TopicListItem(props: { data: AllActiveTopicsQueryResult[0] }) {
   const { image, title, slug, description } = props.data ?? {};
 
   return (
@@ -25,7 +24,7 @@ function TopicListItem(props: { data: TopicListItemPayload }) {
           />
         )}
         <AvatarFallback className="text-3xl">
-          {title.substring(0, 1)}
+          {title?.substring(0, 1)}
         </AvatarFallback>
       </Avatar>
       <div>
@@ -33,16 +32,16 @@ function TopicListItem(props: { data: TopicListItemPayload }) {
           {title}
         </h2>
         {description && (
-          <Balancer as="p" className="text-muted-foreground">
-            {description}
-          </Balancer>
+          <p className="text-balance text-muted-foreground">{description}</p>
         )}
       </div>
     </Link>
   );
 }
 
-export function TopicsIndexPageLayout(props: { data: TopicListItemPayload[] }) {
+export function TopicsIndexPageLayout(props: {
+  data: AllActiveTopicsQueryResult;
+}) {
   return (
     <div className="container">
       <PageHeader>

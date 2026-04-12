@@ -1,7 +1,6 @@
 import { Metadata, ResolvingMetadata } from "next";
 import { notFound } from "next/navigation";
 import { client } from "@/sanity/lib/client";
-import { urlForImage } from "@/sanity/lib/image";
 import { loadPage } from "@/sanity/loader/loadQuery";
 import { groq } from "next-sanity";
 
@@ -10,9 +9,9 @@ import { PageLayout } from "@/components/pages/page-layout";
 import { Person } from "@/components/shared/person";
 
 interface PageProps {
-  params: {
+  params: Promise<{
     slug?: string[];
-  };
+  }>;
 }
 
 function prefixSlug(slug: string[] = []) {
@@ -20,27 +19,25 @@ function prefixSlug(slug: string[] = []) {
 }
 
 export async function generateMetadata(
-  { params: { slug } }: PageProps,
+  props: PageProps,
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
-  const data = await loadPage(prefixSlug(slug));
+  const params = await props.params;
+
+  const { slug } = params;
+
+  const { data } = await loadPage(prefixSlug(slug));
 
   if (!data) notFound();
 
   const previousImages = (await parent).openGraph?.images || [];
-  const image = data.image && {
-    url: urlForImage(data.image).size(1200, 630).url(),
-    width: 1200,
-    height: 630,
-    alt: data.image.alt,
-  };
 
   return {
     title: data.title,
     description: data.description,
     openGraph: {
-      images: image ? [image, ...previousImages] : previousImages,
-      title: data.title,
+      images: previousImages,
+      title: data.title || undefined,
       type: "website",
       url: `https://www.vofo.no${resolveHref("page", prefixSlug(slug))}`,
     },
@@ -61,9 +58,10 @@ export async function generateStaticParams() {
   }));
 }
 
-export default async function Page({ params }: PageProps) {
+export default async function Page(props: PageProps) {
+  const params = await props.params;
   const slug = prefixSlug(params.slug);
-  const data = await loadPage(slug);
+  const { data } = await loadPage(slug);
 
   if (!data) notFound();
 

@@ -573,7 +573,7 @@ export async function makeUtil(yearArg: string) {
               reportName,
             ),
           ),
-          { access: "public", addRandomSuffix: false },
+          { access: "public", addRandomSuffix: false, allowOverwrite: true },
         ).then((result) => {
           nextIndex.push({
             name: reportName,

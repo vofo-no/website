@@ -6,7 +6,7 @@ import { TopicsIndexPageLayout } from "@/components/pages/topics-index";
 export const metadata: Metadata = { title: "Tema" };
 
 export default async function TopicsIndexPage() {
-  const data = await loadAllTopics();
+  const { data } = await loadAllTopics();
 
   return <TopicsIndexPageLayout data={data} />;
 }

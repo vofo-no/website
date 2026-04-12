@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useSelectedLayoutSegment } from "next/navigation";
-import { CoursePayload } from "@/types";
+import { CourseBySlugQueryResult } from "@/sanity.types";
 import { useAtom } from "jotai";
 import { ArrowRightIcon } from "lucide-react";
 
@@ -19,9 +19,11 @@ import {
 
 import { completedCoursesAtom } from "./completed-courses-atom";
 
-export function CourseNextLesson({ data }: { data: CoursePayload }) {
+export function CourseNextLesson({ data }: { data: CourseBySlugQueryResult }) {
   const segment = useSelectedLayoutSegment();
   const [completed, setCompleted] = useAtom(completedCoursesAtom);
+
+  if (!data || !data.slug || !data.lessons) return null;
 
   const allLessons = data.lessons.map((item) => item.slug);
   const lessonsCompleted = (completed[data.slug] || []).filter((item) =>
@@ -34,7 +36,9 @@ export function CourseNextLesson({ data }: { data: CoursePayload }) {
     if (segment) {
       setCompleted((prevState) => ({
         ...prevState,
-        [data.slug]: Array.from(new Set([...lessonsCompleted, segment])),
+        [data?.slug || "??"]: Array.from(
+          new Set([...lessonsCompleted, segment]),
+        ),
       }));
     }
   }

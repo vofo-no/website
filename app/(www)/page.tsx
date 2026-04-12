@@ -7,17 +7,17 @@ import { CalendarEventLayout } from "@/components/shared/calendar-event/layout";
 import { PostList } from "@/components/shared/post-list";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const data = await loadHome();
+  const { data } = await loadHome();
 
   return {
-    description: data.description,
+    description: data?.description,
   };
 }
 
 export default async function HomePage() {
-  const [data, calendarEntries] = await Promise.all([
+  const [{ data }, calendarEntries] = await Promise.all([
     loadHome(),
-    loadCalendarEntries().then((result) => result.slice(0, 6)),
+    loadCalendarEntries().then((result) => result.data?.slice(0, 6)),
   ]);
 
   const archiveParams = new URLSearchParams({});

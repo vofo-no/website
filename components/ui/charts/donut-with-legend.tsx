@@ -7,7 +7,7 @@ import { formatNumber } from "@/lib/formatNumber";
 interface DonutWithLegendProps {
   category: string;
   index: string;
-  data: any[];
+  data: Record<string, unknown>[];
 }
 
 export function DonutWithLegend(props: DonutWithLegendProps) {
@@ -15,7 +15,7 @@ export function DonutWithLegend(props: DonutWithLegendProps) {
     <div className="flex flex-wrap items-center justify-center gap-6 not-prose">
       <DonutChart {...props} className="w-40" valueFormatter={formatNumber} />
       <Legend
-        categories={props.data.map((bin) => bin[props.index])}
+        categories={props.data.map((bin) => bin[props.index] as string)}
         className="max-w-xs"
       />
     </div>

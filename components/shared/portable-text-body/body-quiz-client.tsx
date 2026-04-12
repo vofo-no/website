@@ -13,16 +13,20 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-const storage = createJSONStorage<Record<string, string>>(() => sessionStorage);
+const storage = createJSONStorage<{ [key: string]: string }>(
+  () => sessionStorage
+);
 const quizAnswers = atomWithStorage("quizAnswers", {}, storage);
 
-export function BodyQuizClient({
-  question,
-  choices,
-}: {
-  question: string;
-  choices: { title: string; isCorrect: boolean }[];
-}) {
+export function BodyQuizClient(
+  {
+    question,
+    choices,
+  }: {
+    question: string;
+    choices: { title: string; isCorrect: boolean }[];
+  }
+) {
   const [answers, setAnswer] = useAtom(quizAnswers);
 
   function choose(choice: string) {
@@ -30,6 +34,7 @@ export function BodyQuizClient({
   }
 
   function reset() {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     setAnswer(({ [question]: x, ...prevState }) => prevState);
   }
 

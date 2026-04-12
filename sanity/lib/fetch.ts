@@ -1,36 +1,34 @@
+import "server-only";
+
 import { draftMode } from "next/headers";
-import type { ClientPerspective, QueryParams } from "next-sanity";
+import type { ClientReturn, QueryParams } from "next-sanity";
 
-import { revalidateSecret } from "./api";
 import { client } from "./client";
-import { token } from "./token";
+import { sanityLiveFetch } from "./live";
 
-export async function sanityFetch<QueryResponse>({
+export async function sanityFetch<const QueryString extends string>({
   query,
   params = {},
-  perspective = draftMode().isEnabled ? "drafts" : "published",
-  stega = perspective === "drafts" || process.env.VERCEL_ENV === "preview",
   tags = [],
 }: {
-  query: string;
+  query: QueryString;
   params?: QueryParams;
-  perspective?: Omit<ClientPerspective, "raw">;
-  stega?: boolean;
-  tags?: string[];
-}) {
-  if (perspective === "drafts") {
-    return client.fetch<QueryResponse>(query, params, {
-      stega,
-      perspective: "drafts",
-      token,
-      useCdn: false,
-      next: { revalidate: 0 },
-    });
+  tags: string[];
+}): Promise<{
+  data: ClientReturn<QueryString>;
+}> {
+  const isDraftMode = (await draftMode()).isEnabled;
+
+  if (isDraftMode) {
+    const { data } = await sanityLiveFetch({ query, params, tags });
+    return { data };
   }
-  return client.fetch<QueryResponse>(query, params, {
-    stega,
-    perspective: "published",
-    useCdn: revalidateSecret ? false : true,
-    next: { revalidate: tags.length ? false : 120, tags },
+
+  const data = await client.fetch(query, params, {
+    next: {
+      revalidate: false,
+      tags,
+    },
   });
+  return { data };
 }

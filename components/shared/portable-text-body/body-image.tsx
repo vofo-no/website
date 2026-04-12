@@ -1,9 +1,8 @@
-import { Image } from "@/types";
 import { PortableTextTypeComponent } from "next-sanity";
 
-import { SanityImage } from "@/components/image";
+import { ImagePayload, SanityImage } from "@/components/image";
 
-interface InlineImageDef extends Image {
+interface InlineImageDef extends ImagePayload {
   _type: "image";
 }
 

@@ -1,4 +1,3 @@
-import { SanityDocument } from "next-sanity";
 import {
   DocumentActionComponent,
   DocumentActionProps,

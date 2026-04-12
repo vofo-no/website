@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
 export function useHeadersObserver(ids: string[] = []) {
-  const observer = useRef<IntersectionObserver>();
+  const observer = useRef<IntersectionObserver>(undefined);
   const [activeId, setActiveId] = useState("");
 
   const handleObsever: IntersectionObserverCallback = (entries) => {

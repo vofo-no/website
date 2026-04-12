@@ -7,7 +7,7 @@ export interface DocumentLinkProps {
 }
 
 export async function DocumentLink({ id }: DocumentLinkProps) {
-  const data = await loadDocumentLink(id);
+  const { data } = await loadDocumentLink(id);
 
   return <DocumentLinkLayout data={data} />;
 }

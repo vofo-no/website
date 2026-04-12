@@ -24,6 +24,7 @@ export default function RootLayout({
   return (
     <html
       lang="no"
+      data-scroll-behavior="smooth"
       className="motion-safe:scroll-smooth antialiased"
       suppressHydrationWarning
     >

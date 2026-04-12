@@ -5,6 +5,7 @@ import {
   allActiveSfQuery,
   allActiveTopicsQuery,
   calendarEntriesQuery,
+  calendarEntryByIdQuery,
   countyBySlugQuery,
   courseBySlugQuery,
   documentLinkByIdQuery,
@@ -19,39 +20,20 @@ import {
   tagByIdQuery,
   topicBySlugQuery,
 } from "@/sanity/lib/queries";
-import {
-  CalendarEntryPayload,
-  CountyListItemPayload,
-  CountyPayload,
-  CourseListItemPayload,
-  CoursePayload,
-  DocumentLinkPayload,
-  HomePayload,
-  OrganizationListItemPayload,
-  PagePayload,
-  PersonPayload,
-  PostListItemPayload,
-  PostPayload,
-  SdgPayload,
-  SettingsPayload,
-  TopicListItemPayload,
-  TopicPayload,
-} from "@/types";
-import { calendarEntryByIdQuery } from "../lib/queries";
 
-export function loadHome() {
-  return sanityFetch<HomePayload>({ query: homeQuery, tags: ["home"] });
+export async function loadHome() {
+  return sanityFetch({ query: homeQuery, tags: ["home"] });
 }
 
-export function loadSettings() {
-  return sanityFetch<SettingsPayload>({
+export async function loadSettings() {
+  return sanityFetch({
     query: settingsQuery,
     tags: ["settings"],
   });
 }
 
 export function loadPost(slug: string) {
-  return sanityFetch<PostPayload | null>({
+  return sanityFetch({
     query: postBySlugQuery,
     params: {
       slug,
@@ -68,14 +50,14 @@ export function loadPostList(
     refs: string[] | null;
     years: string[] | null;
   },
-  lastItem?: PostListItemPayload,
+  lastItem?: { publishedAt?: string | null; _id: string | null } | null,
 ) {
   const paginatedSearchParams = searchParams && {
     lastPublishedAt: lastItem?.publishedAt || null,
     lastId: lastItem?._id || null,
     ...searchParams,
   };
-  return sanityFetch<PostListItemPayload[]>({
+  return sanityFetch({
     query: searchParams ? searchPostsQuery : postsByReferenceQuery,
     params: paginatedSearchParams || { ref: referencesId ?? null },
     tags: ["post", "county", "topic"],
@@ -83,14 +65,14 @@ export function loadPostList(
 }
 
 export function loadAllSfs() {
-  return sanityFetch<OrganizationListItemPayload[]>({
+  return sanityFetch({
     query: allActiveSfQuery,
     tags: [`organization`],
   });
 }
 
 export function loadCalendarEntryById(id: string) {
-  return sanityFetch<CalendarEntryPayload | null>({
+  return sanityFetch({
     query: calendarEntryByIdQuery,
     params: { id },
     tags: [`event:${id}`],
@@ -98,7 +80,7 @@ export function loadCalendarEntryById(id: string) {
 }
 
 export function loadCalendarEntries(year: string | null = null) {
-  return sanityFetch<CalendarEntryPayload[]>({
+  return sanityFetch({
     query: calendarEntriesQuery,
     params: { year },
     tags: [`event`, `post`],
@@ -106,14 +88,14 @@ export function loadCalendarEntries(year: string | null = null) {
 }
 
 export function loadAllCounties() {
-  return sanityFetch<CountyListItemPayload[]>({
+  return sanityFetch({
     query: allActiveCountiesQuery,
     tags: [`county`],
   });
 }
 
 export function loadCounty(slug: string) {
-  return sanityFetch<CountyPayload | null>({
+  return sanityFetch({
     query: countyBySlugQuery,
     params: {
       slug,
@@ -123,14 +105,14 @@ export function loadCounty(slug: string) {
 }
 
 export function loadAllCourses() {
-  return sanityFetch<CourseListItemPayload[]>({
+  return sanityFetch({
     query: allActiveCoursesQuery,
     tags: [`course`],
   });
 }
 
 export function loadCourse(slug: string) {
-  return sanityFetch<CoursePayload | null>({
+  return sanityFetch({
     query: courseBySlugQuery,
     params: {
       slug,
@@ -140,7 +122,7 @@ export function loadCourse(slug: string) {
 }
 
 export function loadPage(slug: string) {
-  return sanityFetch<PagePayload | null>({
+  return sanityFetch({
     query: pageBySlugQuery,
     params: {
       slug,
@@ -150,7 +132,7 @@ export function loadPage(slug: string) {
 }
 
 export function loadTopic(slug: string) {
-  return sanityFetch<TopicPayload | null>({
+  return sanityFetch({
     query: topicBySlugQuery,
     params: {
       slug,
@@ -160,14 +142,14 @@ export function loadTopic(slug: string) {
 }
 
 export function loadAllTopics() {
-  return sanityFetch<TopicListItemPayload[]>({
+  return sanityFetch({
     query: allActiveTopicsQuery,
     tags: [`topic`],
   });
 }
 
 export function loadDocumentLink(id: string) {
-  return sanityFetch<DocumentLinkPayload | null>({
+  return sanityFetch({
     query: documentLinkByIdQuery,
     params: { id },
     tags: [`page:${id}`, `post:${id}`],
@@ -175,7 +157,7 @@ export function loadDocumentLink(id: string) {
 }
 
 export function loadPerson(id: string) {
-  return sanityFetch<PersonPayload | null>({
+  return sanityFetch({
     query: personByIdQuery,
     params: { id },
     tags: [`person:${id}`],
@@ -183,7 +165,7 @@ export function loadPerson(id: string) {
 }
 
 export function loadSdg(id: string) {
-  return sanityFetch<SdgPayload | null>({
+  return sanityFetch({
     query: sdgByIdQuery,
     params: { id },
     tags: [`sdg:${id}`],
@@ -191,7 +173,7 @@ export function loadSdg(id: string) {
 }
 
 export function loadTag(id: string) {
-  return sanityFetch<DocumentLinkPayload | null>({
+  return sanityFetch({
     query: tagByIdQuery,
     params: { id },
     tags: [`county:${id}`, `topic:${id}`],

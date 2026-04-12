@@ -11,7 +11,7 @@ export function CourseStatus({
   lessons,
 }: {
   slug: string;
-  lessons: string[];
+  lessons: (string | null)[];
 }) {
   const [completed] = useAtom(completedCoursesAtom);
 

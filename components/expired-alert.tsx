@@ -8,7 +8,7 @@ interface ExpiredAlertProps {
   expiredAt?: string;
   explanation?: string;
   locale?: string;
-  publishedAt: string;
+  publishedAt?: string | null;
 }
 
 function addOneYear(isoDateStr: string) {
@@ -34,6 +34,8 @@ export function ExpiredAlert({
   locale,
   publishedAt,
 }: ExpiredAlertProps) {
+  if (!publishedAt) return;
+
   const expired =
     new Date() > (expiredAt ? new Date(expiredAt) : addOneYear(publishedAt));
 

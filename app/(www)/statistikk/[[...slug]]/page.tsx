@@ -11,14 +11,15 @@ import {
 } from "../utils";
 
 interface SlugStatisticsPageProps {
-  params: {
+  params: Promise<{
     slug?: string[];
-  };
+  }>;
 }
 
-export function generateMetadata({
-  params: { slug },
-}: SlugStatisticsPageProps): Metadata {
+export async function generateMetadata(
+  props: SlugStatisticsPageProps,
+): Promise<Metadata> {
+  const { slug } = await props.params;
   const params = parseSlugs(slug);
   const index =
     dataIndexV2.find(
@@ -47,9 +48,11 @@ export function generateStaticParams() {
   return slugs;
 }
 
-export default async function SlugStatisticsPage({
-  params: { slug },
-}: SlugStatisticsPageProps) {
+export default async function SlugStatisticsPage(
+  props: SlugStatisticsPageProps,
+) {
+  const { slug } = await props.params;
+
   const params = parseSlugs(slug);
   const index =
     dataIndexV2.find(

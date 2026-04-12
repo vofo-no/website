@@ -10,16 +10,20 @@ import { PostPageLayout } from "@/components/pages/post-page";
 import { TagLink } from "@/components/shared/tag-link";
 
 interface PostPageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 export async function generateMetadata(
-  { params: { slug } }: PostPageProps,
+  props: PostPageProps,
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
-  const data = await loadPost(slug);
+  const params = await props.params;
+
+  const { slug } = params;
+
+  const { data } = await loadPost(slug);
 
   if (!data) notFound();
 
@@ -36,9 +40,9 @@ export async function generateMetadata(
     description: data.description,
     openGraph: {
       images: image ? [image, ...previousImages] : previousImages,
-      title: data.title,
+      title: data.title || undefined,
       type: "article",
-      publishedTime: data.publishedAt,
+      publishedTime: data.publishedAt || undefined,
       modifiedTime: data._updatedAt,
       url: `https://www.vofo.no${resolveHref("post", slug)}`,
     },
@@ -59,8 +63,12 @@ export async function generateStaticParams() {
   }));
 }
 
-export default async function PostPage({ params: { slug } }: PostPageProps) {
-  const data = await loadPost(slug);
+export default async function PostPage(props: PostPageProps) {
+  const params = await props.params;
+
+  const { slug } = params;
+
+  const { data } = await loadPost(slug);
 
   if (!data) notFound();
 

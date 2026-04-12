@@ -11,7 +11,7 @@ export const projectId = assertValue(
 );
 
 export const apiVersion =
-  process.env.NEXT_PUBLIC_SANITY_API_VERSION || "2023-06-21";
+  process.env.NEXT_PUBLIC_SANITY_API_VERSION || "2026-02-01";
 
 export const revalidateSecret = process.env.SANITY_REVALIDATE_SECRET;
 

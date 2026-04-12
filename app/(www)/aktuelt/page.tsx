@@ -10,20 +10,22 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = { title: "Dokument- og nyhetsarkiv" };
 
 export default async function PostsIndexPage(props: {
-  searchParams: {
+  searchParams: Promise<{
     [key: string]: string | string[] | undefined;
-  };
+  }>;
 }) {
-  const [counties, topics] = await Promise.all([
+  const [{ data: counties }, { data: topics }] = await Promise.all([
     loadAllCounties(),
     loadAllTopics(),
   ]);
 
+  const serverSearchParams = await props.searchParams;
+
   const searchParams = parseSearch(
     new URLSearchParams(
-      Object.keys(props.searchParams)
+      Object.keys(serverSearchParams)
         .map((key) => {
-          const value = props.searchParams[key];
+          const value = serverSearchParams[key];
 
           if (typeof value === "undefined") return undefined;
           return [key, typeof value === "string" ? value : value[0]];
@@ -36,10 +38,13 @@ export default async function PostsIndexPage(props: {
   return (
     <PostsIndexPageLayout
       counties={counties.map(({ title, slug }) => ({
-        title,
-        value: slug,
+        title: title || "",
+        value: slug || "",
       }))}
-      topics={topics.map(({ title, slug }) => ({ title, value: slug }))}
+      topics={topics.map(({ title, slug }) => ({
+        title: title || "",
+        value: slug || "",
+      }))}
     >
       <PostList searchParams={searchParams} dynamic />
     </PostsIndexPageLayout>

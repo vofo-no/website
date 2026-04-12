@@ -26,7 +26,7 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
-  const data = await loadAllCourses();
+  const { data } = await loadAllCourses();
 
   return (
     <div className="container">
@@ -47,13 +47,15 @@ export default async function Page() {
               </CardHeader>
               <CardContent>
                 <div className="flex gap-4 items-center">
-                  <CourseStatus slug={item.slug} lessons={item.lessons} />
+                  {item.slug && item.lessons && (
+                    <CourseStatus slug={item.slug} lessons={item.lessons} />
+                  )}
                   <p>{item.description}</p>
                 </div>
               </CardContent>
               <CardFooter>
                 <Button asChild className="mx-auto">
-                  <Link href={resolveHref("course", item.slug)!}>
+                  <Link href={resolveHref("course", item.slug || undefined)!}>
                     Gå til kurset <ArrowRight />
                   </Link>
                 </Button>

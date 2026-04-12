@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { FileDownIcon } from "lucide-react";
-import { FileAsset } from "sanity";
 
 import { Button } from "@/components/ui/button";
 
@@ -11,7 +10,19 @@ const byteValueNumberFormatter = Intl.NumberFormat("en", {
   unitDisplay: "narrow",
 });
 
-export function FileDownload({ file }: { file: FileAsset }) {
+export function FileDownload({
+  file,
+}: {
+  file?: {
+    _id: string;
+    assetId: string | null;
+    originalFilename: string | null;
+    mimeType: string | null;
+    size: number | null;
+  } | null;
+}) {
+  if (!file) return;
+
   return (
     <Button variant="outline" asChild className="not-prose my-1">
       <Link
@@ -26,7 +37,7 @@ export function FileDownload({ file }: { file: FileAsset }) {
           <span className="truncate">{file.originalFilename}</span>
           <small className="truncate font-normal flex">
             <span className="truncate">{file.mimeType}</span>
-            <span>, {byteValueNumberFormatter.format(file.size)}</span>
+            <span>, {byteValueNumberFormatter.format(file.size || 0)}</span>
           </small>
         </div>
       </Link>

@@ -11,16 +11,17 @@ import { Person } from "@/components/shared/person";
 import { PostList } from "@/components/shared/post-list";
 
 interface TopicPageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 export async function generateMetadata(
-  { params: { slug } }: TopicPageProps,
+  props: TopicPageProps,
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
-  const data = await loadTopic(slug);
+  const { slug } = await props.params;
+  const { data } = await loadTopic(slug);
 
   if (!data) notFound();
 
@@ -37,7 +38,7 @@ export async function generateMetadata(
     description: data.description,
     openGraph: {
       images: image ? [image, ...previousImages] : previousImages,
-      title: data.title,
+      title: data.title || undefined,
       type: "website",
       url: `https://www.vofo.no${resolveHref("topic", slug)}`,
     },
@@ -58,8 +59,12 @@ export async function generateStaticParams() {
   }));
 }
 
-export default async function TopicPage({ params: { slug } }: TopicPageProps) {
-  const data = await loadTopic(slug);
+export default async function TopicPage(props: TopicPageProps) {
+  const params = await props.params;
+
+  const { slug } = params;
+
+  const { data } = await loadTopic(slug);
 
   if (!data) notFound();
 
@@ -73,7 +78,7 @@ export default async function TopicPage({ params: { slug } }: TopicPageProps) {
     <PageLayout data={data} contacts={contacts}>
       <PostList
         referencesId={data._id}
-        title={`Aktuelt om ${data.title.toLocaleLowerCase()}`}
+        title={`Aktuelt om ${data.title?.toLocaleLowerCase()}`}
         archiveParams={archiveParams}
       />
     </PageLayout>

@@ -27,8 +27,8 @@ const buttonVariants = cva(
 export interface TagLinkProps extends VariantProps<typeof buttonVariants> {
   data: {
     _type: string;
-    slug: string;
-    title: string;
+    slug: string | null;
+    title: string | null;
   };
 }
 
@@ -45,7 +45,7 @@ export function TagLinkLayout({
           size,
         }),
       )}
-      href={resolveHref(_type, slug)!}
+      href={resolveHref(_type, slug || undefined)!}
     >
       <svg viewBox="0 0 100 100" className="h-[0.8em]">
         <circle cx="50" cy="53" r="44" fill="currentColor" />

@@ -1,4 +1,4 @@
-import { CountyPayload } from "@/types";
+import { CountyBySlugQueryResult } from "@/sanity.types";
 
 import { cn } from "@/lib/utils";
 import { SanityImage } from "@/components/image";
@@ -13,7 +13,7 @@ import { CountyStatisticBrief } from "../county-statistic-brief";
 
 export function CountyPageLayout(
   props: React.PropsWithChildren<{
-    data: CountyPayload;
+    data: CountyBySlugQueryResult;
     contacts?: React.ReactNode;
   }>,
 ) {
@@ -34,7 +34,7 @@ export function CountyPageLayout(
               image ? "md:row-start-3" : "md:row-start-1 md:row-span-2",
             )}
           >
-            <PortableTextBody value={body} />
+            <PortableTextBody value={body || undefined} />
           </div>
           <aside className={cn("md:col-start-3 md:row-span-3")}>
             <div className="flex flex-col gap-8 md:sticky md:top-28">
@@ -48,7 +48,12 @@ export function CountyPageLayout(
                   {props.contacts}
                 </section>
               )}
-              <CountyStatisticBrief slug={slug} locale={locale} />
+              {slug && (
+                <CountyStatisticBrief
+                  slug={slug}
+                  locale={locale || undefined}
+                />
+              )}
             </div>
           </aside>
         </div>

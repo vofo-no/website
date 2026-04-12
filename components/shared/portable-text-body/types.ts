@@ -12,6 +12,7 @@ interface EventReferenceDef extends Reference {
 interface PeopleDef {
   _type: "people";
   members: { person: Reference }[];
+  showDescription?: boolean | null;
 }
 
 interface SdgRefDef extends Reference {

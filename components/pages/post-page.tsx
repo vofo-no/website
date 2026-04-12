@@ -1,4 +1,4 @@
-import { PostPayload } from "@/types";
+import { PostBySlugQueryResult } from "@/sanity.types";
 
 import { localeName, parseLocale } from "@/lib/locale";
 import { cn } from "@/lib/utils";
@@ -32,7 +32,7 @@ function localizedContentLabel(locale: localeName) {
 }
 
 export function PostPageLayout(props: {
-  data: PostPayload;
+  data: PostBySlugQueryResult;
   relevance?: React.ReactNode;
 }) {
   const {
@@ -46,7 +46,7 @@ export function PostPageLayout(props: {
     _updatedAt,
     expiration,
   } = props.data ?? {};
-  const locale = parseLocale(props.data?.locale);
+  const locale = parseLocale(props.data?.locale || undefined);
   const meta = !!(publishedAt || _updatedAt);
   return (
     <article className="container">
@@ -75,9 +75,9 @@ export function PostPageLayout(props: {
               explanation={expiration?.explanation}
             />
             <Toc title={localizedContentLabel(locale)} headers={toc} mobile />
-            <PortableTextBody value={body} />
+            <PortableTextBody value={body || undefined} />
             {attachments?.map((file) => (
-              <FileDownload file={file} key={file._id} />
+              <FileDownload file={file} key={file?._id} />
             ))}
           </div>
           <aside
@@ -91,13 +91,13 @@ export function PostPageLayout(props: {
                 <div className="text-muted-foreground my-2">
                   <small className="flex flex-row flex-wrap md:flex-col gap-1">
                     <RelativeDate
-                      value={publishedAt}
+                      value={publishedAt || undefined}
                       locale={locale}
                       prefix="Publisert"
                     />
                     <RelativeDate
                       value={
-                        !isSameDate(publishedAt, _updatedAt)
+                        !isSameDate(publishedAt || undefined, _updatedAt)
                           ? _updatedAt
                           : undefined
                       }

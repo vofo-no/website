@@ -1,6 +1,6 @@
 export function parseSearch(
   searchParams: URLSearchParams,
-  filters: { slug: string; _id: string }[],
+  filters: { slug: string | null; _id: string }[],
 ): {
   docTypes: string[] | null;
   q: string | null;

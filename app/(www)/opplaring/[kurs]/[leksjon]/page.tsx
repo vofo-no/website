@@ -9,19 +9,20 @@ import { Separator } from "@/components/ui/separator";
 import { PortableTextBody } from "@/components/shared/portable-text-body";
 
 interface CourseLessonPageProps {
-  params: {
+  params: Promise<{
     kurs: string;
     leksjon: string;
-  };
+  }>;
 }
 
 export async function generateMetadata(
-  { params }: CourseLessonPageProps,
+  props: CourseLessonPageProps,
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
-  const data = await loadCourse(params.kurs);
+  const params = await props.params;
+  const { data } = await loadCourse(params.kurs);
 
-  const lesson = data?.lessons.find((item) => item.slug === params.leksjon);
+  const lesson = data?.lessons?.find((item) => item.slug === params.leksjon);
 
   if (!lesson) notFound();
 
@@ -32,7 +33,7 @@ export async function generateMetadata(
     description: lesson.description,
     openGraph: {
       images: previousImages,
-      title: lesson.title,
+      title: lesson.title || undefined,
       type: "website",
       url: `https://www.vofo.no${resolveHref("course", params.kurs)}/${params.leksjon}`,
     },
@@ -48,7 +49,7 @@ export async function generateStaticParams() {
     { next: { tags: ["course"] } },
   );
 
-  let params: { kurs: string; leksjon: string }[] = [];
+  const params: { kurs: string; leksjon: string }[] = [];
 
   data.forEach((item) => {
     item.lessons.forEach((leksjon) =>
@@ -62,12 +63,11 @@ export async function generateStaticParams() {
   return params;
 }
 
-export default async function CourseLessonPage({
-  params,
-}: CourseLessonPageProps) {
-  const data = await loadCourse(params.kurs);
+export default async function CourseLessonPage(props: CourseLessonPageProps) {
+  const params = await props.params;
+  const { data } = await loadCourse(params.kurs);
 
-  const lesson = data?.lessons.find((item) => item.slug === params.leksjon);
+  const lesson = data?.lessons?.find((item) => item.slug === params.leksjon);
 
   if (!lesson) notFound();
 
@@ -77,7 +77,7 @@ export default async function CourseLessonPage({
         <h1>{lesson.title}</h1>
         <p className="lead">{lesson.description}</p>
         <Separator />
-        <PortableTextBody value={lesson.body} />
+        <PortableTextBody value={lesson.body || undefined} />
       </div>
     </div>
   );

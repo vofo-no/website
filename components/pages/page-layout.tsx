@@ -1,4 +1,4 @@
-import { PagePayload } from "@/types";
+import { PageBySlugQueryResult, PostBySlugQueryResult } from "@/sanity.types";
 
 import { cn } from "@/lib/utils";
 import { BackToTopButton } from "@/components/back-to-top-button";
@@ -15,12 +15,14 @@ import { RelativeDate } from "../relative-date";
 
 export function PageLayout(
   props: React.PropsWithChildren<{
-    data: PagePayload;
+    data: PageBySlugQueryResult | PostBySlugQueryResult;
     contacts?: React.ReactNode;
   }>,
 ) {
-  const { title, description, body, toc, image, _updatedAt, locale } =
+  const { title, description, body, toc, _updatedAt, locale } =
     props.data ?? {};
+  const image =
+    props.data && "image" in props.data ? props.data.image : undefined;
 
   const meta = !!_updatedAt;
   return (
@@ -44,7 +46,7 @@ export function PageLayout(
             )}
           >
             <Toc title="Innhold" headers={toc} mobile />
-            <PortableTextBody value={body} />
+            <PortableTextBody value={body || undefined} />
           </div>
           <aside
             className={cn(
@@ -58,7 +60,7 @@ export function PageLayout(
                   <small className="flex flex-row flex-wrap md:flex-col gap-1">
                     <RelativeDate
                       value={_updatedAt}
-                      locale={locale}
+                      locale={locale || undefined}
                       prefix="Oppdatert"
                     />
                   </small>
@@ -77,7 +79,7 @@ export function PageLayout(
                   {props.contacts}
                 </section>
               )}
-              <BackToTopButton locale={locale} />
+              <BackToTopButton locale={locale || undefined} />
             </div>
           </aside>
         </div>

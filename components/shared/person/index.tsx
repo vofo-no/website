@@ -4,10 +4,11 @@ import { PersonLayout } from "./layout";
 
 export interface PersonProps {
   id: string;
+  showDescription?: boolean;
 }
 
-export async function Person({ id }: PersonProps) {
-  const data = await loadPerson(id);
+export async function Person({ id, ...props }: PersonProps) {
+  const { data } = await loadPerson(id);
 
-  return data ? <PersonLayout data={data} /> : null;
+  return data ? <PersonLayout data={data} {...props} /> : null;
 }

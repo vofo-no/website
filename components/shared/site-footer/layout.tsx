@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { SettingsPayload } from "@/types";
-import { vercelStegaSplit } from "@vercel/stega";
+import { SettingsQueryResult } from "@/sanity.types";
 import { MailIcon, MapPinIcon } from "lucide-react";
+import { stegaClean } from "next-sanity";
 
 import { formatPhone } from "@/lib/formatPhone";
 import { cn } from "@/lib/utils";
@@ -9,7 +9,7 @@ import { FooterSponsor } from "@/components/footer-sponsor";
 import { FormatLink } from "@/components/FormatLink";
 import { SomeIcons, someIconsHoverClassName } from "@/components/some-icons";
 
-export function SiteFooterLayout(props: { data: SettingsPayload }) {
+export function SiteFooterLayout(props: { data: SettingsQueryResult }) {
   const { email, phone, postalAddress, officeAddress, some, about, shortcuts } =
     props.data ?? {};
   return (
@@ -26,13 +26,14 @@ export function SiteFooterLayout(props: { data: SettingsPayload }) {
         <section className="flex items-center gap-2">
           <h2 className="font-bold">Følg oss:</h2>
           {some?.map(({ title, href }) => {
-            const { cleaned } = vercelStegaSplit(title);
+            if (!title) return null;
+            const cleaned = stegaClean(title);
             const Icon = SomeIcons[cleaned];
             const someHoverClassName = someIconsHoverClassName[cleaned];
             return (
               <Link
                 key={href}
-                href={href}
+                href={href || ""}
                 title={cleaned}
                 className={cn(
                   "p-2",
@@ -99,9 +100,9 @@ export function SiteFooterLayout(props: { data: SettingsPayload }) {
             {shortcuts.map(({ title, href }) => (
               <li key={href}>
                 <Link
-                  href={href}
+                  href={href || ""}
                   className="underline hover:text-foreground"
-                  target={/^https?:\/\//.test(href) ? "_blank" : "_self"}
+                  target={/^https?:\/\//.test(href || "") ? "_blank" : "_self"}
                 >
                   {title}
                 </Link>
@@ -115,7 +116,10 @@ export function SiteFooterLayout(props: { data: SettingsPayload }) {
           </li>
           {about?.map(({ title, href }) => (
             <li key={href}>
-              <Link href={href} className="underline hover:text-foreground">
+              <Link
+                href={href || ""}
+                className="underline hover:text-foreground"
+              >
                 {title}
               </Link>
             </li>

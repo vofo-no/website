@@ -1,10 +1,6 @@
 import type dataSchema from "@/data/schema.json";
-import type {
-  FileAsset,
-  PortableTextBlock,
-  Reference,
-  Image as SanityImage,
-} from "sanity";
+import { PortableTextBlock } from "next-sanity";
+import type { FileAsset, Reference, Image as SanityImage } from "sanity";
 
 export interface Image extends SanityImage {
   alt: string;
@@ -81,7 +77,7 @@ interface DocumentListItemPayload {
   image?: Image;
 }
 
-export interface OrganizationListItemPayload extends DocumentListItemPayload {}
+export type OrganizationListItemPayload = DocumentListItemPayload;
 
 export interface CalendarEntryPayload {
   _id: string;
@@ -95,7 +91,7 @@ export interface CalendarEntryPayload {
   relatedPost?: DocumentLinkPayload;
 }
 
-export interface CountyListItemPayload extends DocumentListItemPayload {}
+export type CountyListItemPayload = DocumentListItemPayload;
 
 export interface CountyPayload extends CountyListItemPayload {
   body: PortableTextBlock[];
@@ -147,6 +143,7 @@ export interface PersonPayload {
   image?: Image;
   email?: string;
   phone?: string;
+  description?: string;
 }
 
 export interface SdgPayload {

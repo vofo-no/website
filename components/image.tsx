@@ -1,10 +1,26 @@
 import Image from "next/image";
+import { SanityImageCrop, SanityImageHotspot } from "@/sanity.types";
 import { urlForImage } from "@/sanity/lib/image";
-import { Image as ImagePayload } from "@/types";
 import { getImageDimensions } from "@sanity/asset-utils";
-import { vercelStegaClean } from "@vercel/stega";
+import { stegaClean } from "next-sanity";
 
 import { AspectRatio } from "./ui/aspect-ratio";
+
+export interface ImagePayload {
+  asset?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+  };
+  media?: unknown;
+  hotspot?: SanityImageHotspot;
+  crop?: SanityImageCrop;
+  caption?: string;
+  credit?: string;
+  alt?: string;
+  position?: "floatRight";
+  _type: "image";
+}
 
 interface Props {
   image: ImagePayload;
@@ -22,7 +38,7 @@ export function SanityImage({ image, mode = "block", priority }: Props) {
       <figure className="md:col-span-2 md:row-span-2 -mx-4 md:mx-0">
         <Image
           src={url.size(2560, 1440).url()}
-          alt={image.alt}
+          alt={image.alt || ""}
           width={2560}
           height={1440}
           sizes="(max-width: 768px) 100vw, 66vw"
@@ -48,7 +64,7 @@ export function SanityImage({ image, mode = "block", priority }: Props) {
         <Image
           className="w-full h-full object-cover rounded border bg-secondary"
           src={url.size(720, 405).dpr(2).url()}
-          alt={image.alt}
+          alt={image.alt || ""}
           title={image.credit}
           width={720}
           height={405}
@@ -66,7 +82,7 @@ export function SanityImage({ image, mode = "block", priority }: Props) {
       <Image
         className="w-full h-full object-cover bg-secondary"
         src={url.size(400, 300).dpr(2).url()}
-        alt={image.alt}
+        alt={image.alt || ""}
         title={image.credit}
         width={400}
         height={300}
@@ -78,14 +94,14 @@ export function SanityImage({ image, mode = "block", priority }: Props) {
     );
   }
 
-  if (vercelStegaClean(image.position) === "floatRight") {
+  if (stegaClean(image.position) === "floatRight") {
     const imageUrl = url.width(640).url();
 
     return (
       <figure className="-mx-4 md:w-[40%] md:ml-4 md:mr-0 md:float-right clear-right">
         <Image
           src={imageUrl}
-          alt={image.alt}
+          alt={image.alt || ""}
           width={640}
           height={getImageDimensions(imageUrl).height}
           placeholder="blur"
@@ -111,7 +127,7 @@ export function SanityImage({ image, mode = "block", priority }: Props) {
     <figure className="-mx-4 md:mx-0">
       <Image
         src={imageUrl}
-        alt={image.alt}
+        alt={image.alt || ""}
         width={1280}
         height={getImageDimensions(imageUrl).height}
         placeholder="blur"

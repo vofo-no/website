@@ -4,15 +4,15 @@ import { ArrowRightIcon } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 
 interface AnnouncementProps {
-  emoji?: string;
-  title: string;
-  href: string;
+  emoji: string | null;
+  title: string | null;
+  href: string | null;
 }
 
 export function Announcement(props: AnnouncementProps) {
   return (
     <Link
-      href={props.href}
+      href={props.href || ""}
       className="inline-flex items-center rounded-lg bg-muted px-3 py-2 text-sm font-medium transition-all hover:bg-primary-foreground group"
     >
       {props.emoji && (

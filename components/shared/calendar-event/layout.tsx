@@ -1,5 +1,8 @@
 import Link from "next/link";
-import { CalendarEntryPayload } from "@/types";
+import {
+  CalendarEntriesQueryResult,
+  CalendarEntryByIdQueryResult,
+} from "@/sanity.types";
 import { ArrowRightIcon } from "lucide-react";
 
 import { formatDate } from "@/lib/date";
@@ -8,7 +11,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
 interface CalendarEventLayoutProps {
-  data: CalendarEntryPayload;
+  data: CalendarEntryByIdQueryResult | CalendarEntriesQueryResult[0];
 }
 
 function isFutureDate(date: Date) {
@@ -16,10 +19,12 @@ function isFutureDate(date: Date) {
 }
 
 export function CalendarEventLayout({ data }: CalendarEventLayoutProps) {
-  const start = new Date(data.duration.start);
+  if (!data || !data.duration) return null;
+
+  const start = new Date(data.duration.start || "");
   const hideTime =
     (data.duration.end &&
-      data.duration.end.split("T")[0] !== data.duration.start.split("T")[0]) ||
+      data.duration.end.split("T")[0] !== data.duration.start?.split("T")[0]) ||
     start.toLocaleString("nb", {
       hour: "2-digit",
       minute: "2-digit",
@@ -54,11 +59,16 @@ export function CalendarEventLayout({ data }: CalendarEventLayoutProps) {
       </div>
       <div>
         <h2 className="text-xl leading-tight font-semibold">
-          {data.relatedPost ? (
+          {"relatedPost" in data && data.relatedPost ? (
             <Link
-              href={resolveHref(data.relatedPost._type, data.relatedPost.slug)!}
+              href={
+                resolveHref(
+                  data.relatedPost._type,
+                  data.relatedPost.slug || "",
+                )!
+              }
               className=" underline hover:text-primary"
-              title={data.relatedPost.title}
+              title={data.relatedPost.title || "???"}
             >
               {data.title}
             </Link>
@@ -94,7 +104,7 @@ export function CalendarEventLayout({ data }: CalendarEventLayoutProps) {
               </Button>
             )}
             {registrationDueDate &&
-              `Påmeldingsfrist: ${formatDate({ date: data.registrationDueDate })}`}
+              `Påmeldingsfrist: ${formatDate({ date: data.registrationDueDate! })}`}
           </p>
         )}
       </div>

@@ -10,8 +10,8 @@ import {
 import { Person } from "@/components/shared/person";
 
 export default async function ContactPage() {
-  const data = await loadSettings();
-  const { email, phone, postalAddress, officeAddress, contacts } = data;
+  const { data } = await loadSettings();
+  const { email, phone, postalAddress, officeAddress, contacts } = data || {};
 
   return (
     <div className="container">
@@ -70,7 +70,7 @@ export default async function ContactPage() {
           <h3>Postadresse for papirfaktura</h3>
           <address className="whitespace-pre-wrap">
             Voksenopplæringsforbundet{"\n"}
-            {(postalAddress || officeAddress).replace(", ", " \n")}
+            {(postalAddress || officeAddress || "").replace(", ", " \n")}
           </address>
         </section>
         <section>
