@@ -73,7 +73,7 @@
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
     "@types/speakingurl": "^13.0.6",
-    "arquero": "^5.4.1",
+    "arquero": "^8.0.3",
     "autoprefixer": "^10.4.27",
     "commander": "^12.1.0",
     "eslint": "^9.39.4",
