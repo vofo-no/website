@@ -27,7 +27,7 @@ export function Picker() {
   );
 
   return (
-    <div className="text-lg sm:text-xl text-center text-balance text-muted-foreground">
+    <div className="text-lg sm:text-xl text-center text-muted-foreground">
       <PageHeaderDescriptionInlineSelect
         defaultValue={defaultStatistikkParams.sf}
         selectAllLabel="Alle studieforbund"
