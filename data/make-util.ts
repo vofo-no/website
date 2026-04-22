@@ -1,8 +1,7 @@
 import fs from "fs";
 import { client } from "@/sanity/lib/client";
 import { put } from "@vercel/blob";
-import { desc, escape, loadCSV, loadJSON, op } from "arquero";
-import ColumnTable from "arquero/dist/types/table/column-table";
+import { ColumnTable, desc, escape, loadCSV, loadJSON, op } from "arquero";
 import { groq } from "next-sanity";
 
 import dataIndex from "./index-v2.json";
