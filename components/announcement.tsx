@@ -18,21 +18,17 @@ function isUrgent(emoji: string | null) {
 export function Announcement(props: AnnouncementProps) {
   if (isUrgent(props.emoji)) {
     return (
-      <div role="alert" className="w-full">
+      <div role="alert" className="w-full mb-12">
         <Link
           href={props.href || ""}
-          className="group flex w-full items-center gap-3 rounded-xl bg-destructive px-5 py-4 text-destructive-foreground shadow-lg shadow-destructive/30 ring-2 ring-destructive/40 ring-offset-2 ring-offset-background transition-all hover:bg-destructive/90 hover:shadow-xl focus-visible:outline-none focus-visible:ring-4"
+          className="group flex w-full items-center gap-4 rounded-xl bg-red-700 px-5 py-4 text-white shadow-lg shadow-red-700/40 ring-2 ring-red-700/50 ring-offset-2 ring-offset-background transition-all hover:bg-red-800 hover:shadow-xl focus-visible:outline-none focus-visible:ring-4"
         >
           <span
             aria-hidden="true"
-            className="text-3xl leading-none motion-safe:animate-pulse"
+            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white text-2xl leading-none shadow-inner motion-safe:animate-pulse"
           >
             {props.emoji}
           </span>
-          <Separator
-            className="h-8 bg-destructive-foreground/40"
-            orientation="vertical"
-          />
           <span className="flex-1 text-balance text-base font-bold sm:text-lg group-hover:underline">
             {props.title}
           </span>
